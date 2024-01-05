@@ -1,0 +1,67 @@
+"use client";
+
+import { Button } from "@/components/ui/button";
+import { Batch } from "@/server/types/batch.type"; // Make sure you have a Batch type defined
+import { ColumnDef } from "@tanstack/react-table";
+import { UpdateBatchDialog } from "../_components/update_batch_dialog"; // Assuming you have an update dialog for batches
+
+export const columns: ColumnDef<Batch>[] = [
+  {
+    accessorKey: "batch_no",
+    header: "Batch No",
+  },
+  {
+    accessorKey: "batch_name",
+    header: "Batch Name",
+  },
+  {
+    accessorKey: "courses.course_code",
+    header: "Course Code",
+  },
+  {
+    accessorKey: "courses.course_name",
+    header: "Course Name",
+  },
+  {
+    accessorKey: "zoom_link",
+    header: "Zoom Link",
+    cell: ({ row }) => (
+      <a href={row.original.zoom_link} className="text-blue-500">
+        Zoom Link
+      </a>
+    ), // Use or create a component for batch updates
+  },
+
+  {
+    accessorKey: "course_auto_id",
+    header: "Course ID",
+  },
+  {
+    accessorKey: "start_date",
+    header: "Start Date",
+  },
+  {
+    accessorKey: "end_date",
+    header: "End Date",
+  },
+  {
+    accessorKey: "status",
+    header: "Status",
+    cell: ({ row }) => (
+      <div>{row.original.status == 1 ? "Active" : "Deactive"}</div>
+    ),
+  },
+  {
+    accessorKey: "password",
+    header: "Password",
+  },
+  {
+    accessorKey: "price",
+    header: "Price",
+  },
+  {
+    accessorKey: "auto_id",
+    header: () => <div>Actions</div>,
+    cell: ({ row }) => <UpdateBatchDialog data={row.original} />, // Use or create a component for batch updates
+  },
+];
