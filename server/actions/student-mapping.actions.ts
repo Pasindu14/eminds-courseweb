@@ -9,7 +9,7 @@ export async function fetchStudentMappings(): Promise<StudentMapping[]> {
     try {
         let { data: mappings, error } = await supabaseCacheFreeClient
             .from('students_mapping')
-            .select('*')
+            .select(`*`)
             .order('auto_id', { ascending: true });
 
         if (error) {
@@ -27,21 +27,27 @@ export async function addStudentMapping(mapping: any) {
         const responseHandler = new ResponseHandler<any>();
         console.log(mapping);
 
-        mapping.students.forEach((element: any) => {
-            console.log(element)
+        mapping.students.forEach(async (element: any) => {
+            const { data, error } = await supabaseCacheFreeClient
+                .from('students_mapping')
+                .insert([{
+                    student_auto_id: element,
+                    batch_auto_id: mapping.batch_auto_id,
+
+                }])
+                .select();
+
+            console.log(error);
+            if (error != null) {
+                return responseHandler.setError(
+                    error.details ?? errorMessage,
+                );
+            }
         });
-        const { data, error } = await supabaseCacheFreeClient
-            .from('students_mapping')
-            .insert([mapping])
-            .select();
-        console.log(error);
-        if (error != null) {
-            return responseHandler.setError(
-                error.details ?? errorMessage,
-            );
-        }
+
+
         revalidatePath('/student-mappings', 'page');
-        return responseHandler.setSuccess("Success", data);
+        return responseHandler.setSuccess("Success");
     } catch (error) {
         throw error;
     }

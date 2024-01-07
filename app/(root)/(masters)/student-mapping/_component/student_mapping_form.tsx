@@ -46,9 +46,6 @@ export function StudentMappingForm({ data }: { data?: any }) {
       if (!result.success) {
         toastError(result.message);
       } else {
-        if (data == null) {
-          form.reset();
-        }
         toastSuccess(successMessage);
       }
     } catch (error) {
