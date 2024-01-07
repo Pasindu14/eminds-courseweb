@@ -1,9 +1,7 @@
-import Link from "next/link";
-import { Control, useController } from "react-hook-form";
+import { Control } from "react-hook-form";
 
 import {
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -17,30 +15,32 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-import React, { useEffect, useMemo, useState } from "react";
-import { fetchCourses } from "@/server/actions/course.actions";
-import { Course } from "@/server/types/course.type";
+import React, { useEffect, useState } from "react";
+import { Exam } from "@/server/types/exam.type";
+import { fetchExams } from "@/server/actions/exams.actions";
 import { Loader } from "@/lib/spinners";
 
-type CourseSelectProps = {
-  control: Control<any>;
+type ExamSelectProps = {
+  control: Control<any>; // Use a more specific type instead of 'any' if available
   name: string;
+  batch?: string;
+  course?: string;
 };
 
-const CourseSelect = ({ control, name }: CourseSelectProps) => {
+const ExamSelect = ({ control, name, batch, course }: ExamSelectProps) => {
   const [loading, setLoading] = useState(false);
-  const [courses, setCourses] = useState<Course[]>([]);
+  const [exams, setExams] = useState<Exam[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      const data = await fetchCourses();
-      setCourses(data);
+      const data = await fetchExams(course, batch);
+      setExams(data);
       setLoading(false);
     };
 
     fetchData();
-  }, []);
+  }, [course, batch]);
 
   return (
     <div>
@@ -49,30 +49,27 @@ const CourseSelect = ({ control, name }: CourseSelectProps) => {
         name={name}
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Course</FormLabel>
+            <FormLabel>Batch</FormLabel>
             <div className="flex items-center justify-center gap-2">
-              <Select
-                onValueChange={field.onChange}
-                defaultValue={field.value.toString()}
-              >
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select a course" />
+                    <SelectValue placeholder="Select a exam" />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  {courses.length > 0 ? (
-                    courses.map((course) => (
+                  {exams.length > 0 ? (
+                    exams.map((exam) => (
                       <SelectItem
-                        key={course.auto_id}
-                        value={course.auto_id!.toString()}
+                        key={exam.exam_auto_id}
+                        value={exam.exam_auto_id!.toString()}
                       >
-                        {course.course_name}
+                        {exam.exam_code}
                       </SelectItem>
                     ))
                   ) : (
                     <SelectItem value="-1" disabled>
-                      No courses available
+                      No exams available
                     </SelectItem>
                   )}
                 </SelectContent>
@@ -87,4 +84,4 @@ const CourseSelect = ({ control, name }: CourseSelectProps) => {
   );
 };
 
-export default CourseSelect;
+export default ExamSelect;

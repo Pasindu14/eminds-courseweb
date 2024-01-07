@@ -5,11 +5,19 @@ import { revalidatePath } from 'next/cache';
 import { Batch } from "../types/batch.type"; // Ensure you have a Batch type defined
 import { errorMessage } from "@/constants/messages";
 
-export async function fetchBatches(): Promise<Batch[]> {
+export async function fetchBatches(courseParam?: string): Promise<Batch[]> {
     try {
-        let { data: batches, error } = await supabaseCacheFreeClient
+        let query = supabaseCacheFreeClient
             .from('batches')
-            .select(`* , courses(course_code,course_name)`).order('auto_id', { ascending: true });
+            .select(`*, courses(course_code, course_name)`)
+            .order('auto_id', { ascending: true });
+
+        // Apply the filter only if courseParam is provided and not empty
+        if (courseParam) {
+            query = query.eq('course_auto_id', courseParam);
+        }
+
+        let { data: batches, error } = await query;
 
         if (error) {
             return [];

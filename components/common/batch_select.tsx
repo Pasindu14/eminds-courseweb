@@ -1,3 +1,4 @@
+"use client";
 import { Control } from "react-hook-form";
 
 import {
@@ -18,23 +19,27 @@ import {
 import React, { useEffect, useState } from "react";
 import { fetchBatches } from "@/server/actions/batch.actions";
 import { Batch } from "@/server/types/batch.type";
+import { Loader } from "@/lib/spinners";
 
 type BatchSelectProps = {
-  control: Control<any>; // Use a more specific type instead of 'any' if available
+  control: Control<any>;
   name: string;
+  filter?: string;
 };
 
-const BatchSelect = ({ control, name }: BatchSelectProps) => {
+const BatchSelect = ({ control, name, filter }: BatchSelectProps) => {
+  const [loading, setLoading] = useState(false);
   const [batches, setBatches] = useState<Batch[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await fetchBatches();
+      setLoading(true);
+      const data = await fetchBatches(filter);
       setBatches(data);
+      setLoading(false);
     };
-
     fetchData();
-  }, []);
+  }, [filter]);
 
   return (
     <div>
@@ -43,25 +48,38 @@ const BatchSelect = ({ control, name }: BatchSelectProps) => {
         name={name}
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Course</FormLabel>
-            <Select onValueChange={field.onChange} defaultValue={field.value}>
-              <FormControl>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select a course" />
-                </SelectTrigger>
-              </FormControl>
-              <SelectContent>
-                {batches.map((batch) => (
-                  <SelectItem
-                    key={batch.auto_id}
-                    value={batch.auto_id!.toString()}
-                  >
-                    {batch.batch_no}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <FormLabel>Batch</FormLabel>
+            <div className="flex items-center justify-center gap-2">
+              <Select
+                onValueChange={field.onChange}
+                defaultValue={field.value}
+                disabled={loading}
+              >
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a batch" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  {batches.length > 0 ? (
+                    batches.map((batch) => (
+                      <SelectItem
+                        key={batch.auto_id}
+                        value={batch.auto_id!.toString()}
+                      >
+                        {batch.batch_no}
+                      </SelectItem>
+                    ))
+                  ) : (
+                    <SelectItem value="-1" disabled>
+                      No batches available
+                    </SelectItem>
+                  )}
+                </SelectContent>
+              </Select>
 
+              {loading && <Loader size={13} color="black" />}
+            </div>
             <FormMessage />
           </FormItem>
         )}

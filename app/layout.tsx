@@ -1,8 +1,15 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import {
+  Cabin,
+  Heebo,
+  Inter,
+  Jost,
+  Oswald,
+  Roboto_Condensed,
+} from "next/font/google";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
-const inter = Inter({ subsets: ["latin"] });
+const jost = Jost({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Eminds",
@@ -16,7 +23,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={jost.className} suppressHydrationWarning={true}>
+        {children}
+      </body>
     </html>
   );
 }

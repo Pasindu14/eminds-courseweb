@@ -19,39 +19,40 @@ import { motion } from "framer-motion";
 
 const components: { title: string; href: string; description: string }[] = [
   {
-    title: "Alert Dialog",
-    href: "/docs/primitives/alert-dialog",
+    title: "Student",
+    href: "/students",
     description:
-      "A modal dialog that interrupts the user with important content and expects a response.",
+      "You can efficiently manage and organize student details using this platform, ensuring easy access and updates to vital information",
   },
   {
-    title: "Hover Card",
-    href: "/docs/primitives/hover-card",
+    title: "Courses",
+    href: "/courses",
     description:
-      "For sighted users to preview content available behind a link.",
+      "Efficiently manage and organize course details, ensuring easy access and updates.",
   },
   {
-    title: "Progress",
-    href: "/docs/primitives/progress",
+    title: "Batches",
+    href: "/batches",
     description:
-      "Displays an indicator showing the completion progress of a task, typically displayed as a progress bar.",
+      "Efficiently manage and organize batch details on this platform, ensuring easy access and updates to vital information.",
   },
   {
-    title: "Scroll-area",
-    href: "/docs/primitives/scroll-area",
-    description: "Visually or semantically separates content.",
+    title: "Jobs",
+    href: "/jobs",
+    description:
+      "Easily manage and view job postings, keeping track of openings, application deadlines, and job details.",
   },
   {
-    title: "Tabs",
-    href: "/docs/primitives/tabs",
+    title: "Exams",
+    href: "/exams",
     description:
-      "A set of layered sections of content—known as tab panels—that are displayed one at a time.",
+      "Efficiently manage and organize exam details on this platform, ensuring easy access and updates to vital information.",
   },
   {
-    title: "Tooltip",
-    href: "/docs/primitives/tooltip",
+    title: "Questions",
+    href: "/questions",
     description:
-      "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
+      "Efficiently manage and review exam questions, keeping tabs on various topics, difficulty levels, and correct answers for streamlined exam preparation and assessment",
   },
 ];
 
@@ -97,7 +98,7 @@ export function NavigationAdmin() {
             </NavigationMenuContent>
           </NavigationMenuItem>
           <NavigationMenuItem>
-            <NavigationMenuTrigger>Components</NavigationMenuTrigger>
+            <NavigationMenuTrigger>Masters</NavigationMenuTrigger>
             <NavigationMenuContent>
               <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
                 {components.map((component) => (

@@ -12,37 +12,37 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import courseSchema from "@/validations/course.validation"; // Define this validation schema
-import { addCourse, updateCourse } from "@/server/actions/course.actions"; // Adjust these functions for courses
+import examSchema from "@/validations/exam.validation"; // Define this validation schema
 import { toastError, toastSuccess } from "@/lib/toast/toast";
 import { useState } from "react";
 import { Loader } from "@/lib/spinners";
 import { errorMessage, successMessage } from "@/constants/messages";
+import { addExam, removeExam } from "@/server/actions/exams.actions";
+import CourseSelect from "@/components/common/course_select";
+import BatchSelect from "@/components/common/batch_select";
 
-export function CourseForm({ data }: { data?: any }) {
+export function ExamForm({ data }: { data?: any }) {
   const [loading, setLoading] = useState(false);
-  const form = useForm<z.infer<typeof courseSchema>>({
-    resolver: zodResolver(courseSchema),
+  const form = useForm<z.infer<typeof examSchema>>({
+    resolver: zodResolver(examSchema),
     defaultValues: {
-      auto_id: data?.auto_id ?? null,
+      batch_code: data?.batch_code ?? "",
       course_code: data?.course_code ?? "",
-      course_name: data?.course_name ?? "",
+      exam_code: data?.exam_code ?? "",
     },
   });
 
-  async function onSubmit(values: z.infer<typeof courseSchema>) {
+  async function onSubmit(values: z.infer<typeof examSchema>) {
     try {
       setLoading(true);
       let result;
-      if (data.auto_id != null) {
-        result = await updateCourse(data.auto_id, values);
-      } else {
-        result = await addCourse(values);
-      }
+
+      result = await addExam(values);
+
       if (!result.success) {
         toastError(result.message);
       } else {
-        if (data.auto_id == null) {
+        if (data?.exam_auto_id == null) {
           form.reset();
         }
         toastSuccess(successMessage);
@@ -58,33 +58,24 @@ export function CourseForm({ data }: { data?: any }) {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
+        <CourseSelect control={form.control} name="course_code" />
+
+        <BatchSelect control={form.control} name="batch_code" />
+
         <FormField
           control={form.control}
-          name="course_code"
+          name="exam_code"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Course Code</FormLabel>
+              <FormLabel>Exam Code</FormLabel>
               <FormControl>
-                <Input placeholder="Enter course code..." {...field} />
+                <Input placeholder="Enter exam code..." {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="course_name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Course Name</FormLabel>
-              <FormControl>
-                <Input placeholder="Enter course name..." {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        {/* Add more fields as necessary for your course attributes */}
+
         <Button type="submit" disabled={loading}>
           {loading ? (
             <div className="flex items-center justify-center gap-2">

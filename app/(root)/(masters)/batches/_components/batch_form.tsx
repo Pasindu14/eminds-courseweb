@@ -72,7 +72,7 @@ export function BatchForm({ data }: { data?: any }) {
         onError={(e) => {
           console.log(e);
         }}
-        className="space-y-8"
+        className="space-y-2"
       >
         <CourseSelect control={form.control} name="course_auto_id" />
 
