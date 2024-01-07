@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import * as z from "zod";
 
 import { Button } from "@/components/ui/button";
@@ -55,13 +55,22 @@ export function StudentMappingForm({ data }: { data?: any }) {
     }
   }
 
+  const courseCode = useWatch({
+    control: form.control,
+    name: "course_auto_id",
+  });
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
         <div className="flex flex-row"></div>
         <CourseSelect control={form.control} name="course_auto_id" />
 
-        <BatchSelect control={form.control} name="batch_auto_id" />
+        <BatchSelect
+          control={form.control}
+          name="batch_auto_id"
+          filter={courseCode}
+        />
 
         <MultiSelect control={form.control} name="students" />
         <Button type="submit" disabled={loading}>

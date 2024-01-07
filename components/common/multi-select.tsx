@@ -11,6 +11,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { Loader } from "@/lib/spinners";
 
 type MultiSelectProps = {
   control: Control<any>;
@@ -18,6 +19,7 @@ type MultiSelectProps = {
 };
 
 export const MultiSelect = ({ control, name }: MultiSelectProps) => {
+  const [loading, setLoading] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
   const [options, setOptions] = useState<{ value: string; label: string }[]>(
     []
@@ -35,8 +37,10 @@ export const MultiSelect = ({ control, name }: MultiSelectProps) => {
   useEffect(() => {
     setIsMounted(true);
     const fetchData = async () => {
+      setLoading(true);
       const data = await fetchStudents();
       setOptions(convertToList(data));
+      setLoading(false);
     };
     fetchData();
   }, []);
@@ -49,26 +53,30 @@ export const MultiSelect = ({ control, name }: MultiSelectProps) => {
         render={({ field }) => (
           <FormItem>
             <FormLabel>Students</FormLabel>
-
-            <Select
-              onChange={(selectedOptions) => {
-                const values = selectedOptions.map((option) =>
-                  option.value.toString()
-                );
-                field.onChange(values);
-              }}
-              styles={{
-                control: (baseStyles, state) => ({
-                  ...baseStyles,
-                  borderColor: state.isFocused ? "bg-red-600" : "bg-red-600",
-                  borderRadius: "0",
-                  borderWidth: state.isFocused || state.isMulti ? "1px" : "1px", // Adjust the values as needed
-                  fontSize: "14px",
-                }),
-              }}
-              isMulti
-              options={options}
-            />
+            <div className="flex items-center justify-center gap-2">
+              <Select
+                className="w-full"
+                onChange={(selectedOptions) => {
+                  const values = selectedOptions.map((option) =>
+                    option.value.toString()
+                  );
+                  field.onChange(values);
+                }}
+                styles={{
+                  control: (baseStyles, state) => ({
+                    ...baseStyles,
+                    borderColor: state.isFocused ? "bg-red-600" : "bg-red-600",
+                    borderRadius: "0",
+                    borderWidth:
+                      state.isFocused || state.isMulti ? "1px" : "1px", // Adjust the values as needed
+                    fontSize: "14px",
+                  }),
+                }}
+                isMulti
+                options={options}
+              />{" "}
+              {loading && <Loader size={13} color="black" />}
+            </div>
 
             <FormMessage />
           </FormItem>

@@ -14,19 +14,20 @@ import { Button } from "@/components/ui/button";
 import { Loader } from "@/lib/spinners";
 import { toastError } from "@/lib/toast/toast";
 import { removeExam } from "@/server/actions/exams.actions";
+import { removeMapping } from "@/server/actions/student-mapping.actions";
 
 import { useState } from "react";
 
 export function ConfirmDeleteAlertDialog({
-  exam_auto_id,
+  auto_id,
 }: {
-  exam_auto_id: number | null;
+  auto_id: number | null;
 }) {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const deleteFunction = async () => {
     setLoading(true);
-    const result = await removeExam(exam_auto_id!.toString());
+    const result = await removeMapping(auto_id!.toString());
     if (!result.success) {
       toastError(result.message);
     } else {

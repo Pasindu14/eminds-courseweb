@@ -9,7 +9,7 @@ export async function fetchStudentMappings(): Promise<StudentMapping[]> {
     try {
         let { data: mappings, error } = await supabaseCacheFreeClient
             .from('students_mapping')
-            .select(`*`)
+            .select(`* , students(name,phonenumber) , batches(batch_name)`)
             .order('auto_id', { ascending: true });
 
         if (error) {
@@ -25,26 +25,35 @@ export async function fetchStudentMappings(): Promise<StudentMapping[]> {
 export async function addStudentMapping(mapping: any) {
     try {
         const responseHandler = new ResponseHandler<any>();
-        console.log(mapping);
 
-        mapping.students.forEach(async (element: any) => {
-            const { data, error } = await supabaseCacheFreeClient
+        for (const studentId of mapping.students) {
+
+            const { data: existingRecords, error: existingError } = await supabaseCacheFreeClient
                 .from('students_mapping')
-                .insert([{
-                    student_auto_id: element,
-                    batch_auto_id: mapping.batch_auto_id,
+                .select('*')
+                .eq('student_auto_id', studentId)
+                .eq('batch_auto_id', mapping.batch_auto_id)
+                .maybeSingle();
 
-                }])
-                .select();
-
-            console.log(error);
-            if (error != null) {
-                return responseHandler.setError(
-                    error.details ?? errorMessage,
-                );
+            if (existingError) {
+                return responseHandler.setError(existingError.message ?? errorMessage);
             }
-        });
 
+            if (!existingRecords) {
+                const { error } = await supabaseCacheFreeClient
+                    .from('students_mapping')
+                    .insert([{
+                        student_auto_id: studentId,
+                        batch_auto_id: mapping.batch_auto_id,
+                        block_status: 0
+                    }])
+                    .single();
+
+                if (error) {
+                    return responseHandler.setError(error.details ?? errorMessage);
+                }
+            }
+        }
 
         revalidatePath('/student-mappings', 'page');
         return responseHandler.setSuccess("Success");
@@ -53,12 +62,16 @@ export async function addStudentMapping(mapping: any) {
     }
 }
 
-export async function updateStudentMapping(auto_id: string, mapping: any) {
+
+export async function updateMapping(auto_id: number, status: boolean) {
+
     try {
         const responseHandler = new ResponseHandler<any>();
         const { data, error } = await supabaseCacheFreeClient
             .from('students_mapping')
-            .update(mapping)
+            .update({
+                block_status: status == true ? 1 : 0,
+            })
             .eq('auto_id', auto_id)
             .select();
 
@@ -67,9 +80,33 @@ export async function updateStudentMapping(auto_id: string, mapping: any) {
                 error.details ?? errorMessage,
             );
         }
-        revalidatePath('/student-mappings', 'page');
+        revalidatePath('/jobs', 'page');
         return responseHandler.setSuccess("Success", data);
     } catch (error) {
         throw error;
     }
 }
+
+export async function removeMapping(auto_id: string) {
+    try {
+        const responseHandler = new ResponseHandler<any>();
+
+        const { error } = await supabase
+            .from('students_mapping')
+            .delete()
+            .eq('auto_id', auto_id)
+
+        if (error != null) {
+            console.log(error)
+            return responseHandler.setError(
+                error.details ?? errorMessage,
+            );
+        }
+        revalidatePath('/student-mappings', 'page');
+        return responseHandler.setSuccess("Success");
+    } catch (error) {
+        throw error;
+    }
+}
+
+

@@ -9,8 +9,13 @@ import {
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { StudentMappingForm } from "./_component/student_mapping_form";
+import { AddMappingDialog } from "./_component/add_mapping_dialog";
+import { DataTable } from "@/components/datatable";
+import { columns } from "./datatable/columns";
+import { fetchStudentMappings } from "@/server/actions/student-mapping.actions";
 
-const StudentMapping = () => {
+const StudentMapping = async () => {
+  const data = await fetchStudentMappings();
   return (
     <div>
       <Card className="w-full rounded-sm">
@@ -24,9 +29,10 @@ const StudentMapping = () => {
         </CardHeader>
         <Separator />
         <CardContent className="pt-4">
-          <div className="md:max-w-xl">
-            <StudentMappingForm />
+          <div className="flex mb-4">
+            <AddMappingDialog />
           </div>
+          <DataTable columns={columns} data={data} />
         </CardContent>
         <CardFooter className="flex justify-between"></CardFooter>
       </Card>
