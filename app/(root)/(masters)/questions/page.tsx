@@ -13,7 +13,6 @@ import { AddQuestionDialog } from "./_component/add_question_dialog";
 import { DataTable } from "@/components/datatable";
 import { columns } from "./datatable/columns";
 import { fetchQuestions } from "@/server/actions/question.actions";
-import { MultiSelect } from "@/components/common/multi_select";
 
 const Questions = async () => {
   const data = await fetchQuestions();
