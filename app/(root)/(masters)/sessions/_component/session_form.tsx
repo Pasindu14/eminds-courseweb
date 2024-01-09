@@ -68,19 +68,23 @@ export function SessionForm({ data }: { data?: any }) {
     try {
       setLoading(true);
       let result;
+      const fileFormData = new FormData();
+      fileFormData.append("file", values.file[0]);
 
       const formData = new FormData();
       for (const [key, value] of Object.entries(values)) {
-        formData.append(key, value);
+        if (key !== "file") {
+          formData.append(key, value);
+        }
       }
 
-      result = await addSession(formData);
+      result = await addSession(formData, fileFormData);
 
       if (!result.success) {
         toastError(result.message);
       } else {
         if (data?.session_auto_id == null) {
-          form.reset();
+          //form.reset();
         }
         toastSuccess(successMessage);
       }

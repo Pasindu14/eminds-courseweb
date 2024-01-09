@@ -24,8 +24,11 @@ import { ColumnDef } from "@tanstack/react-table";
 import { fetchSessions } from "@/server/actions/sessions.actions";
 import { AddSessionDialog } from "./_component/add_session_dialog";
 import FileUpload from "./_component/upload";
+import { columns } from "./datatable/columns";
 
-const Sessions = () => {
+const Sessions = async () => {
+  const data = await fetchSessions();
+
   return (
     <div>
       <Card className="w-full rounded-sm">
@@ -41,7 +44,7 @@ const Sessions = () => {
           <div className="flex mb-4">
             <AddSessionDialog />
           </div>
-          {/*           <DataTable columns={sessionColumns} data={data} /> */}
+          <DataTable columns={columns} data={data} />
           {/* Ensure sessionColumns are relevant for sessions */}
         </CardContent>
         <CardFooter className="flex justify-between"></CardFooter>

@@ -74,7 +74,7 @@ export const MultiSelect = ({ control, name }: MultiSelectProps) => {
                 }}
                 isMulti
                 options={options}
-              />{" "}
+              />
               {loading && <Loader size={13} color="black" />}
             </div>
 
@@ -82,7 +82,6 @@ export const MultiSelect = ({ control, name }: MultiSelectProps) => {
           </FormItem>
         )}
       />
-      <FormLabel>Students</FormLabel>
     </div>
   ) : null;
 };

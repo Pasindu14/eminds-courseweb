@@ -4,12 +4,13 @@ import { supabase, supabaseCacheFreeClient } from "../server";
 import { revalidatePath } from 'next/cache';
 import { errorMessage } from "@/constants/messages";
 import { Session } from "../types/sessions.type";
+import { uploadFile } from "./file.actions";
 
 export async function fetchSessions(batchParam?: string): Promise<Session[]> {
     try {
         let query = supabaseCacheFreeClient
             .from('sessions')
-            .select(`*, batches(batch_name)`)  // Assuming you have a batches table to join
+            .select(`*, batches(batch_name,batch_no)`)
             .order('session_auto_id', { ascending: true });
 
         if (batchParam) {
@@ -21,7 +22,6 @@ export async function fetchSessions(batchParam?: string): Promise<Session[]> {
         if (error) {
             return [];
         }
-
         return sessions ?? [];
     } catch (error) {
         return [];
@@ -29,21 +29,13 @@ export async function fetchSessions(batchParam?: string): Promise<Session[]> {
 }
 
 
-export async function addSession(session: FormData) {
+export async function addSession(session: FormData, fileFormData: FormData) {
     try {
         const responseHandler = new ResponseHandler<any>();
-        const file = session.get('file');
 
-        const response = await fetch(
-            "https://eminds.com.au/coursewebfiles/uploadfiles.php",
-            {
-                method: "POST",
-                body: file,
-            }
-        );
+        const jsonResponse = await uploadFile(fileFormData);
 
-
-        const jsonResponse = (await response.json()) // Parse and cast to UploadResponse
+        console.log(jsonResponse);
 
         if (jsonResponse.success !== true) {
             return responseHandler.setError(
@@ -51,25 +43,33 @@ export async function addSession(session: FormData) {
             );
         }
 
-        /*         const { data, error } = await supabaseCacheFreeClient
-                    .from('sessions')
-                    .insert([
-                        {
-                            title: session.title,
-                            zoom_link: session.zoom_link,
-                            zoom_password: session.zoom_password,
-                            batch_auto_id: session.batch_auto_id,
-                            course_auto_id: session.course_auto_id,
-                            slide_extension: jsonResponse.file_id
-                        },
-                    ])
-                    .select();
-        
-                if (error != null) {
-                    return responseHandler.setError(
-                        error.details ?? errorMessage,
-                    );
-                } */
+        const title = session.get('title');
+        const zoomLink = session.get('zoom_link');
+        const zoomPassword = session.get('zoom_password');
+        const batchAutoId = session.get('batch_auto_id');
+        const courseAutoId = session.get('course_auto_id');
+
+        const fileId = jsonResponse.file_id;
+
+        const { data, error } = await supabaseCacheFreeClient
+            .from('sessions')
+            .insert([
+                {
+                    title: title,
+                    zoom_link: zoomLink,
+                    zoom_password: zoomPassword,
+                    batch_auto_id: batchAutoId,
+                    course_auto_id: courseAutoId,
+                    slide_extension: fileId
+                },
+            ])
+            .select();
+
+        if (error != null) {
+            return responseHandler.setError(
+                error.details ?? errorMessage,
+            );
+        }
         revalidatePath('/sessions', 'page');
         return responseHandler.setSuccess("Success", "data");
     } catch (error) {

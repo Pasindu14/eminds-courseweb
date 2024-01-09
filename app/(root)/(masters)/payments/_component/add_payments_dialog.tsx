@@ -12,9 +12,9 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { PlusSquare } from "lucide-react";
 import { motion } from "framer-motion";
-import { SessionForm } from "./session_form";
+import { PaymentsForm } from "./payments_form";
 
-export function AddSessionDialog() {
+export function AddPaymentsDialog() {
   return (
     <motion.div initial={{ opacity: 0, y: -50 }} animate={{ opacity: 1, y: 0 }}>
       <Dialog>
@@ -25,11 +25,11 @@ export function AddSessionDialog() {
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px] md:max-w-xl overflow-y-scroll max-h-[95vh]">
           <DialogHeader>
-            <DialogTitle className="text-3xl">Add Session</DialogTitle>
+            <DialogTitle className="text-3xl">Add Payment</DialogTitle>
             <DialogDescription></DialogDescription>
           </DialogHeader>
           <Separator />
-          <SessionForm />
+          <PaymentsForm />
         </DialogContent>
       </Dialog>
     </motion.div>
