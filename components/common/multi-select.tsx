@@ -16,9 +16,10 @@ import { Loader } from "@/lib/spinners";
 type MultiSelectProps = {
   control: Control<any>;
   name: string;
+  max?: number;
 };
 
-export const MultiSelect = ({ control, name }: MultiSelectProps) => {
+export const MultiSelect = ({ control, name, max }: MultiSelectProps) => {
   const [loading, setLoading] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
   const [options, setOptions] = useState<{ value: string; label: string }[]>(
@@ -74,6 +75,7 @@ export const MultiSelect = ({ control, name }: MultiSelectProps) => {
                 }}
                 isMulti
                 options={options}
+                isOptionDisabled={() => field.value.length >= (max ?? Infinity)}
               />
               {loading && <Loader size={13} color="black" />}
             </div>

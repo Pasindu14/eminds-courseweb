@@ -9,14 +9,16 @@ import {
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { AddPaymentsDialog } from "./_component/add_payments_dialog";
-import { Button } from "@/components/ui/button";
-import TestPAy from "./_component/test_pay";
-const Payment = () => {
+import PaymentFilterForm from "./_component/payment_filter_form";
+import { fetchPaymentLinesWithBatchNo } from "@/server/actions/payments.actions";
+import { DataTable } from "@/components/datatable";
+import { columns } from "./datatable/columns";
+
+const Payment = async () => {
   return (
     <div>
       <Card className="w-full rounded-sm">
         <CardHeader>
-          <TestPAy />
           <CardTitle className="text-4xl">Payments</CardTitle>
           <CardDescription>
             Streamline the management and tracking of payments, ensuring
@@ -29,7 +31,9 @@ const Payment = () => {
           <div className="flex mb-4">
             <AddPaymentsDialog />
           </div>
-          {/* <DataTable columns={columns} data={data} /> */}
+          <Separator />
+          <PaymentFilterForm />
+
           {/* Ensure sessionColumns are relevant for sessions */}
         </CardContent>
         <CardFooter className="flex justify-between"></CardFooter>

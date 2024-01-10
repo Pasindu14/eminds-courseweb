@@ -20,29 +20,29 @@ import { useState } from "react";
 import { Loader } from "@/lib/spinners";
 import { errorMessage, successMessage } from "@/constants/messages";
 import BatchSelect from "../../../../../components/common/batch_select"; // Assuming you have this component
-import studentMappingSchema from "@/validations/student-mapping.validation";
-import { addStudentMapping } from "@/server/actions/student-mapping.actions";
 import CourseSelect from "@/components/common/course_select";
 import { MultiSelect } from "@/components/common/multi-select";
-import dynamic from "next/dynamic";
+import { paymentSchema } from "@/validations/payment.validation";
+import { addPaymentByAdmin } from "@/server/actions/payments.actions";
 
 export function PaymentsForm({ data }: { data?: any }) {
   const [loading, setLoading] = useState(false);
-  const form = useForm<z.infer<typeof studentMappingSchema>>({
-    resolver: zodResolver(studentMappingSchema),
+  const form = useForm<z.infer<typeof paymentSchema>>({
+    resolver: zodResolver(paymentSchema),
     defaultValues: {
-      batch_auto_id: data?.batch_auto_id ?? "",
-      course_auto_id: data?.course_auto_id ?? "",
-      block_status: data?.block_status ?? 1,
+      batch_auto_id: "",
+      course_auto_id: "",
+      amount: 0,
       students: [],
     },
   });
 
-  async function onSubmit(values: z.infer<typeof studentMappingSchema>) {
+  async function onSubmit(values: z.infer<typeof paymentSchema>) {
     try {
       setLoading(true);
-      let result;
-      result = await addStudentMapping(values);
+
+      const result = await addPaymentByAdmin(values);
+
       if (!result.success) {
         toastError(result.message);
       } else {
@@ -72,7 +72,22 @@ export function PaymentsForm({ data }: { data?: any }) {
           filter={courseCode}
         />
 
-        <MultiSelect control={form.control} name="students" />
+        <MultiSelect control={form.control} name="students" max={1} />
+
+        <FormField
+          control={form.control}
+          name="amount"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Amount</FormLabel>
+              <FormControl>
+                <Input placeholder="Enter amount..." {...field} type="number" />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
         <Button type="submit" disabled={loading}>
           {loading ? (
             <div className="flex items-center justify-center gap-2">

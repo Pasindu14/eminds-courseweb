@@ -1,13 +1,13 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { addPayment } from "@/server/actions/payments.actions";
+import { addPaymentByAdmin } from "@/server/actions/payments.actions";
 import React from "react";
 
 const TestPAy = () => {
   const onClick = async () => {
-    const result = await addPayment("0711803295", 10, 1000);
+    /*  const result = await addPaymentByAdmin(11, 10, 2000); 
 
-    console.log(result);
+    console.log(result);*/
   };
 
   return (
