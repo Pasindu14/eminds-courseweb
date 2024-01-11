@@ -36,29 +36,6 @@ export function SessionForm({ data }: { data?: any }) {
     },
   });
 
-  /*   const handleUpload = async (file: any) => {
-    const formData = new FormData();
-    formData.append("file", file);
-
-    try {
-      const response = await fetch(
-        "https://eminds.com.au/coursewebfiles/uploadfiles.php",
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const jsonResponse = (await response.json()) as UploadResponse; // Parse and cast to UploadResponse
-      console.log(jsonResponse);
-    } catch (error) {
-      console.error("Error uploading file:", error);
-    }
-  }; */
-
   const courseCode = useWatch({
     control: form.control,
     name: "course_auto_id",

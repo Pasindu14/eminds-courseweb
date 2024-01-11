@@ -1,14 +1,13 @@
 "use server"
+import { revalidatePath } from "next/cache";
 import ResponseHandler from "../models/response.model";
 import { supabase, supabaseCacheFreeClient } from "../server";
 import { errorMessage } from "@/constants/messages";
 
 
-
-export async function fetchPaymentLinesWithBatchNo(student_auto_id: number): Promise<PaymentLines[]> {
+export async function fetchPaymentLinesWithBatchNo(student_auto_id?: number, pending?: number): Promise<PaymentLines[]> {
     try {
-        const student = await fetchStudentDetails(student_auto_id)
-        const { data, error } = await supabaseCacheFreeClient
+        let query = supabaseCacheFreeClient
             .from('payments_line')
             .select(`
                 payments_line_auto_id,
@@ -25,19 +24,76 @@ export async function fetchPaymentLinesWithBatchNo(student_auto_id: number): Pro
                         batch_name 
                     )
                 )
-            `)
-            .eq('payments.student_phone', student.phonenumber).returns<PaymentLines[]>();
+            `).order('created_at', { ascending: false });
+
+        if (student_auto_id != undefined) {
+            const student = await fetchStudentDetails(student_auto_id);
+            query = query.eq('payments.student_phone', student.phonenumber);
+        }
+
+        if (pending != undefined) {
+            query = query.eq('approve_status', pending);
+        }
+
+
+        const { data, error } = await query.returns<PaymentLines[]>();
 
         if (error) {
             console.error('Error fetching payment lines with batch no:', error);
             return [];
         }
-        console.log(data);
         return data;
     } catch (error) {
+        console.error('Error:', error);
         return [];
     }
 };
+
+
+export async function fetchAllPaymentsForReport(batch_auto_id?: number, course_auto_id?: number): Promise<Payment[]> {
+    try {
+        let query = supabaseCacheFreeClient
+            .from('payments')
+            .select(`
+                    student_phone,
+                    batch_auto_id,
+                    created_at,
+                    batch_price,
+                    current,
+                    batches (
+                        batch_no,   
+                        batch_name,
+                        course_auto_id,
+                        courses (auto_id,course_code)
+                    )`
+            ).order('created_at', { ascending: false });
+
+        if (batch_auto_id) {
+            query = query.eq('batch_auto_id', batch_auto_id);
+        }
+
+        if (course_auto_id) {
+            query = query.eq('batches.course_auto_id', course_auto_id);
+        }
+        const { data, error } = await query.returns<Payment[]>();
+
+        if (error) {
+            console.error('Error fetching payment lines with batch no:', error);
+            return [];
+        }
+
+        let filteredData = data;
+        filteredData = data?.filter(item =>
+            item.batches != null
+        );
+        return filteredData;
+
+    } catch (error) {
+        console.error('Error:', error);
+        return [];
+    }
+};
+
 
 export async function addPaymentByAdmin(paymentParam: any) {
 
@@ -108,6 +164,33 @@ async function updatePayment(phoneNumber: string, batch_auto_id: number, amount:
 
     return payments;
 }
+
+
+export async function updatePaymentLine(payments_line_auto_id: string) {
+    const responseHandler = new ResponseHandler<any>();
+
+    try {
+        const { data, error } = await supabaseCacheFreeClient
+            .from('payments_line')
+            .update({ approve_status: 1 })
+            .eq('payments_line_auto_id', payments_line_auto_id)
+            .select()
+
+        if (error) {
+            return responseHandler.setError(
+                error.message ?? errorMessage,
+            );
+
+        }
+
+        return responseHandler.setSuccess("All payments processed successfully");
+    } catch (error: any) {
+        return responseHandler.setError(
+            error.message ?? errorMessage,
+        );
+    }
+}
+
 
 async function addPayment(phoneNumber: string, batch_auto_id: number, price: number, amount: number) {
     let { data: payments, error } = await supabaseCacheFreeClient

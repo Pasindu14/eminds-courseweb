@@ -76,6 +76,25 @@ const mappingComponents: {
   },
 ];
 
+const paymentComponents: {
+  title: string;
+  href: string;
+  description: string;
+}[] = [
+  {
+    title: "Payments",
+    href: "/payments",
+    description:
+      "Streamline the management and tracking of payments, ensuring seamless transactions and easy access to crucial financial information.",
+  },
+  {
+    title: "Payment Report",
+    href: "/payment-report",
+    description:
+      "Manage and organize session details efficiently, ensuring convenient access and timely updates to essential information.",
+  },
+];
+
 export function NavigationAdmin() {
   return (
     <motion.div
@@ -106,6 +125,22 @@ export function NavigationAdmin() {
             <NavigationMenuContent>
               <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
                 {mappingComponents.map((component) => (
+                  <ListItem
+                    key={component.title}
+                    title={component.title}
+                    href={component.href}
+                  >
+                    {component.description}
+                  </ListItem>
+                ))}
+              </ul>
+            </NavigationMenuContent>
+          </NavigationMenuItem>
+          <NavigationMenuItem>
+            <NavigationMenuTrigger>Payments</NavigationMenuTrigger>
+            <NavigationMenuContent>
+              <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
+                {paymentComponents.map((component) => (
                   <ListItem
                     key={component.title}
                     title={component.title}

@@ -35,13 +35,8 @@ const PaymentFilterForm = () => {
 
   async function onSubmit(values: z.infer<typeof paymentFilterSchema>) {
     try {
-      console.log(values);
       setLoading(true);
-      const result = await fetchPaymentLinesWithBatchNo(
-        Number(values.students[0])
-      );
-      console.log(result);
-      setPaymentLines(result);
+      await fetchPaymentLinesWithFilter(values);
     } catch (error) {
       toastError(errorMessage);
     } finally {
@@ -49,15 +44,34 @@ const PaymentFilterForm = () => {
     }
   }
 
+  const fetchPaymentLinesWithFilter = async (values: any) => {
+    const result = await fetchPaymentLinesWithBatchNo(
+      Number(values.students[0])
+    );
+    setPaymentLines(result);
+  };
+
+  const fetchPaymentLines = async () => {
+    try {
+      setLoading(true);
+      const result = await fetchPaymentLinesWithBatchNo(undefined, 0);
+      setPaymentLines(result);
+    } catch (error) {
+      toastError(errorMessage);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <>
+    <div className="mt-2">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
           <div className="flex flex-row items-end gap-2">
             <div className="w-1/3">
               <MultiSelect control={form.control} name="students" max={1} />
             </div>
-            <div>
+            <div className="gap-2 flex flex-col md:flex-row md:items-center">
               <Button type="submit" disabled={loading}>
                 {loading ? (
                   <div className="md:flex items-center justify-center gap-2">
@@ -68,13 +82,28 @@ const PaymentFilterForm = () => {
                   "Filter"
                 )}
               </Button>
+
+              <Button
+                type="button"
+                disabled={loading}
+                onClick={fetchPaymentLines}
+              >
+                {loading ? (
+                  <div className="md:flex items-center justify-center gap-2">
+                    <p>Get pending approvals</p>
+                    <Loader size={13} />
+                  </div>
+                ) : (
+                  "Get pending approvals"
+                )}
+              </Button>
             </div>
           </div>
         </form>
       </Form>
       <Separator className="mt-2" />
       <DataTable columns={columns} data={paymentLines} />
-    </>
+    </div>
   );
 };
 

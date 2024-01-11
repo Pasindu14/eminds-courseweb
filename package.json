@@ -23,6 +23,7 @@
     "@radix-ui/react-switch": "^1.0.3",
     "@supabase/supabase-js": "^2.39.2",
     "@tanstack/react-table": "^8.11.2",
+    "@types/uuid": "^9.0.7",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "cmdk": "^0.2.0",
@@ -39,6 +40,8 @@
     "supabase": "^1.127.4",
     "tailwind-merge": "^2.2.0",
     "tailwindcss-animate": "^1.0.7",
+    "uuid": "^9.0.1",
+    "xlsx": "^0.18.5",
     "zod": "^3.22.4"
   },
   "devDependencies": {

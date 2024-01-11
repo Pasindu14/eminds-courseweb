@@ -6,8 +6,13 @@ import { ColumnDef } from "@tanstack/react-table";
 import { removeExam } from "@/server/actions/exams.actions";
 import { Session } from "@/server/types/sessions.type";
 import Link from "next/link";
+import { ApproveAlertDialog } from "../_component/approve_payment_alert";
 
 export const columns: ColumnDef<PaymentLines>[] = [
+  {
+    accessorKey: "payments.student_phone",
+    header: "Phone",
+  },
   {
     accessorKey: "payments.created_at",
     header: "Date",
@@ -32,29 +37,18 @@ export const columns: ColumnDef<PaymentLines>[] = [
           <p className="text-blue-600">Receipt</p>
         </Link>;
       }
-    }, // Use or create a component for exam updates
+    },
   },
   {
     accessorKey: "payments_line_auto_id",
     header: "Actions",
     cell: ({ row }) => {
-      if (row.original.approve_status == 1) {
-        return <Button>Approved</Button>;
-      } else {
-        return <Button variant="secondary">Pending</Button>;
-      }
+      return (
+        <ApproveAlertDialog
+          payment_line_auto_id={row.original.payments_line_auto_id}
+          status={row.original.approve_status}
+        />
+      );
     },
   },
-  /*   {
-    accessorKey: "slide_extension",
-    header: "Slide Url",
-    cell: ({ row }) => (
-      <Link
-        href={`https://eminds.com.au/coursewebfiles/downloadfiles.php?id=${row.original.}`}
-        target="_blank"
-      >
-        <p className="text-blue-600">Slide</p>
-      </Link>
-    ), // Use or create a component for exam updates
-  }, */
 ];
