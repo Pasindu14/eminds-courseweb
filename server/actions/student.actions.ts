@@ -22,6 +22,9 @@ export async function fetchStudents(): Promise<Student[]> {
     }
 }
 
+
+
+
 export async function addStudent(student: any) {
     try {
         const responseHandler = new ResponseHandler<any>();
@@ -59,6 +62,27 @@ export async function addStudent(student: any) {
 
         revalidatePath('/students', 'page');
         return responseHandler.setSuccess("Success", data);
+
+    } catch (error) {
+        throw error;
+    }
+}
+
+export async function fetchStudentByPhoneNumber(phoneNumber: string) {
+    try {
+        const responseHandler = new ResponseHandler<Student>();
+
+        const { data, error } = await supabaseCacheFreeClient
+            .from('students')
+            .select()
+            .eq('phonenumber', phoneNumber)
+            .maybeSingle();
+
+        if (error) {
+            return responseHandler.setError(error.message ?? errorMessage);
+        }
+
+        return data;
 
     } catch (error) {
         throw error;

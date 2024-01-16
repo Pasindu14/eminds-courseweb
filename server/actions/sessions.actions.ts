@@ -28,6 +28,21 @@ export async function fetchSessions(batchParam?: string): Promise<Session[]> {
     }
 }
 
+export async function fetchSessionsByBatchId(batch_auto_id: number): Promise<Session[]> {
+    try {
+        let { data: sessions, error } = await supabaseCacheFreeClient
+            .from('sessions')
+            .select()
+            .order('session_auto_id', { ascending: true }).eq('batch_auto_id', batch_auto_id);
+
+        if (error) {
+            return [];
+        }
+        return sessions ?? [];
+    } catch (error) {
+        return [];
+    }
+}
 
 export async function addSession(session: FormData, fileFormData: FormData) {
     try {

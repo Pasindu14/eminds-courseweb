@@ -2,7 +2,7 @@
 import ResponseHandler from "../models/response.model";
 import { supabase, supabaseCacheFreeClient } from "../server";
 import { revalidatePath } from 'next/cache';
-import { Batch } from "../types/batch.type"; // Ensure you have a Batch type defined
+import { Batch } from "../types/batch.type";
 import { errorMessage } from "@/constants/messages";
 
 export async function fetchBatches(courseParam?: string): Promise<Batch[]> {
@@ -12,7 +12,6 @@ export async function fetchBatches(courseParam?: string): Promise<Batch[]> {
             .select(`*, courses(course_code, course_name)`)
             .order('auto_id', { ascending: true });
 
-        // Apply the filter only if courseParam is provided and not empty
         if (courseParam) {
             query = query.eq('course_auto_id', courseParam);
         }
@@ -28,6 +27,28 @@ export async function fetchBatches(courseParam?: string): Promise<Batch[]> {
         return [];
     }
 }
+
+
+export async function fetchBatchByPassword(
+    password: string
+) {
+    try {
+        const { data: batch, error } = await supabaseCacheFreeClient
+            .from('batches')
+            .select()
+            .eq('password', password)
+            .single()
+
+        if (error) {
+            return null;
+        }
+
+        return batch ?? null;
+    } catch (error) {
+        return null;
+    }
+}
+
 
 export async function addBatch(batch: any) {
 
