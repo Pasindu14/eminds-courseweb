@@ -9,6 +9,7 @@ import {
 } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
+import Providers from "./Providers";
 const jost = Jost({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -24,7 +25,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={jost.className} suppressHydrationWarning={true}>
-        {children}
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

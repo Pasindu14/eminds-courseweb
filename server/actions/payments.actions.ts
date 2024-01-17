@@ -140,6 +140,7 @@ export async function addPaymentByAdmin(paymentParam: any) {
         }
 
         return responseHandler.setSuccess("All payments processed successfully");
+
     } catch (error: any) {
         return responseHandler.setError(
             error.message ?? errorMessage,

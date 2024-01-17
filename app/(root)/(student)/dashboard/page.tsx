@@ -24,8 +24,6 @@ const Dashboard = async () => {
   const batchDetails = await fetchBatchByPassword(password);
   const sessions = await fetchSessionsByBatchId(batchDetails.auto_id);
 
-  console.log(sessions);
-
   return (
     <div>
       <Card className="w-full rounded-sm">

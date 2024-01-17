@@ -6,6 +6,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "eminds.com.au",
       },
+      {
+        protocol: "https",
+        hostname: "zoom.com",
+      },
     ],
   },
 };

@@ -12,3 +12,12 @@ export const paymentSchema = z.object({
 export const paymentFilterSchema = z.object({
   students: z.string().array().nonempty({ message: "Students are required" }),
 });
+
+export const studentPaymentSchema = z.object({
+  amount: z.coerce.number().min(1),
+  file: z
+    .any()
+    .refine((data: any) => data instanceof FileList && data.length > 0, {
+      message: "No file selected",
+    }),
+});

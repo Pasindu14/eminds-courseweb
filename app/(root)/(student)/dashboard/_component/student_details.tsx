@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import React from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import ZoomComponent from "./zoom_component";
 
 const StudentDetails = ({
   studentData,
@@ -23,9 +24,7 @@ const StudentDetails = ({
           <h1>Email: {studentData.email}</h1>
           <h1>Birth Day: {studentData.birthday}</h1>
 
-          <Button asChild className="rounded-xl">
-            <Link href={batchData?.zoom_link}>Live Class</Link>
-          </Button>
+          <ZoomComponent />
         </div>
       )}
     </motion.div>

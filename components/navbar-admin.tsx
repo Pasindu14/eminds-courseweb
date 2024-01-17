@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/navigation-menu";
 
 import { motion } from "framer-motion";
+import { useSession } from "next-auth/react";
 
 const masterComponents: { title: string; href: string; description: string }[] =
   [
@@ -96,6 +97,8 @@ const paymentComponents: {
 ];
 
 export function NavigationAdmin() {
+  const { data: session } = useSession();
+
   return (
     <motion.div
       className="h-16 w-full flex items-center justify-center shadow-md px-8"
