@@ -1,3 +1,4 @@
+"use client";
 import { studentPaymentSchema } from "@/validations/payment.validation";
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -17,8 +18,12 @@ import { toastError, toastSuccess } from "@/lib/toast/toast";
 import { addSession } from "@/server/actions/sessions.actions";
 import { errorMessage, successMessage } from "@/constants/messages";
 import { Loader } from "@/lib/spinners";
+import { useSession } from "next-auth/react";
+import { addPaymentsByStudent } from "@/server/actions/payments.actions";
 
 const PaymentForm = () => {
+  const { data: session }: any = useSession();
+
   const [loading, setLoading] = useState(false);
   const form = useForm<z.infer<typeof studentPaymentSchema>>({
     resolver: zodResolver(studentPaymentSchema),
@@ -31,18 +36,15 @@ const PaymentForm = () => {
   async function onSubmit(values: z.infer<typeof studentPaymentSchema>) {
     try {
       setLoading(true);
-      let result;
       const fileFormData = new FormData();
       fileFormData.append("file", values.file[0]);
 
       const formData = new FormData();
-      for (const [key, value] of Object.entries(values)) {
-        if (key !== "file") {
-          formData.append(key, value);
-        }
-      }
+      formData.append("batch_auto_id", session?.batchId);
+      formData.append("amount", values.amount.toString());
+      formData.append("student_auto_id", session?.id);
 
-      result = await addSession(formData, fileFormData);
+      const result = await addPaymentsByStudent(formData, fileFormData);
 
       if (!result.success) {
         toastError(result.message);

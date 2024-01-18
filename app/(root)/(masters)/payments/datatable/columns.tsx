@@ -7,6 +7,7 @@ import { removeExam } from "@/server/actions/exams.actions";
 import { Session } from "@/server/types/sessions.type";
 import Link from "next/link";
 import { ApproveAlertDialog } from "../_component/approve_payment_alert";
+import { convertToLocaleDateTime } from "@/lib/utils";
 
 export const columns: ColumnDef<PaymentLines>[] = [
   {
@@ -14,8 +15,11 @@ export const columns: ColumnDef<PaymentLines>[] = [
     header: "Phone",
   },
   {
-    accessorKey: "payments.created_at",
+    accessorKey: "created_at",
     header: "Date",
+    cell: ({ row }) => {
+      return convertToLocaleDateTime(row.original.created_at);
+    },
   },
   {
     accessorKey: "payments.batches.batch_name",

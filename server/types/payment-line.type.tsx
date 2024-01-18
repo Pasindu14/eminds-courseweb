@@ -4,6 +4,7 @@ type PaymentLines = {
   image_url: string | null;
   is_admin: number;
   approve_status: number;
+  created_at: Date;
   payments: {
     student_phone: string;
     batch_auto_id: number;

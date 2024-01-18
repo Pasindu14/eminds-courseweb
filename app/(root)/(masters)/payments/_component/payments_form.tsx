@@ -23,7 +23,7 @@ import BatchSelect from "../../../../../components/common/batch_select"; // Assu
 import CourseSelect from "@/components/common/course_select";
 import { MultiSelect } from "@/components/common/multi-select";
 import { paymentSchema } from "@/validations/payment.validation";
-import { addPaymentByAdmin } from "@/server/actions/payments.actions";
+import { addPaymentByUser } from "@/server/actions/payments.actions";
 
 export function PaymentsForm({ data }: { data?: any }) {
   const [loading, setLoading] = useState(false);
@@ -41,7 +41,7 @@ export function PaymentsForm({ data }: { data?: any }) {
     try {
       setLoading(true);
 
-      const result = await addPaymentByAdmin(values);
+      const result = await addPaymentByUser(values, "ADMIN");
 
       if (!result.success) {
         toastError(result.message);

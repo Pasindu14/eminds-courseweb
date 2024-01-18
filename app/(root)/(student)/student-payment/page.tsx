@@ -10,10 +10,16 @@ import {
 import { Separator } from "@/components/ui/separator";
 import PaymentForm from "./_component/payment_form";
 import { AddPaymentDialog } from "./_component/add_payment_dialog";
+import { DataTable } from "@/components/datatable";
+import { columns } from "./datatable/columns";
+import { fetchPaymentLinesWithBatchNo } from "@/server/actions/payments.actions";
+import { getServerSession } from "next-auth";
+import { authOption } from "../../../api/auth/[...nextauth]/route";
 
-const StudentPayment = () => {
-  const studentId = "0711803295";
-  const password = "1122334";
+const StudentPayment = async () => {
+  const session: any = await getServerSession(authOption);
+
+  const paymentLines = await fetchPaymentLinesWithBatchNo(Number(session.id));
 
   return (
     <div>
@@ -31,6 +37,8 @@ const StudentPayment = () => {
             <AddPaymentDialog />
           </div>
           <Separator className="mt-3" />
+
+          <DataTable columns={columns} data={paymentLines} />
         </CardContent>
         <CardFooter className="flex justify-between"></CardFooter>
       </Card>

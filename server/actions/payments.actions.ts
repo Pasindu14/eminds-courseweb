@@ -3,6 +3,7 @@ import { revalidatePath } from "next/cache";
 import ResponseHandler from "../models/response.model";
 import { supabase, supabaseCacheFreeClient } from "../server";
 import { errorMessage } from "@/constants/messages";
+import { uploadFile } from "./file.actions";
 
 
 export async function fetchPaymentLinesWithBatchNo(student_auto_id?: number, pending?: number): Promise<PaymentLines[]> {
@@ -15,6 +16,7 @@ export async function fetchPaymentLinesWithBatchNo(student_auto_id?: number, pen
                 image_url,
                 is_admin,
                 approve_status,
+                created_at,
                 payments:payment_hdr_id (
                     student_phone,
                     batch_auto_id,
@@ -34,7 +36,6 @@ export async function fetchPaymentLinesWithBatchNo(student_auto_id?: number, pen
         if (pending != undefined) {
             query = query.eq('approve_status', pending);
         }
-
 
         const { data, error } = await query.returns<PaymentLines[]>();
 
@@ -94,8 +95,38 @@ export async function fetchAllPaymentsForReport(batch_auto_id?: number, course_a
     }
 };
 
+export async function addPaymentsByStudent(paymentData: FormData, fileFormData: FormData) {
+    const responseHandler = new ResponseHandler<any>();
+    try {
 
-export async function addPaymentByAdmin(paymentParam: any) {
+
+        const batchAutoId = paymentData.get('batch_auto_id');
+        const amount = paymentData.get('amount');
+        const studentId = paymentData.get('student_auto_id');
+
+        const paymentParam = {
+            batch_auto_id: batchAutoId,
+            amount: Number(amount),
+            students: [studentId],
+        };
+
+        const result = await addPaymentByUser(paymentParam, 'STUDENT', fileFormData);
+
+        if (result.success) {
+            return responseHandler.setSuccess("All payments processed successfully");
+        } else {
+            return responseHandler.setError(
+                result.message ?? errorMessage,
+            );
+        }
+    } catch (error: any) {
+        return responseHandler.setError(
+            error.message ?? errorMessage,
+        );
+    }
+}
+
+export async function addPaymentByUser(paymentParam: any, role: string, fileFormData?: FormData) {
 
     const responseHandler = new ResponseHandler<any>();
 
@@ -105,6 +136,7 @@ export async function addPaymentByAdmin(paymentParam: any) {
             const student_auto_id = studentId;
             const amount = paymentParam.amount;
             const batch_auto_id = paymentParam.batch_auto_id;
+            let image_url = "";
 
             const student = await fetchStudentDetails(student_auto_id);
 
@@ -118,7 +150,21 @@ export async function addPaymentByAdmin(paymentParam: any) {
 
                 const addPaymentResult = await addPayment(phoneNumber, batch_auto_id, batch.price, amount);
 
-                await addPaymentLineByAdmin(addPaymentResult![0].payment_auto_id, amount);
+
+                if (fileFormData) {
+                    const jsonResponse = await uploadFile(fileFormData);
+
+                    if (jsonResponse.success !== true) {
+                        return responseHandler.setError(
+                            jsonResponse.message ?? errorMessage,
+                        );
+                    }
+
+                    image_url = jsonResponse.file_id;
+                }
+
+
+                await addPaymentLines(addPaymentResult![0].payment_auto_id, amount, role, image_url);
 
             } else {
 
@@ -134,7 +180,19 @@ export async function addPaymentByAdmin(paymentParam: any) {
 
                 const updatePaymentResult = await updatePayment(phoneNumber, batch_auto_id, totalAmount, status);
 
-                await addPaymentLineByAdmin(updatePaymentResult![0].payment_auto_id, amount);
+                if (fileFormData) {
+                    const jsonResponse = await uploadFile(fileFormData);
+
+                    if (jsonResponse.success !== true) {
+                        return responseHandler.setError(
+                            jsonResponse.message ?? errorMessage,
+                        );
+                    }
+
+                    image_url = jsonResponse.file_id;
+                }
+
+                await addPaymentLines(updatePaymentResult![0].payment_auto_id, amount, role, image_url);
 
             }
         }
@@ -252,12 +310,12 @@ async function fetchPayment(phoneNumber: string, batch_auto_id: number) {
     return payments;
 }
 
-export async function addPaymentLineByAdmin(payment_hdr: string, price: number) {
+export async function addPaymentLines(payment_hdr: string, price: number, role: string, imageUrl?: string) {
 
     const { error } = await supabaseCacheFreeClient
         .from('payments_line')
         .insert([
-            { payment_hdr_id: payment_hdr, amount: price, approve_status: 1, is_admin: 1 },
+            { payment_hdr_id: payment_hdr, amount: price, approve_status: (role == "STUDENT" ? 0 : 1), is_admin: role == "STUDENT" ? 0 : 1, image_url: imageUrl ?? "" },
         ])
         .select()
 

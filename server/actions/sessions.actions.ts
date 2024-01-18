@@ -50,8 +50,6 @@ export async function addSession(session: FormData, fileFormData: FormData) {
 
         const jsonResponse = await uploadFile(fileFormData);
 
-        console.log(jsonResponse);
-
         if (jsonResponse.success !== true) {
             return responseHandler.setError(
                 jsonResponse.message ?? errorMessage,
