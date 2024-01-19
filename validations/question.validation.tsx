@@ -10,7 +10,7 @@ const questionSchema = z.object({
   answer_02: z.string().min(1), // Non-empty string
   answer_03: z.string().min(1), // Non-empty string
   answer_04: z.string().min(1), // Non-empty string
-  correct_answer: z.number().nullable().optional(), // Nullable and optional
+  correct_answer: z.string().min(1), // Nullable and optional
 });
 
 export default questionSchema;

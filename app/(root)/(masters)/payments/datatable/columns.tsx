@@ -8,6 +8,7 @@ import { Session } from "@/server/types/sessions.type";
 import Link from "next/link";
 import { ApproveAlertDialog } from "../_component/approve_payment_alert";
 import { convertToLocaleDateTime } from "@/lib/utils";
+import { Badge } from "@/components/ui/badge";
 
 export const columns: ColumnDef<PaymentLines>[] = [
   {
@@ -34,12 +35,14 @@ export const columns: ColumnDef<PaymentLines>[] = [
     header: "Receipt Url",
     cell: ({ row }) => {
       if (row.original.image_url) {
-        <Link
-          href={`https://eminds.com.au/coursewebfiles/downloadfiles.php?id=${row.original.image_url}`}
-          target="_blank"
-        >
-          <p className="text-blue-600">Receipt</p>
-        </Link>;
+        return (
+          <Link
+            href={`https://eminds.com.au/coursewebfiles/downloadfiles.php?id=${row.original.image_url}`}
+            target="_blank"
+          >
+            <Badge>Receipt</Badge>
+          </Link>
+        );
       }
     },
   },

@@ -5,11 +5,18 @@ import { revalidatePath } from 'next/cache';
 import { Question } from "../types/question.type"; // Assuming you have a corresponding type for questions
 import { errorMessage } from "@/constants/messages";
 
-export async function fetchQuestions(): Promise<Question[]> {
+export async function fetchQuestions(exam_code?: string): Promise<Question[]> {
     try {
-        let { data: questions, error } = await supabaseCacheFreeClient
+        let query = supabaseCacheFreeClient
             .from('questions')
             .select(`* , courses (course_code,course_name) , batches(batch_no,batch_name),exams (exam_code)`).order('question_auto_id', { ascending: true });
+
+
+        if (exam_code) {
+            query = query.eq('exam_code', exam_code);
+        }
+
+        let { data: questions, error } = await query;
 
         if (error) {
             return [];

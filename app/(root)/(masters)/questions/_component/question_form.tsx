@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -22,6 +23,15 @@ import { addQuestion } from "@/server/actions/question.actions";
 import CourseSelect from "@/components/common/course_select";
 import BatchSelect from "@/components/common/batch_select";
 import ExamSelect from "@/components/common/exam_select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
+import { Link } from "lucide-react";
 
 export function QuestionForm({ data }: { data?: any }) {
   const [loading, setLoading] = useState(false);
@@ -36,7 +46,7 @@ export function QuestionForm({ data }: { data?: any }) {
       answer_02: data?.answer_02 ?? "asdassa",
       answer_03: data?.answer_03 ?? "asdassad",
       answer_04: data?.answer_04 ?? "asdsasadasd",
-      correct_answer: data?.correct_answer ?? null,
+      correct_answer: data?.correct_answer ?? "1",
     },
   });
 
@@ -88,6 +98,21 @@ export function QuestionForm({ data }: { data?: any }) {
           batch={batchCode}
           course={courseCode}
         />
+
+        <FormField
+          control={form.control}
+          name="question"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Question</FormLabel>
+              <FormControl>
+                <Input placeholder="Enter question..." {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
         <FormField
           control={form.control}
           name="answer_01"
@@ -139,6 +164,30 @@ export function QuestionForm({ data }: { data?: any }) {
               <FormControl>
                 <Input placeholder="Enter answer 04..." {...field} />
               </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="correct_answer"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Correct Answer</FormLabel>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a verified email to display" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  <SelectItem value="1">1</SelectItem>
+                  <SelectItem value="2">2</SelectItem>
+                  <SelectItem value="3">3</SelectItem>
+                  <SelectItem value="4">4</SelectItem>
+                </SelectContent>
+              </Select>
               <FormMessage />
             </FormItem>
           )}

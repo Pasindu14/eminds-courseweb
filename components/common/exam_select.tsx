@@ -49,8 +49,8 @@ const ExamSelect = ({ control, name, batch, course }: ExamSelectProps) => {
         name={name}
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Batch</FormLabel>
-            <div className="flex items-center justify-center gap-2">
+            <FormLabel>Exam</FormLabel>
+            <div className="flex items-center justify-center gap-2 md:min-w-96">
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
                   <SelectTrigger>

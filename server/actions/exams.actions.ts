@@ -12,12 +12,10 @@ export async function fetchExams(courseParams?: string, batchParam?: string): Pr
             .select(`*, courses(course_code, course_name), batches(batch_no, batch_name)`)
             .order('exam_auto_id', { ascending: true });
 
-
         if (courseParams) {
             query = query.eq('course_code', courseParams);
         }
 
-        // Apply the filter for batchParam if provided
         if (batchParam) {
             query = query.eq('batch_code', batchParam);
         }

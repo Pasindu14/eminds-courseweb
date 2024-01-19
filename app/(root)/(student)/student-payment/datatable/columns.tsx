@@ -46,7 +46,7 @@ export const columns: ColumnDef<PaymentLines>[] = [
           </Link>
         );
       } else {
-        <p className="text-blue-600">Added By Admin</p>;
+        return <Badge variant="secondary">Added By Admin</Badge>;
       }
     },
   },

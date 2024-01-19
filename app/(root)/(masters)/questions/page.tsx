@@ -16,7 +16,6 @@ import { fetchQuestions } from "@/server/actions/question.actions";
 
 const Questions = async () => {
   const data = await fetchQuestions();
-  console.log(data);
   return (
     <div>
       <Card className="w-full rounded-sm">
