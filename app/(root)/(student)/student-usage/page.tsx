@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import {
   Card,
@@ -8,12 +9,11 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { DataTable } from "@/components/datatable";
-import { fetchPaymentLinesWithBatchNo } from "@/server/actions/payments.actions";
-import { getServerSession } from "next-auth";
-import { authOption } from "../../../api/auth/[...nextauth]/route";
+import { useSession } from "next-auth/react";
 
 const StudentUsage = () => {
+  const { data: session } = useSession();
+
   return (
     <div>
       <Card className="w-full rounded-sm">

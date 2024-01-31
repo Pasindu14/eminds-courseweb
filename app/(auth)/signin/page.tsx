@@ -30,13 +30,13 @@ const SignIn = () => {
   const { data: session } = useSession();
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
+  /*   useEffect(() => {
     if (session) {
       router.replace(studentDashboardPath);
     }
 
     return () => {};
-  }, [session, router]);
+  }, [session, router]); */
 
   const form = useForm<z.infer<typeof authSchema>>({
     resolver: zodResolver(authSchema),
