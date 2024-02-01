@@ -9,7 +9,23 @@ export async function fetchJobs(): Promise<Job[]> {
     try {
         let { data: jobs, error } = await supabaseCacheFreeClient
             .from('jobs')
-            .select('*').order('job_auto_id', { ascending: true });
+            .select('*').order('job_auto_id', { ascending: true })
+
+        if (error) {
+            return [];
+        }
+
+        return jobs ?? [];
+    } catch (error) {
+        return [];
+    }
+}
+
+export async function fetchJobsForStudents(): Promise<Job[]> {
+    try {
+        let { data: jobs, error } = await supabaseCacheFreeClient
+            .from('jobs')
+            .select('*').order('job_auto_id', { ascending: true }).eq('status', 1);
 
         if (error) {
             return [];

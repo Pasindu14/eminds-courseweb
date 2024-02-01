@@ -8,11 +8,11 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { fetchJobs, fetchJobsForStudents } from "@/server/actions/jobs.actions";
-import JobItem from "./_component/job-item";
+import { fetchJobs } from "@/server/actions/jobs.actions";
+import EventItem from "./_component/event-item";
 
-const StudentJobs = async () => {
-  const jobs = await fetchJobsForStudents();
+const StudentEvents = async () => {
+  const jobs = await fetchJobs();
 
   return (
     <div>
@@ -26,7 +26,7 @@ const StudentJobs = async () => {
           {jobs.map((job: any) => {
             return (
               <div key={job.job_auto_id}>
-                <JobItem job={job} />
+                <EventItem event={job} />
               </div>
             );
           })}
@@ -37,4 +37,4 @@ const StudentJobs = async () => {
   );
 };
 
-export default StudentJobs;
+export default StudentEvents;
