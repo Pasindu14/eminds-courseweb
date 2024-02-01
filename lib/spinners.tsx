@@ -9,7 +9,7 @@ interface LoaderProps {
 
 export function LoaderFull({ size, color = "white" }: LoaderProps) {
   return (
-    <div className="flex justify-center items-center w-full h-full min-h-[50vh]">
+    <div className="flex justify-center items-center w-full h-full min-h-[50vh] mt-4">
       <div className="sweet-loading">
         <ClipLoader
           color={color}

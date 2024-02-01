@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   Card,
   CardContent,
@@ -10,9 +10,105 @@ import {
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { useSession } from "next-auth/react";
+import {
+  fetchTotalSessions,
+  fetchUsage,
+} from "@/server/actions/student-usage.actions";
+import { DataTable } from "@/components/datatable";
+import { columns } from "./datatable/columns";
+import { Loader, LoaderFull } from "@/lib/spinners";
+import toast from "react-hot-toast";
+import { set } from "react-hook-form";
+import { ProgressBar } from "./_component/progress";
+import { getUserLoginActivity } from "@/server/actions/auth.action";
+
+interface State {
+  usageData: any[];
+  percentage: number;
+  userLoginActivity: any;
+}
 
 const StudentUsage = () => {
-  const { data: session } = useSession();
+  const { data: session }: any = useSession();
+
+  const [state, setState] = useState<State>({
+    usageData: [],
+    percentage: 0,
+    userLoginActivity: 0,
+  });
+
+  const [loading, setLoading] = useState(true);
+
+  const manipulateData = (usageData: any, totalSessions: any) => {
+    let array: UsageData[] = [];
+    for (let i = 0; i < totalSessions.length; i++) {
+      let filteredData = usageData.filter((element: any) => {
+        return (
+          element.sessions.session_auto_id === totalSessions[i].session_auto_id
+        );
+      });
+
+      if (filteredData.length === 0) {
+        array.push({
+          sessionTitle: totalSessions[i].title,
+          dropClicksCount: 0,
+          slidesClicksCount: 0,
+          totalSessionCount: totalSessions.length,
+        });
+      } else {
+        array.push({
+          sessionTitle: filteredData[0].sessions.title,
+          dropClicksCount: filteredData[0].dropbox_clicks,
+          slidesClicksCount: filteredData[0].slide_clicks,
+          totalSessionCount: totalSessions.length,
+        });
+      }
+    }
+
+    let total = 0;
+
+    for (let i = 0; i < array.length; i++) {
+      const element = array[i];
+
+      if (element.dropClicksCount >= 1) {
+        total = total + 1;
+      }
+
+      if (element.slidesClicksCount >= 1) {
+        total = total + 1;
+      }
+    }
+
+    const totalSessionCount = totalSessions.length * 2;
+    const percentage = total / totalSessionCount;
+
+    return { percentage: percentage * 100, aasd: array };
+  };
+
+  const fetchUsageData = useCallback(async () => {
+    try {
+      if (!session?.batchId) return;
+      setLoading(true);
+      const usageData = await fetchUsage(session.batchId);
+      const totalSessionData = await fetchTotalSessions(session.batchId);
+      const userLoginActivity = await getUserLoginActivity(session.phoneNumber);
+      const { percentage, aasd } = manipulateData(usageData, totalSessionData);
+
+      setState({
+        usageData: aasd,
+        percentage: percentage,
+        userLoginActivity: userLoginActivity,
+      });
+    } catch (error) {
+      toast.error("Something went wrong, please try again later");
+    } finally {
+      setLoading(false);
+    }
+  }, [session?.batchId, session?.phoneNumber]);
+
+  useEffect(() => {
+    fetchUsageData();
+  }, [fetchUsageData]);
 
   return (
     <div>
@@ -26,11 +122,17 @@ const StudentUsage = () => {
         </CardHeader>
         <Separator />
         <CardContent className="pt-4">
-          <div className="flex flex-row justify-between"></div>
-          <div></div>
-          <Separator className="mt-3" />
-
-          {/* <DataTable columns={columns} data={paymentLines} /> */}
+          <Separator className="mt-3 mb-3" />
+          {loading && <LoaderFull size={25} color="black" />}
+          {!loading && state.usageData.length > 0 && (
+            <>
+              <ProgressBar percentage={state.percentage} />
+              <DataTable columns={columns} data={state.usageData} />
+              <p className="text-xl mb-2">
+                Times logged in to the system: {state.userLoginActivity}
+              </p>
+            </>
+          )}
         </CardContent>
         <CardFooter className="flex justify-between"></CardFooter>
       </Card>

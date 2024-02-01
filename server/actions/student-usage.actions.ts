@@ -1,3 +1,4 @@
+import { debug } from "console";
 import { supabaseCacheFreeClient } from "../server";
 
 async function checkExistence(phone: string, sessionId: number) {
@@ -105,4 +106,37 @@ export async function upsertUserSlidesClicksCount(phone: string, sessionId: numb
     }
 }
 
+export async function fetchUsage(batchId?: string) {
+    try {
+        const { data, error } = await supabaseCacheFreeClient
+            .from('user_activity')
+            .select(`*, sessions(title,batch_auto_id,session_auto_id)`)
+            .eq('sessions.batch_auto_id', batchId)
+            .order('id', { ascending: true });
+        if (error) {
+            return [];
+        }
+
+        return data ?? [];
+    } catch (error) {
+        return [];
+    }
+}
+
+export async function fetchTotalSessions(batchId?: string) {
+    try {
+        const { data, error } = await supabaseCacheFreeClient
+            .from('sessions')
+            .select('*')
+            .eq('batch_auto_id', batchId)
+
+        if (error) {
+            return [];
+        }
+
+        return data;
+    } catch (error) {
+        return [];
+    }
+}
 
