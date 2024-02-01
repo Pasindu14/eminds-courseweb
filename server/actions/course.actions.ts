@@ -63,3 +63,21 @@ export async function updateCourse(auto_id: string, course: any) {
         throw error;
     }
 }
+
+
+export async function getCourseByAutoId(autoId: string) {
+
+    const { data, error } = await supabaseCacheFreeClient
+        .from('courses')
+        .select('*')
+        .eq('auto_id', autoId)
+        .maybeSingle();
+
+    if (error) {
+        throw error;
+    }
+
+    return data;
+
+}
+
