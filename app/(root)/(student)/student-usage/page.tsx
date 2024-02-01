@@ -37,7 +37,7 @@ const StudentUsage = () => {
     userLoginActivity: 0,
   });
 
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const manipulateData = (usageData: any, totalSessions: any) => {
     let array: UsageData[] = [];
