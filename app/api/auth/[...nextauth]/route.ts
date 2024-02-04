@@ -19,13 +19,20 @@ export const authOption: NextAuthOptions = {
             },
             async authorize(credentials) {
                 if (credentials) {
-                    const authResult = await validateUser(credentials.username, credentials.password);
-                    if (authResult) {
-                        const accessToken = uuidv4();
-                        await insertOrUpdateSession(authResult.students.auto_id, accessToken);
-                        const user = { id: authResult.students.auto_id, name: authResult.students.name, email: authResult.students.email, role: 'STUDENT', phoneNumber: authResult.students.phonenumber, batchId: authResult.batch_auto_id, batchName: authResult.batches.batch_name, courseId: authResult.batches.course_auto_id, accessToken: accessToken };
+
+                    if (credentials.username != "admin") {
+                        const authResult = await validateUser(credentials.username, credentials.password);
+                        if (authResult) {
+                            const accessToken = uuidv4();
+                            await insertOrUpdateSession(authResult.students.auto_id, accessToken);
+                            const user = { id: authResult.students.auto_id, name: authResult.students.name, email: authResult.students.email, role: 'STUDENT', phoneNumber: authResult.students.phonenumber, batchId: authResult.batch_auto_id, batchName: authResult.batches.batch_name, courseId: authResult.batches.course_auto_id, accessToken: accessToken };
+                            return user;
+                        }
+                    } else {
+                        const user = { id: "114023127", name: "admin", email: "admin@eminds.lk", role: 'ADMIN', phoneNumber: "1592402352" };
                         return user;
                     }
+
                 }
                 return null;
             },

@@ -3,7 +3,6 @@ import React from "react";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -16,18 +15,17 @@ import { fetchBatchByPassword } from "@/server/actions/batch.actions";
 import { fetchSessionsByBatchId } from "@/server/actions/sessions.actions";
 import { DataTable } from "@/components/datatable";
 import { columns } from "./datatable/columns";
-import { getServerSession } from "next-auth";
-import { authOption } from "@/app/api/auth/[...nextauth]/route";
-import { getSessionValidity } from "@/server/actions/auth.action";
-import { signOut } from "next-auth/react";
+import { fetchAllExamResults } from "@/server/actions/exam-marks.actions";
+import { resultsColumns } from "./datatable/resultsColumns";
 
 const Dashboard = async () => {
-  const studentId = "0711803295";
+  const studentPhone = "0711803295";
   const password = "1122334";
 
-  const studentDetails = await fetchStudentByPhoneNumber(studentId);
+  const studentDetails = await fetchStudentByPhoneNumber(studentPhone);
   const batchDetails = await fetchBatchByPassword(password);
   const sessions = await fetchSessionsByBatchId(batchDetails.auto_id);
+  const examResults = await fetchAllExamResults(studentPhone);
 
   return (
     <div>
@@ -44,11 +42,18 @@ const Dashboard = async () => {
               studentData={studentDetails}
               batchData={batchDetails}
             />
-            {/*       <AnimationComponent /> */}
+            <AnimationComponent />
           </div>
+          <h1 className="text-2xl mt-2 mb-2 font-semibold">Sessions</h1>
           <Separator className="mt-3" />
           <div>
             <DataTable columns={columns} data={sessions} />
+          </div>
+
+          <h1 className="text-2xl mt-2 mb-2 font-semibold">Exam Results</h1>
+          <Separator className="mt-3" />
+          <div>
+            <DataTable columns={resultsColumns} data={examResults} />
           </div>
         </CardContent>
         <CardFooter className="flex justify-between"></CardFooter>

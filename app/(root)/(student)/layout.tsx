@@ -2,12 +2,14 @@ import { NavigationAdmin } from "@/components/navbar-admin";
 import { getServerSession } from "next-auth";
 import React from "react";
 import { Toaster } from "react-hot-toast";
-import { authOption } from "../api/auth/[...nextauth]/route";
+
 import { redirect } from "next/navigation";
 import { signIn } from "@/constants/paths";
+import { NavigationStudent } from "@/components/navbar-student";
+import { authOption } from "@/app/api/auth/[...nextauth]/route";
 
 const RootLayout = async ({ children }: { children: React.ReactNode }) => {
-  const session = await getServerSession(authOption);
+  const session: any = await getServerSession(authOption);
 
   if (!session) {
     redirect(signIn);
@@ -15,7 +17,9 @@ const RootLayout = async ({ children }: { children: React.ReactNode }) => {
 
   return (
     <div className="background-image min-h-screen flex flex-col">
-      <NavigationAdmin />
+      <div className="hidden md:block">
+        {session.role === "ADMIN" ? <NavigationAdmin /> : <NavigationStudent />}
+      </div>
       <div className="container mx-auto pt-4 pb-4">{children}</div>
       <Toaster />
     </div>

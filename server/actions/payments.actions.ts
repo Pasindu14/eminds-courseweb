@@ -113,6 +113,8 @@ export async function addPaymentsByStudent(paymentData: FormData, fileFormData: 
         const result = await addPaymentByUser(paymentParam, 'STUDENT', fileFormData);
 
         if (result.success) {
+
+            revalidatePath('/student-payment', 'page');
             return responseHandler.setSuccess("All payments processed successfully");
         } else {
             return responseHandler.setError(

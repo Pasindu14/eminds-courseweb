@@ -60,7 +60,11 @@ const SignIn = () => {
         toastError("Invalid credentials please try again!");
         setLoading(false);
       } else {
-        router.replace(studentDashboardPath);
+        if (values.username != "admin") {
+          router.replace(studentDashboardPath);
+        } else {
+          router.replace("/students");
+        }
       }
     } catch (error) {
       toastError(errorMessage);

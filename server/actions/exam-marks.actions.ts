@@ -53,6 +53,25 @@ export async function checkIfExamMarkExists(studentPhone: string, examCode: stri
     }
 }
 
+export async function fetchAllExamResults(studentPhone: string) {
+
+    try {
+        const { data, error } = await supabaseCacheFreeClient
+            .from('exam_marks')
+            .select(`* , exams(exam_code)`)
+            .eq('student_phone', studentPhone);
+
+        if (error) {
+
+            return [];
+        }
+
+        return data;
+    } catch (error) {
+        return [];
+    }
+}
+
 
 export async function fetchMarksByExamId(examCode: string) {
     try {
