@@ -20,6 +20,7 @@ import {
   addExamMarks,
   checkIfExamMarkExists,
 } from "@/server/actions/exam-marks.actions";
+import { AddFinalSubmissionDialog } from "./submit_final_submission";
 
 export function StudentExamSelectionForm() {
   const { data: session }: any = useSession();
@@ -132,29 +133,34 @@ export function StudentExamSelectionForm() {
 
   return (
     <div>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
-          <div className="md:flex items-end w-full gap-2">
-            <ExamSelect
-              control={form.control}
-              name="exam_auto_id"
-              batch={session?.batchId}
-            />
+      <div className="md:flex items-center justify-between">
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
+            <div className="md:flex w-full gap-2">
+              <ExamSelect
+                control={form.control}
+                name="exam_auto_id"
+                batch={session?.batchId}
+              />
 
-            <Button type="submit" disabled={loading}>
-              {loading ? (
-                <div className="flex items-center justify-center gap-2">
-                  <p>Select</p>
-                  <Loader size={13} />
-                </div>
-              ) : (
-                "Select"
-              )}
-            </Button>
-          </div>
-        </form>
-      </Form>
+              <Button type="submit" disabled={loading} className="mt-8">
+                {loading ? (
+                  <div className="flex items-center justify-center gap-2">
+                    <p>Select</p>
+                    <Loader size={13} />
+                  </div>
+                ) : (
+                  "Select"
+                )}
+              </Button>
+            </div>
+          </form>
+        </Form>
 
+        <div className="md:mt-8">
+          <AddFinalSubmissionDialog />
+        </div>
+      </div>
       <Separator className="mt-4" />
       <div className="w-full mt-3">
         {questions.map((q: Question, index: number) => (

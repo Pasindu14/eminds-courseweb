@@ -10,9 +10,10 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { fetchJobs } from "@/server/actions/jobs.actions";
 import EventItem from "./_component/event-item";
+import { fetchEvents } from "@/server/actions/events.actions";
 
 const StudentEvents = async () => {
-  const jobs = await fetchJobs();
+  const events = await fetchEvents();
 
   return (
     <div>
@@ -23,7 +24,7 @@ const StudentEvents = async () => {
         </CardHeader>
         <Separator />
         <CardContent className="pt-4">
-          {jobs.map((job: any) => {
+          {events.map((job: any) => {
             return (
               <div key={job.job_auto_id}>
                 <EventItem event={job} />

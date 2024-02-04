@@ -52,3 +52,22 @@ export async function checkIfExamMarkExists(studentPhone: string, examCode: stri
         return responseHandler.setError(errorMessage);
     }
 }
+
+
+export async function fetchMarksByExamId(examCode: string) {
+    try {
+        const { data, error } = await supabaseCacheFreeClient
+            .from('exam_marks')
+            .select()
+            .eq('exam_code', examCode)
+            .maybeSingle();
+
+        if (error) {
+            return [];
+        }
+
+        return data;
+    } catch (error) {
+        return [];
+    }
+}

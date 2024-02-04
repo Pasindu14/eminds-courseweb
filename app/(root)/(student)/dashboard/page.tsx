@@ -16,10 +16,15 @@ import { fetchBatchByPassword } from "@/server/actions/batch.actions";
 import { fetchSessionsByBatchId } from "@/server/actions/sessions.actions";
 import { DataTable } from "@/components/datatable";
 import { columns } from "./datatable/columns";
+import { getServerSession } from "next-auth";
+import { authOption } from "@/app/api/auth/[...nextauth]/route";
+import { getSessionValidity } from "@/server/actions/auth.action";
+import { signOut } from "next-auth/react";
 
 const Dashboard = async () => {
   const studentId = "0711803295";
   const password = "1122334";
+
   const studentDetails = await fetchStudentByPhoneNumber(studentId);
   const batchDetails = await fetchBatchByPassword(password);
   const sessions = await fetchSessionsByBatchId(batchDetails.auto_id);
@@ -39,7 +44,7 @@ const Dashboard = async () => {
               studentData={studentDetails}
               batchData={batchDetails}
             />
-            <AnimationComponent />
+            {/*       <AnimationComponent /> */}
           </div>
           <Separator className="mt-3" />
           <div>

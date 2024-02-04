@@ -1,11 +1,13 @@
 
+import { getServerSession } from "next-auth";
 import { supabaseCacheFreeClient } from "../server";
+import { authOption } from "@/app/api/auth/[...nextauth]/route";
 
 export async function validateUser(phoneNumber: string, password: string): Promise<any> {
     try {
         let { data: student, error } = await supabaseCacheFreeClient
             .from('students_mapping')
-            .select(`* , batches!inner(auto_id,batch_name,password) , students!inner(auto_id,name,phonenumber,email)`)
+            .select(`* , batches!inner(auto_id,batch_name,password,course_auto_id) , students!inner(auto_id,name,phonenumber,email)`)
             .eq('students.phonenumber', phoneNumber).eq('batches.password', password).maybeSingle()
 
         if (error) {
@@ -21,8 +23,6 @@ export async function validateUser(phoneNumber: string, password: string): Promi
         return null;
     }
 }
-
-
 
 export async function updateLoginActivity(phoneNumber: string): Promise<any> {
 
@@ -66,5 +66,67 @@ export async function getUserLoginActivity(phoneNumber: string) {
     }
 
     return data?.times_logged_in ?? 0;
+
+}
+
+export async function insertOrUpdateSession(
+    user_id: number,
+    session_token: string
+) {
+    // Try to find a session that matches the user_id
+    let { data: existingSession, error: findError } = await supabaseCacheFreeClient
+        .from('user_sessions')
+        .select('*')
+        .eq('user_id', user_id)
+        .maybeSingle();
+
+    if (findError) {
+        console.error("Error finding existing session:", findError);
+        return { error: findError };
+    }
+
+    if (existingSession) {
+        // Session exists for the user, update it
+        const { data, error: updateError } = await supabaseCacheFreeClient
+            .from('user_sessions')
+            .update({ session_token, updated_at: new Date().toISOString() }) // Corrected typo in session_token
+            .eq('user_id', user_id);
+
+        if (updateError) {
+            console.error("Error updating session:", updateError);
+            return { error: updateError };
+        }
+        return { data }; // Successfully updated
+    } else {
+        // Session does not exist, insert new session
+        const { data, error: insertError } = await supabaseCacheFreeClient
+            .from('user_sessions')
+            .insert([{ user_id, session_token }]);
+
+        if (insertError) {
+            console.error("Error inserting new session:", insertError);
+            return { error: insertError };
+        }
+        return { data }; // Successfully inserted
+    }
+}
+
+export async function getSessionValidity(user_id: number, session_token: string) {
+    let { data: user_sessions, error } = await supabaseCacheFreeClient
+        .from('user_sessions')
+        .select("session_token").eq('user_id', user_id).maybeSingle();
+
+    if (error || !user_sessions) {
+        return false;
+    }
+
+    const session_token_from_db = user_sessions.session_token;
+
+    if (session_token_from_db == session_token) {
+        return true;
+    } else {
+        return false;
+    }
+
 
 }

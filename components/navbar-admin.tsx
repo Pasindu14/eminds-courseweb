@@ -19,6 +19,7 @@ import { motion } from "framer-motion";
 import { signOut, useSession } from "next-auth/react";
 import { Button } from "./ui/button";
 import { LogOut } from "lucide-react";
+import AuthSessionValidator from "./common/auth-validator";
 
 const masterComponents: { title: string; href: string; description: string }[] =
   [
@@ -79,6 +80,25 @@ const mappingComponents: {
   },
 ];
 
+const examComponents: {
+  title: string;
+  href: string;
+  description: string;
+}[] = [
+  {
+    title: "Exam Results",
+    href: "/exam-results",
+    description:
+      "View and manage exam results for students. Allow sorting, filtering and exporting results for analysis and tracking of student performance.",
+  },
+  {
+    title: "Final Submissions Results",
+    href: "/final-exams-submissions-results",
+    description:
+      "View and manage final exam submission results for all courses and other details for each submission.",
+  },
+];
+
 const paymentComponents: {
   title: string;
   href: string;
@@ -99,7 +119,7 @@ const paymentComponents: {
 ];
 
 export function NavigationAdmin() {
-  const { data: session } = useSession();
+  const { data: session }: any = useSession();
 
   return (
     <motion.div
@@ -107,6 +127,8 @@ export function NavigationAdmin() {
       initial={{ opacity: 0, y: -50 }}
       animate={{ opacity: 1, y: 0 }}
     >
+      {/*       {session && <AuthSessionValidator userId={session?.id!} />} */}
+
       <div className="flex items-center justify-between w-full">
         <div></div>
         <NavigationMenu>
@@ -159,10 +181,27 @@ export function NavigationAdmin() {
                 </ul>
               </NavigationMenuContent>
             </NavigationMenuItem>
+
             <NavigationMenuItem>
-              <Link href="/docs" legacyBehavior passHref>
+              <NavigationMenuTrigger>Exams</NavigationMenuTrigger>
+              <NavigationMenuContent>
+                <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
+                  {examComponents.map((component) => (
+                    <ListItem
+                      key={component.title}
+                      title={component.title}
+                      href={component.href}
+                    >
+                      {component.description}
+                    </ListItem>
+                  ))}
+                </ul>
+              </NavigationMenuContent>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+              <Link href="/payment-report" legacyBehavior passHref>
                 <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                  Documentation
+                  Payment Report
                 </NavigationMenuLink>
               </Link>
             </NavigationMenuItem>
@@ -181,28 +220,29 @@ export function NavigationAdmin() {
   );
 }
 
-const ListItem = React.forwardRef<
-  React.ElementRef<"a">,
-  React.ComponentPropsWithoutRef<"a">
->(({ className, title, children, ...props }, ref) => {
-  return (
-    <li>
-      <NavigationMenuLink asChild>
-        <a
-          ref={ref}
-          className={cn(
-            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
-            className
-          )}
-          {...props}
-        >
-          <div className="text-sm font-medium leading-none">{title}</div>
-          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-            {children}
-          </p>
-        </a>
-      </NavigationMenuLink>
-    </li>
-  );
-});
+const ListItem = React.memo(
+  React.forwardRef<React.ElementRef<"a">, React.ComponentPropsWithoutRef<"a">>(
+    ({ className, title, children, ...props }, ref) => {
+      return (
+        <li>
+          <NavigationMenuLink asChild>
+            <a
+              ref={ref}
+              className={cn(
+                "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
+                className
+              )}
+              {...props}
+            >
+              <div className="text-sm font-medium leading-none">{title}</div>
+              <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                {children}
+              </p>
+            </a>
+          </NavigationMenuLink>
+        </li>
+      );
+    }
+  )
+);
 ListItem.displayName = "ListItem";

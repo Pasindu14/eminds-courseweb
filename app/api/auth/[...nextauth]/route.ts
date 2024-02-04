@@ -1,9 +1,9 @@
 
-import { validateUser } from "@/server/actions/auth.action";
+import { insertOrUpdateSession, validateUser } from "@/server/actions/auth.action";
 import { NextAuthOptions } from "next-auth";
 import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
-
+import { v4 as uuidv4 } from 'uuid';
 
 export const authOption: NextAuthOptions = {
     providers: [
@@ -21,7 +21,9 @@ export const authOption: NextAuthOptions = {
                 if (credentials) {
                     const authResult = await validateUser(credentials.username, credentials.password);
                     if (authResult) {
-                        const user = { id: authResult.students.auto_id, name: authResult.students.name, email: authResult.students.email, role: 'STUDENT', phoneNumber: authResult.students.phonenumber, batchId: authResult.batch_auto_id, batchName: authResult.batches.batch_name };
+                        const accessToken = uuidv4();
+                        await insertOrUpdateSession(authResult.students.auto_id, accessToken);
+                        const user = { id: authResult.students.auto_id, name: authResult.students.name, email: authResult.students.email, role: 'STUDENT', phoneNumber: authResult.students.phonenumber, batchId: authResult.batch_auto_id, batchName: authResult.batches.batch_name, courseId: authResult.batches.course_auto_id, accessToken: accessToken };
                         return user;
                     }
                 }
@@ -47,6 +49,8 @@ export const authOption: NextAuthOptions = {
                 token.phoneNumber = user.phoneNumber;
                 token.batchId = user.batchId;
                 token.batchName = user.batchName;
+                token.courseId = user.courseId;
+                token.accessToken = user.accessToken;
             }
             return token;
         },
@@ -59,6 +63,8 @@ export const authOption: NextAuthOptions = {
             session.phoneNumber = token.phoneNumber;
             session.batchId = token.batchId;
             session.batchName = token.batchName;
+            session.courseId = token.courseId;
+            session.accessToken = token.accessToken;
             return session;
         }
     }, pages: {

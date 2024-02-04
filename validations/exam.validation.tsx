@@ -7,4 +7,10 @@ const examSchema = z.object({
   exam_code: z.string().min(3).max(500),
 });
 
+export const examResultsilterSchema = z.object({
+  courseId: z.string().min(1, { message: "Course code is required" }),
+  batchId: z.string().min(1, { message: "Batch code is required" }),
+  examId: z.string().min(1, { message: "Exam code is required" }),
+});
+
 export default examSchema;

@@ -32,7 +32,6 @@ export async function fetchExams(courseParams?: string, batchParam?: string): Pr
     }
 }
 
-
 export async function addExam(exam: any) {
     try {
         const responseHandler = new ResponseHandler<any>();
@@ -73,5 +72,60 @@ export async function removeExam(exam_auto_id: string) {
         return responseHandler.setSuccess("Success");
     } catch (error) {
         throw error;
+    }
+}
+
+export async function addFinalExamSubmission(finalExam: any) {
+    try {
+        const responseHandler = new ResponseHandler<any>();
+        const { data, error } = await supabaseCacheFreeClient
+            .from('exam_marks_final_submission')
+            .insert([
+                { student_phone: finalExam.student_phone, batch_auto_id: finalExam.batch_auto_id, course_auto_id: finalExam.course_auto_id, link: finalExam.link },
+            ])
+            .select();
+        if (error != null) {
+            return responseHandler.setError(
+                error.details ?? errorMessage,
+            );
+        }
+        return responseHandler.setSuccess("Success", data);
+    } catch (error) {
+        throw error;
+    }
+}
+
+export async function fetchFinalSubmissionMarks(batchId: string): Promise<any[]> {
+    try {
+        let { data, error } = await supabase
+            .rpc('fetch_final_submission_marks', { batch_id: batchId });
+
+        if (error) {
+            console.error('Error fetching final submission marks:', error);
+            return [];
+        }
+
+        return data;
+    } catch (error) {
+        console.error('Exception when fetching final submission marks:', error);
+        return [];
+    }
+}
+
+
+export async function fetchExamMarks(examId: string): Promise<any[]> {
+
+    try {
+        let { data, error } = await supabaseCacheFreeClient
+            .rpc('fetch_exam_marks', { exam_id: examId });
+
+        if (error) {
+            console.error('Error fetching Exam marks:', error);
+            return [];
+        }
+        return data;
+    } catch (error) {
+        console.error('Exception when fetching Exam marks:', error);
+        return [];
     }
 }

@@ -16,3 +16,18 @@ export function convertToLocaleDateTime(isoDateTimeString: Date) {
   const formattedDateTime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
   return formattedDateTime;
 }
+
+export function formatDate(dateInput: string) {
+  const date = new Date(dateInput);
+  let month = '' + (date.getMonth() + 1), // getMonth() is zero-based
+    day = '' + date.getDate(),
+    year = date.getFullYear();
+
+  // Pad single digit month and day with a leading zero
+  if (month.length < 2)
+    month = '0' + month;
+  if (day.length < 2)
+    day = '0' + day;
+
+  return [year, month, day].join('-');
+}

@@ -1,10 +1,12 @@
 "use client";
 
 import { motion } from "framer-motion";
-import React from "react";
+import React, { useCallback, useEffect } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import ZoomComponent from "./zoom_component";
+import { signOut, useSession } from "next-auth/react";
+import { getSessionValidity } from "@/server/actions/auth.action";
 
 const StudentDetails = ({
   studentData,
@@ -13,6 +15,21 @@ const StudentDetails = ({
   studentData: any;
   batchData: any;
 }) => {
+  const { data: session }: any = useSession();
+
+  const validateSession = useCallback(async () => {
+    if (session) {
+      const result = await getSessionValidity(session.id, session.accessToken);
+      if (result == false) {
+        signOut();
+      }
+    }
+  }, [session]);
+
+  useEffect(() => {
+    validateSession();
+  }, [validateSession]);
+
   return (
     <motion.div initial={{ opacity: 0, y: -50 }} animate={{ opacity: 1, y: 0 }}>
       {studentData && (

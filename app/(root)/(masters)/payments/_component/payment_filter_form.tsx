@@ -45,6 +45,7 @@ const PaymentFilterForm = () => {
   }
 
   const fetchPaymentLinesWithFilter = async (values: any) => {
+    setPaymentLines([]);
     const result = await fetchPaymentLinesWithBatchNo(
       Number(values.students[0])
     );
@@ -54,6 +55,7 @@ const PaymentFilterForm = () => {
   const fetchPaymentLines = async () => {
     try {
       setLoading(true);
+      setPaymentLines([]);
       const result = await fetchPaymentLinesWithBatchNo(undefined, 0);
       setPaymentLines(result);
     } catch (error) {
@@ -63,16 +65,22 @@ const PaymentFilterForm = () => {
     }
   };
 
+  const hasErrors = Object.keys(form.formState.errors).length === 0;
+
   return (
     <div className="mt-2">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
-          <div className="flex flex-row items-end gap-2">
+          <div className="md:flex flex-row  gap-2">
             <div className="w-1/3">
               <MultiSelect control={form.control} name="students" max={1} />
             </div>
             <div className="gap-2 flex flex-col md:flex-row md:items-center">
-              <Button type="submit" disabled={loading}>
+              <Button
+                type="submit"
+                disabled={loading}
+                className={`md:mt-8 mt-2 ${!hasErrors && "md:mt-1"}`}
+              >
                 {loading ? (
                   <div className="md:flex items-center justify-center gap-2">
                     <p>Filter</p>
@@ -87,6 +95,7 @@ const PaymentFilterForm = () => {
                 type="button"
                 disabled={loading}
                 onClick={fetchPaymentLines}
+                className={`md:mt-8 mt-2 ${!hasErrors && "md:mt-1"}`}
               >
                 {loading ? (
                   <div className="md:flex items-center justify-center gap-2">
