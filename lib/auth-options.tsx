@@ -3,7 +3,6 @@ import {
   validateUser,
 } from "@/server/actions/auth.action";
 import { NextAuthOptions } from "next-auth";
-
 import CredentialsProvider from "next-auth/providers/credentials";
 import { v4 as uuidv4 } from "uuid";
 
@@ -21,15 +20,7 @@ export const authOption: NextAuthOptions = {
       },
       async authorize(credentials) {
         if (credentials) {
-          const user = {
-            id: "114023127",
-            name: "admin",
-            email: "admin@eminds.lk",
-            role: "ADMIN",
-            phoneNumber: "1592402352",
-          };
-          return user;
-          /*           if (credentials.username != "admin") {
+          if (credentials.username != "admin") {
             const authResult = await validateUser(
               credentials.username,
               credentials.password
@@ -62,7 +53,7 @@ export const authOption: NextAuthOptions = {
               phoneNumber: "1592402352",
             };
             return user;
-          } */
+          }
         }
         return null;
       },
@@ -70,11 +61,11 @@ export const authOption: NextAuthOptions = {
   ],
   callbacks: {
     async redirect({ url, baseUrl }) {
-      /*       if (url.startsWith(baseUrl)) {
+      if (url.startsWith(baseUrl)) {
         return url;
       } else if (url.startsWith("/")) {
         return new URL(url, baseUrl).toString();
-      } */
+      }
       return baseUrl;
     },
     async jwt({ token, user }: any) {
