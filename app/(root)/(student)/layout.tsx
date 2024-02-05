@@ -6,8 +6,9 @@ import { Toaster } from "react-hot-toast";
 import { redirect } from "next/navigation";
 import { signIn } from "@/constants/paths";
 import { NavigationStudent } from "@/components/navbar-student";
-import { authOption } from "@/app/api/auth/[...nextauth]/route";
+
 import Providers from "@/app/Providers";
+import { authOption } from "@/lib/auth-options";
 
 const RootLayout = async ({ children }: { children: React.ReactNode }) => {
   const session: any = await getServerSession(authOption);

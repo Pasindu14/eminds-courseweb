@@ -14,8 +14,8 @@ import { DataTable } from "@/components/datatable";
 import { columns } from "./datatable/columns";
 import { fetchPaymentLinesWithBatchNo } from "@/server/actions/payments.actions";
 import { getServerSession } from "next-auth";
-import { authOption } from "../../../api/auth/[...nextauth]/route";
 import AnimationComponent from "./_component/animation-component";
+import { authOption } from "@/lib/auth-options";
 
 const StudentPayment = async () => {
   const session: any = await getServerSession(authOption);
