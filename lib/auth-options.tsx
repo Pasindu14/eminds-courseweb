@@ -70,11 +70,11 @@ export const authOption: NextAuthOptions = {
   ],
   callbacks: {
     async redirect({ url, baseUrl }) {
-      if (url.startsWith(baseUrl)) {
+      /*       if (url.startsWith(baseUrl)) {
         return url;
       } else if (url.startsWith("/")) {
         return new URL(url, baseUrl).toString();
-      }
+      } */
       return baseUrl;
     },
     async jwt({ token, user }: any) {
