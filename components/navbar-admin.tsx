@@ -59,6 +59,18 @@ const masterComponents: { title: string; href: string; description: string }[] =
       description:
         "Efficiently manage and review exam questions, keeping tabs on various topics, difficulty levels, and correct answers for streamlined exam preparation and assessment",
     },
+    {
+      title: "Badges",
+      href: "/badges",
+      description:
+        "View and manage badges earned by students for completing courses and other achievement",
+    },
+    {
+      title: "Expire badges",
+      href: "/expire-badges",
+      description:
+        "View and expire badges that were previously earned by students for completing courses and other achievements",
+    },
   ];
 
 const mappingComponents: {

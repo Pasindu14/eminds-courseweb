@@ -666,14 +666,13 @@ export async function deleteBadgeById(id: string) {
     }
 
     revalidatePath('/badges', 'page');
+    revalidatePath('/expire-badges', 'page');
     return responseHandler.setSuccess("Badge deleted successfully");
 
   } catch (error: any) {
     return responseHandler.setSuccess(error.message);
   }
-
 }
-
 
 export async function fetchBadgesByStudentAutoId(student_auto_id: number) {
 
@@ -688,4 +687,44 @@ export async function fetchBadgesByStudentAutoId(student_auto_id: number) {
 
   return studentBadges ?? [];
 
+}
+
+export async function getStudentBadgesOlderThan3Years() {
+  try {
+    let { data, error } = await supabaseCacheFreeClient
+      .from('student_badge')
+      .select('* , courses!inner(auto_id, course_code, course_name,badge),students!inner(name,phonenumber)')
+      .lte('created_date', new Date(new Date().setFullYear(new Date().getFullYear() - 3)).toISOString());
+
+    if (error) {
+      return [];
+    }
+
+    return data ?? [];
+  } catch (error) {
+    console.error('Error fetching student badges:', error);
+    return [];
+  }
+}
+
+export async function deleteBadgesByIds(ids: string[]) {
+  const responseHandler = new ResponseHandler<any>();
+  try {
+    const { error } = await supabaseCacheFreeClient
+      .from('student_badge')
+      .delete()
+      .in('auto_id', ids);
+
+    if (error) {
+      return responseHandler.setError(error.message);
+    }
+
+    revalidatePath('/badges', 'page');
+    revalidatePath('/expire-badges', 'page');
+    return responseHandler.setSuccess("Badges deleted successfully");
+
+  } catch (error: any) {
+    // Adjust the error handling as needed
+    return responseHandler.setError(error.message || "An unexpected error occurred");
+  }
 }

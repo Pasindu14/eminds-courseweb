@@ -12,20 +12,33 @@ import {
 import { Button } from "@/components/ui/button";
 import { Loader } from "@/lib/spinners";
 import { toastError } from "@/lib/toast/toast";
-import { deleteBadgeById } from "@/server/actions/badge.actions";
+import {
+  deleteBadgeById,
+  deleteBadgesByIds,
+} from "@/server/actions/badge.actions";
 
 import { useState } from "react";
 
 export function ConfirmDeleteAlertDialog({
   badge_auto_id,
+  badges,
 }: {
-  badge_auto_id: number | null;
+  badge_auto_id?: number | null;
+  badges?: any[];
 }) {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const deleteFunction = async () => {
     setLoading(true);
-    const result = await deleteBadgeById(badge_auto_id!.toString());
+    let result;
+    if (badges != null || badges != undefined) {
+      const autoIdsAsStringArray = badges.map((item) =>
+        item.auto_id.toString()
+      );
+      result = await deleteBadgesByIds(autoIdsAsStringArray);
+    } else {
+      result = await deleteBadgeById(badge_auto_id!.toString());
+    }
     if (!result.success) {
       toastError(result.message);
     } else {
@@ -36,7 +49,9 @@ export function ConfirmDeleteAlertDialog({
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>
-        <Button variant="destructive">Delete</Button>
+        <Button variant="destructive">
+          {badges != null ? "Delete all expired badges" : "Delete"}
+        </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
