@@ -45,12 +45,17 @@ export const authOption: NextAuthOptions = {
               return user;
             }
           } else {
+            const accessToken = uuidv4();
             const user = {
               id: "114023127",
               name: "admin",
               email: "admin@eminds.lk",
               role: "ADMIN",
               phoneNumber: "1592402352",
+              batchId: "2148998808",
+              batchName: "3957277763",
+              courseId: "2559933968",
+              accessToken: accessToken,
             };
             return user;
           }
