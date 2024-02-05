@@ -5,12 +5,11 @@ import React from "react";
 import Image from "next/image";
 
 const EventItem = ({ event }: { event: any }) => {
-  console.log(event);
   return (
     <div className="border border-1 w-full rounded-xl">
       <div className="grid md:grid-cols-2">
         <Image
-          src="https://eminds.com.au/coursewebfiles/downloadfiles.php?id=65"
+          src={`https://eminds.com.au/coursewebfiles/downloadfiles.php?id=${event.image}`}
           alt="asdasdasd"
           height={500}
           width={500}

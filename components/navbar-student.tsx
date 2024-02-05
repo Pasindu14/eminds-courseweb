@@ -7,11 +7,9 @@ import { cn } from "@/lib/utils";
 
 import {
   NavigationMenu,
-  NavigationMenuContent,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
-  NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 
@@ -179,7 +177,11 @@ export function NavigationStudent() {
 
         <div>
           {session && (
-            <Button variant={"ghost"} onClick={() => signOut()}>
+            <Button
+              variant={"ghost"}
+              onClick={() => signOut()}
+              className="rounded-full"
+            >
               <LogOut />
             </Button>
           )}

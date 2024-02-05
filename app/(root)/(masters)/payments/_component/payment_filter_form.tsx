@@ -47,7 +47,9 @@ const PaymentFilterForm = () => {
   const fetchPaymentLinesWithFilter = async (values: any) => {
     setPaymentLines([]);
     const result = await fetchPaymentLinesWithBatchNo(
-      Number(values.students[0])
+      undefined,
+      Number(values.students[0]),
+      undefined
     );
     setPaymentLines(result);
   };
@@ -56,7 +58,11 @@ const PaymentFilterForm = () => {
     try {
       setLoading(true);
       setPaymentLines([]);
-      const result = await fetchPaymentLinesWithBatchNo(undefined, 0);
+      const result = await fetchPaymentLinesWithBatchNo(
+        undefined,
+        undefined,
+        0
+      );
       setPaymentLines(result);
     } catch (error) {
       toastError(errorMessage);

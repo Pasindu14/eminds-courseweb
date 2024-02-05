@@ -25,6 +25,15 @@ export const columns: ColumnDef<any>[] = [
   {
     accessorKey: "link",
     header: "Link",
+    cell: ({ row }) => {
+      return (
+        <Button>
+          <Link href={row.original.link} target="_blank">
+            Submission Link
+          </Link>
+        </Button>
+      );
+    },
   },
   {
     accessorKey: "date",

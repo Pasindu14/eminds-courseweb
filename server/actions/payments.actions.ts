@@ -4,9 +4,10 @@ import ResponseHandler from "../models/response.model";
 import { supabase, supabaseCacheFreeClient } from "../server";
 import { errorMessage } from "@/constants/messages";
 import { uploadFile } from "./file.actions";
+import { fetchStudentDetails } from "./student.actions";
 
 
-export async function fetchPaymentLinesWithBatchNo(student_auto_id?: number, pending?: number): Promise<PaymentLines[]> {
+export async function fetchPaymentLinesWithBatchNo(batch_auto_id?: number, student_auto_id?: number, pending?: number): Promise<PaymentLines[]> {
     try {
         let query = supabaseCacheFreeClient
             .from('payments_line')
@@ -17,7 +18,7 @@ export async function fetchPaymentLinesWithBatchNo(student_auto_id?: number, pen
                 is_admin,
                 approve_status,
                 created_at,
-                payments:payment_hdr_id (
+                payments!inner (
                     student_phone,
                     batch_auto_id,
                     created_at,
@@ -26,7 +27,12 @@ export async function fetchPaymentLinesWithBatchNo(student_auto_id?: number, pen
                         batch_name 
                     )
                 )
-            `).order('created_at', { ascending: false });
+            `).order('created_at', { ascending: false })
+
+
+        if (batch_auto_id != undefined) {
+            query = query.eq('payments.batch_auto_id', batch_auto_id);
+        }
 
         if (student_auto_id != undefined) {
             const student = await fetchStudentDetails(student_auto_id);
@@ -36,6 +42,7 @@ export async function fetchPaymentLinesWithBatchNo(student_auto_id?: number, pen
         if (pending != undefined) {
             query = query.eq('approve_status', pending);
         }
+
 
         const { data, error } = await query.returns<PaymentLines[]>();
 
@@ -49,7 +56,6 @@ export async function fetchPaymentLinesWithBatchNo(student_auto_id?: number, pen
         return [];
     }
 };
-
 
 export async function fetchAllPaymentsForReport(batch_auto_id?: number, course_auto_id?: number): Promise<Payment[]> {
     try {
@@ -226,7 +232,6 @@ async function updatePayment(phoneNumber: string, batch_auto_id: number, amount:
     return payments;
 }
 
-
 export async function updatePaymentLine(payments_line_auto_id: string) {
     const responseHandler = new ResponseHandler<any>();
 
@@ -251,7 +256,6 @@ export async function updatePaymentLine(payments_line_auto_id: string) {
         );
     }
 }
-
 
 async function addPayment(phoneNumber: string, batch_auto_id: number, price: number, amount: number) {
     let { data: payments, error } = await supabaseCacheFreeClient
@@ -286,19 +290,6 @@ async function fetchBatches(batch_auto_id: number) {
     return batch;
 }
 
-async function fetchStudentDetails(auto_id: number) {
-    let { data: student, error } = await supabaseCacheFreeClient
-        .from("students")
-        .select("*")
-        .eq("auto_id", auto_id)
-        .single();
-
-    if (error) {
-        throw new Error(error?.details ?? "Error fetching student details.");
-    }
-
-    return student;
-}
 
 async function fetchPayment(phoneNumber: string, batch_auto_id: number) {
     let { data: payments, error } = await supabaseCacheFreeClient
@@ -325,5 +316,16 @@ export async function addPaymentLines(payment_hdr: string, price: number, role: 
         throw new Error(error?.details ?? "Error adding payment line");
     }
 
+
+}
+
+export async function fetchPendingApprovalPayments() {
+
+    let { count } = await supabaseCacheFreeClient
+        .from('payments_line')
+        .select('*', { count: 'exact' })
+        .eq('approve_status', 0)
+
+    return count;
 
 }

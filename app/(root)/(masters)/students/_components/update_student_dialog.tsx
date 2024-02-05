@@ -14,7 +14,7 @@ export function UpdateStudentDialog({ data }: { data: any }) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button>Update</Button>
+        <Button size={"sm"}>Update</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px] md:max-w-xl overflow-y-scroll max-h-[95vh]">
         <DialogHeader>

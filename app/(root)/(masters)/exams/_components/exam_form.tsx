@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import * as z from "zod";
 
 import { Button } from "@/components/ui/button";
@@ -55,12 +55,21 @@ export function ExamForm({ data }: { data?: any }) {
     }
   }
 
+  const courseCode = useWatch({
+    control: form.control,
+    name: "course_code",
+  });
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
         <CourseSelect control={form.control} name="course_code" />
 
-        <BatchSelect control={form.control} name="batch_code" />
+        <BatchSelect
+          control={form.control}
+          name="batch_code"
+          filter={courseCode}
+        />
 
         <FormField
           control={form.control}

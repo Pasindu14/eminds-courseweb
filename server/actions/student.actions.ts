@@ -66,6 +66,21 @@ export async function addStudent(student: any) {
     }
 }
 
+export async function fetchStudentDetails(auto_id: number) {
+    let { data: student, error } = await supabaseCacheFreeClient
+        .from("students")
+        .select("*")
+        .eq("auto_id", auto_id)
+        .single();
+
+    if (error) {
+        throw new Error(error?.details ?? "Error fetching student details.");
+    }
+
+    return student;
+}
+
+
 export async function fetchStudentByPhoneNumber(phoneNumber: string) {
     try {
         const responseHandler = new ResponseHandler<Student>();

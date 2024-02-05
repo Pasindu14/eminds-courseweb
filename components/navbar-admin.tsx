@@ -18,8 +18,8 @@ import {
 import { motion } from "framer-motion";
 import { signOut, useSession } from "next-auth/react";
 import { Button } from "./ui/button";
-import { LogOut } from "lucide-react";
-import { useEffect } from "react";
+import { BellDot, LogOut } from "lucide-react";
+import { fetchPendingApprovalPayments } from "@/server/actions/payments.actions";
 
 const masterComponents: { title: string; href: string; description: string }[] =
   [
@@ -120,6 +120,15 @@ const paymentComponents: {
 
 export function NavigationAdmin() {
   const { data: session }: any = useSession();
+  const [pendingApprovals, setPendingApprovals] = React.useState<number>(0);
+
+  React.useEffect(() => {
+    const getPendingApprovals = async () => {
+      const result = await fetchPendingApprovalPayments();
+      setPendingApprovals(result ?? 0);
+    };
+    getPendingApprovals();
+  }, []);
 
   return (
     <motion.div
@@ -208,9 +217,21 @@ export function NavigationAdmin() {
           </NavigationMenuList>
         </NavigationMenu>
 
-        <div>
+        <div className="flex items-center space-x-2">
+          {session && pendingApprovals > 0 && (
+            <Button variant={"ghost"} className="rounded-full">
+              <Link href="/payments">
+                <BellDot color="#2563EB" />
+              </Link>
+            </Button>
+          )}
+
           {session && (
-            <Button variant={"ghost"} onClick={() => signOut()}>
+            <Button
+              variant={"ghost"}
+              onClick={() => signOut()}
+              className="rounded-full"
+            >
               <LogOut />
             </Button>
           )}

@@ -123,7 +123,11 @@ const StudentUsage = () => {
         <Separator />
         <CardContent className="pt-4">
           <Separator className="mt-3 mb-3" />
-          {loading && <LoaderFull size={25} color="black" />}
+          {loading && (
+            <div className="md:min-h-[40vh] flex justify-center items-center">
+              <LoaderFull size={25} color="#2563EB" />
+            </div>
+          )}
           {!loading && state.usageData.length > 0 && (
             <>
               <ProgressBar percentage={state.percentage} />

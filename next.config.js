@@ -10,6 +10,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "zoom.com",
       },
+      {
+        protocol: "https",
+        hostname: "courseweb.eminds.lk",
+      },
     ],
   },
 };

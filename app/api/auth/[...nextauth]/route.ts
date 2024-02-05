@@ -19,7 +19,6 @@ export const authOption: NextAuthOptions = {
             },
             async authorize(credentials) {
                 if (credentials) {
-
                     if (credentials.username != "admin") {
                         const authResult = await validateUser(credentials.username, credentials.password);
                         if (authResult) {

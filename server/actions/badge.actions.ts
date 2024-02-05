@@ -5,25 +5,25 @@ import { uploadFile } from "./file.actions";
 import { supabaseCacheFreeClient } from "../server";
 import { revalidatePath } from "next/cache";
 import { cpdmBadgeImage, dpdmBadgeImage, emindsLogo, profileDetailsPath } from "@/constants/badge";
-import { fetchStudentByAutoid, fetchStudentByPhoneNumber } from "./student.actions";
+import { fetchStudentByAutoid } from "./student.actions";
 import { getCourseByAutoId } from "./course.actions";
 
 
 export async function fetchBadges(): Promise<any> {
 
-    let { data: student_badges, error } = await supabaseCacheFreeClient
-        .from('student_badge')
-        .select(`* , students(name,phonenumber) , courses(course_name)`)
+  let { data: student_badges, error } = await supabaseCacheFreeClient
+    .from('student_badge')
+    .select(`* , students(name,phonenumber) , courses(course_name)`)
 
-    if (error) {
-        return [];
-    }
+  if (error) {
+    return [];
+  }
 
-    return student_badges;
+  return student_badges;
 }
 
 const headTags = (courseCode: any) =>
-    `
+  `
 <head>
 <!-- Required meta tags -->
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -359,7 +359,7 @@ li.active a {
 </head>`;
 
 const generateCPDMHtmlContent = (name: string, courseCode: string) => {
-    return `<html lang="en">
+  return `<html lang="en">
     
     ${headTags(courseCode)}
     
@@ -470,7 +470,7 @@ const generateCPDMHtmlContent = (name: string, courseCode: string) => {
 };
 
 const generateDPDMHtmlContent = (name: string, courseCode: string) => {
-    return `<html lang="en">
+  return `<html lang="en">
     ${headTags(courseCode)}
     
     <body><nav class="navbar navbar-expand-lg navbar-light fixed-top sticky" id="navbar">
@@ -587,89 +587,105 @@ const generateDPDMHtmlContent = (name: string, courseCode: string) => {
 };
 
 export async function addBadge(badge: FormData, fileFormData: FormData) {
-    const responseHandler = new ResponseHandler<any>();
+  const responseHandler = new ResponseHandler<any>();
 
-    try {
-        const jsonResponse = await uploadFile(fileFormData);
+  try {
+    const jsonResponse = await uploadFile(fileFormData);
 
-        if (jsonResponse.success !== true) {
-            return responseHandler.setError(
-                jsonResponse.message ?? errorMessage
-            );
-        }
-
-        const courseId = badge.get('course_auto_id');
-        const studentId = badge.get('students');
-
-        // Check if badge already exists
-        const { data: existing, error: existingError } = await supabaseCacheFreeClient
-            .from('student_badge')
-            .select()
-            .eq('course_auto_id', courseId)
-            .eq('student_auto_id', studentId)
-            .maybeSingle();
-
-        if (existingError) {
-            return responseHandler.setError(existingError.message);
-        }
-
-        if (existing) {
-            return responseHandler.setError('Badge already exists for this student and course');
-        }
-
-        const fileId = jsonResponse.file_id;
-
-        const { data, error } = await supabaseCacheFreeClient
-            .from('student_badge')
-            .insert([
-                {
-                    student_auto_id: studentId,
-                    course_auto_id: courseId,
-                    image_name: fileId
-                }
-            ]);
-
-        if (error) {
-            return responseHandler.setError(error.message);
-        }
-
-        const studentDetails = await fetchStudentByAutoid(studentId!.toString())
-
-        const courseDetails = await getCourseByAutoId(courseId!.toString())
-
-        if (courseDetails.course_code === 'DPDM') {
-            const html = generateDPDMHtmlContent(studentDetails.name, courseDetails.course_code);
-        } else {
-            const html = generateCPDMHtmlContent(studentDetails.name, courseDetails.course_code);
-        }
-
-        revalidatePath('/badges', 'page');
-
-        return responseHandler.setSuccess("Badge added successfully");
-
-    } catch (error: any) {
-        return responseHandler.setSuccess(error.message);
+    if (jsonResponse.success !== true) {
+      return responseHandler.setError(
+        jsonResponse.message ?? errorMessage
+      );
     }
+
+    const courseId = badge.get('course_auto_id');
+    const studentId = badge.get('students');
+
+    // Check if badge already exists
+    const { data: existing, error: existingError } = await supabaseCacheFreeClient
+      .from('student_badge')
+      .select()
+      .eq('course_auto_id', courseId)
+      .eq('student_auto_id', studentId)
+      .maybeSingle();
+
+    if (existingError) {
+      return responseHandler.setError(existingError.message);
+    }
+
+    if (existing) {
+      return responseHandler.setError('Badge already exists for this student and course');
+    }
+
+    const fileId = jsonResponse.file_id;
+
+    const { data, error } = await supabaseCacheFreeClient
+      .from('student_badge')
+      .insert([
+        {
+          student_auto_id: studentId,
+          course_auto_id: courseId,
+          image_name: fileId
+        }
+      ]);
+
+    if (error) {
+      return responseHandler.setError(error.message);
+    }
+
+    const studentDetails = await fetchStudentByAutoid(studentId!.toString())
+
+    const courseDetails = await getCourseByAutoId(courseId!.toString())
+
+    if (courseDetails.course_code === 'DPDM') {
+      const html = generateDPDMHtmlContent(studentDetails.name, courseDetails.course_code);
+    } else {
+      const html = generateCPDMHtmlContent(studentDetails.name, courseDetails.course_code);
+    }
+
+    revalidatePath('/badges', 'page');
+
+    return responseHandler.setSuccess("Badge added successfully");
+
+  } catch (error: any) {
+    return responseHandler.setSuccess(error.message);
+  }
 
 }
 
 export async function deleteBadgeById(id: string) {
-    const responseHandler = new ResponseHandler<any>();
-    try {
-        const { error } = await supabaseCacheFreeClient
-            .from('student_badge')
-            .delete()
-            .eq('auto_id', id)
+  const responseHandler = new ResponseHandler<any>();
+  try {
+    const { error } = await supabaseCacheFreeClient
+      .from('student_badge')
+      .delete()
+      .eq('auto_id', id)
 
-        if (error) {
-            return responseHandler.setError(error.message);
-        }
-
-        revalidatePath('/badges', 'page');
-        return responseHandler.setSuccess("Badge deleted successfully");
-
-    } catch (error: any) {
-        return responseHandler.setSuccess(error.message);
+    if (error) {
+      return responseHandler.setError(error.message);
     }
+
+    revalidatePath('/badges', 'page');
+    return responseHandler.setSuccess("Badge deleted successfully");
+
+  } catch (error: any) {
+    return responseHandler.setSuccess(error.message);
+  }
+
+}
+
+
+export async function fetchBadgesByStudentAutoId(student_auto_id: number) {
+
+  let { data: studentBadges, error } = await supabaseCacheFreeClient
+    .from('student_badge')
+    .select(`*, courses!inner(auto_id, course_code, course_name,badge)`)
+    .eq('student_auto_id', student_auto_id);
+
+  if (error) {
+    return [];
+  }
+
+  return studentBadges ?? [];
 
 }

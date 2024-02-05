@@ -1,8 +1,16 @@
-import { getToken } from 'next-auth/jwt';
-import type { NextRequest } from 'next/server'
+import { withAuth } from "next-auth/middleware"
 
-export async function middleware(request: NextRequest) {
-    /*    const token: any = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET });
-       console.log(token.role);
-       console.log(request.nextUrl.pathname); */
-}
+export default withAuth(
+    {
+        callbacks: {
+            authorized: ({ token }) => {
+                if (token?.role === "ADMIN") {
+                    return true;
+                }
+                return false;
+            },
+        },
+    }
+)
+
+export const config = { matcher: ["/badges", "/batches", "/courses", "/events", "/exam-results", "/exams", "/expire-badges", "/final-exams-submissions-results", "/jobs", "/payment-report", "/payments", "/questions", "/sessions", "/student-mapping", "/students"] }

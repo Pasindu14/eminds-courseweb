@@ -20,7 +20,7 @@ export function AddPaymentsDialog() {
       <Dialog>
         <DialogTrigger asChild>
           <Button>
-            <PlusSquare className="mr-2 h-4 w-4" /> Add
+            <PlusSquare className="mr-2 h-4 w-4" /> Add Payments
           </Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px] md:max-w-xl overflow-y-scroll max-h-[95vh]">

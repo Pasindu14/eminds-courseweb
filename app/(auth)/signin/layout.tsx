@@ -1,3 +1,4 @@
+import Providers from "@/app/Providers";
 import { NavigationAdmin } from "@/components/navbar-admin";
 import { Jost } from "next/font/google";
 import React from "react";
@@ -8,7 +9,9 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className={jost.className}>
       <div className="background-image min-h-screen flex flex-col">
-        <div className="container mx-auto pt-4">{children}</div>
+        <div className="container mx-auto pt-4">
+          <Providers>{children}</Providers>
+        </div>
         <Toaster />
       </div>
     </div>

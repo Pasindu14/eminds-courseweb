@@ -10,6 +10,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { fetchJobs, fetchJobsForStudents } from "@/server/actions/jobs.actions";
 import JobItem from "./_component/job-item";
+import NotFoundAnimationComponent from "@/components/common/not-found-component";
 
 const StudentJobs = async () => {
   const jobs = await fetchJobsForStudents();
@@ -30,6 +31,8 @@ const StudentJobs = async () => {
               </div>
             );
           })}
+
+          {jobs.length == 0 && <NotFoundAnimationComponent />}
         </CardContent>
         <CardFooter className="flex justify-between"></CardFooter>
       </Card>

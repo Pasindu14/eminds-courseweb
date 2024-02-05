@@ -1,14 +1,12 @@
 
-import { getServerSession } from "next-auth";
 import { supabaseCacheFreeClient } from "../server";
-import { authOption } from "@/app/api/auth/[...nextauth]/route";
 
 export async function validateUser(phoneNumber: string, password: string): Promise<any> {
     try {
         let { data: student, error } = await supabaseCacheFreeClient
             .from('students_mapping')
             .select(`* , batches!inner(auto_id,batch_name,password,course_auto_id) , students!inner(auto_id,name,phonenumber,email)`)
-            .eq('students.phonenumber', phoneNumber).eq('batches.password', password).maybeSingle()
+            .eq('students.phonenumber', phoneNumber).eq('batches.password', password).eq('block_status', 0).maybeSingle()
 
         if (error) {
             return null;

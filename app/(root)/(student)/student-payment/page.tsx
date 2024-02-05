@@ -15,11 +15,15 @@ import { columns } from "./datatable/columns";
 import { fetchPaymentLinesWithBatchNo } from "@/server/actions/payments.actions";
 import { getServerSession } from "next-auth";
 import { authOption } from "../../../api/auth/[...nextauth]/route";
+import AnimationComponent from "./_component/animation-component";
 
 const StudentPayment = async () => {
   const session: any = await getServerSession(authOption);
 
-  const paymentLines = await fetchPaymentLinesWithBatchNo(Number(session.id));
+  const paymentLines = await fetchPaymentLinesWithBatchNo(
+    session.batchId,
+    Number(session.id)
+  );
 
   return (
     <div>
@@ -32,9 +36,9 @@ const StudentPayment = async () => {
         </CardHeader>
         <Separator />
         <CardContent className="pt-4">
-          <div className="flex flex-row justify-between"></div>
-          <div>
+          <div className="md:flex flex-row justify-between items-center">
             <AddPaymentDialog />
+            <AnimationComponent />
           </div>
           <Separator className="mt-3" />
 

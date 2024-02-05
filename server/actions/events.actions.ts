@@ -11,6 +11,7 @@ export async function fetchEvents(): Promise<Event[]> {
         let { data: events, error } = await supabaseCacheFreeClient
             .from('events')
             .select(`*`)
+            .eq('status', 1)
             .order('event_auto_id', { ascending: true });
 
         if (error) {

@@ -30,19 +30,11 @@ const SignIn = () => {
   const { data: session } = useSession();
   const [loading, setLoading] = useState(false);
 
-  /*   useEffect(() => {
-    if (session) {
-      router.replace(studentDashboardPath);
-    }
-
-    return () => {};
-  }, [session, router]); */
-
   const form = useForm<z.infer<typeof authSchema>>({
     resolver: zodResolver(authSchema),
     defaultValues: {
-      username: "0711803295",
-      password: "1122334",
+      username: "admin",
+      password: "admin",
     },
   });
 

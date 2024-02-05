@@ -41,12 +41,12 @@ export function QuestionForm({ data }: { data?: any }) {
       course_code: data?.course_code ?? "",
       batch_code: data?.batch_code ?? "",
       exam_code: data?.exam_code ?? "",
-      question: data?.question ?? "adaasdasasd",
-      answer_01: data?.answer_01 ?? "adasdsad",
-      answer_02: data?.answer_02 ?? "asdassa",
-      answer_03: data?.answer_03 ?? "asdassad",
-      answer_04: data?.answer_04 ?? "asdsasadasd",
-      correct_answer: data?.correct_answer ?? "1",
+      question: data?.question ?? "",
+      answer_01: data?.answer_01 ?? "",
+      answer_02: data?.answer_02 ?? "",
+      answer_03: data?.answer_03 ?? "",
+      answer_04: data?.answer_04 ?? "",
+      correct_answer: data?.correct_answer ?? "",
     },
   });
 
