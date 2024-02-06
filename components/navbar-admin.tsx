@@ -18,7 +18,7 @@ import {
 import { motion } from "framer-motion";
 import { signOut, useSession } from "next-auth/react";
 import { Button } from "./ui/button";
-import { BellDot, LogOut } from "lucide-react";
+import { BellDot, LogOut, Menu } from "lucide-react";
 import { fetchPendingApprovalPayments } from "@/server/actions/payments.actions";
 
 const masterComponents: { title: string; href: string; description: string }[] =
@@ -133,6 +133,7 @@ const paymentComponents: {
 export function NavigationAdmin() {
   const { data: session }: any = useSession();
   const [pendingApprovals, setPendingApprovals] = React.useState<number>(0);
+  const [open, setOpen] = React.useState(false);
 
   React.useEffect(() => {
     const getPendingApprovals = async () => {
@@ -144,13 +145,13 @@ export function NavigationAdmin() {
 
   return (
     <motion.div
-      className="h-16 w-full flex items-center justify-center shadow-md px-8"
+      className="h-16 w-full items-center justify-center shadow-md px-8 flex"
       initial={{ opacity: 0, y: -50 }}
       animate={{ opacity: 1, y: 0 }}
     >
       {/*       {session && <AuthSessionValidator userId={session?.id!} />} */}
 
-      <div className="flex items-center justify-between w-full">
+      <div className="items-center justify-between w-full hidden md:flex">
         <div></div>
         <NavigationMenu>
           <NavigationMenuList>
@@ -248,6 +249,12 @@ export function NavigationAdmin() {
             </Button>
           )}
         </div>
+      </div>
+
+      <div className="md:hidden flex items-center justify-between w-full">
+        <Button variant="ghost" onClick={() => setOpen(!open)}>
+          <Menu />
+        </Button>
       </div>
     </motion.div>
   );
