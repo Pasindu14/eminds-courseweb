@@ -47,7 +47,7 @@ const SignIn = () => {
         password: values.password,
         callbackUrl: studentDashboardPath,
       });
-
+      console.log(res);
       if (res?.ok === false) {
         toastError("Invalid credentials please try again!");
         setLoading(false);
