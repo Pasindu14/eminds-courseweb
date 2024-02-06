@@ -53,7 +53,7 @@ const SignIn = () => {
         setLoading(false);
       } else {
         if (values.username != "admin") {
-          router.replace("/students");
+          router.replace(studentDashboardPath);
         } else {
           router.replace("/students");
         }
