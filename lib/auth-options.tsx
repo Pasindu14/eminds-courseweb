@@ -35,7 +35,7 @@ export const authOption: NextAuthOptions = {
                 id: authResult.students.auto_id,
                 name: authResult.students.name,
                 email: authResult.students.email,
-                role: "STUDENT",
+                role: "ADMIN",
                 phoneNumber: authResult.students.phonenumber,
                 batchId: authResult.batch_auto_id,
                 batchName: authResult.batches.batch_name,
