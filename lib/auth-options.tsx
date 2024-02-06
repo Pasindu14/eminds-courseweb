@@ -19,8 +19,7 @@ export const authOption: NextAuthOptions = {
         password: { label: "Password", type: "password", value: "" },
       },
       async authorize(credentials) {
-        return null;
-        /*         if (credentials) {
+        if (credentials) {
           if (credentials.username != "admin") {
             const authResult = await validateUser(
               credentials.username,
@@ -61,7 +60,7 @@ export const authOption: NextAuthOptions = {
             return user;
           }
         }
-        return null; */
+        return null;
       },
     }),
   ],
@@ -79,7 +78,7 @@ export const authOption: NextAuthOptions = {
         token.id = user.id;
         token.name = user.name;
         token.email = user.email;
-        token.role = user.role;
+        token.role = "ADMIN";
         token.phoneNumber = user.phoneNumber;
         token.batchId = user.batchId;
         token.batchName = user.batchName;
@@ -93,7 +92,7 @@ export const authOption: NextAuthOptions = {
       session.id = token.id;
       session.name = token.name;
       session.email = token.email;
-      session.role = token.role;
+      session.role = "ADMIN";
       session.phoneNumber = token.phoneNumber;
       session.batchId = token.batchId;
       session.batchName = token.batchName;
