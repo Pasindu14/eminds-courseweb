@@ -4,11 +4,10 @@ import { NextResponse } from "next/server";
 export default withAuth(
 
     function middleware(req) {
-        console.log(req.nextauth);
         if (
             req.nextauth.token?.role != "ADMIN"
         ) {
-            return new NextResponse("You are not authorized!");
+            return NextResponse.redirect(new URL('/unauthorized', req.url));
         }
     },
     {
