@@ -25,6 +25,8 @@ export const authOption: NextAuthOptions = {
               credentials.username,
               credentials.password
             );
+
+            console.log(authResult);
             if (authResult) {
               const accessToken = uuidv4();
               await insertOrUpdateSession(
@@ -42,6 +44,7 @@ export const authOption: NextAuthOptions = {
                 courseId: authResult.batches.course_auto_id,
                 accessToken: accessToken,
               };
+              console.log(user);
               return user;
             }
           } else {
@@ -57,9 +60,11 @@ export const authOption: NextAuthOptions = {
               courseId: "2559933968",
               accessToken: accessToken,
             };
+            console.log(user);
             return user;
           }
         }
+        console.log("asdadsaasd");
         return null;
       },
     }),
