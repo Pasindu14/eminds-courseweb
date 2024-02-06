@@ -19,14 +19,13 @@ export const authOption: NextAuthOptions = {
         password: { label: "Password", type: "password", value: "" },
       },
       async authorize(credentials) {
-        if (credentials) {
+        return null;
+        /*         if (credentials) {
           if (credentials.username != "admin") {
             const authResult = await validateUser(
               credentials.username,
               credentials.password
             );
-
-            console.log(authResult);
             if (authResult) {
               const accessToken = uuidv4();
               await insertOrUpdateSession(
@@ -37,14 +36,13 @@ export const authOption: NextAuthOptions = {
                 id: authResult.students.auto_id,
                 name: authResult.students.name,
                 email: authResult.students.email,
-                role: "ADMIN",
+                role: "STUDENT",
                 phoneNumber: authResult.students.phonenumber,
                 batchId: authResult.batch_auto_id,
                 batchName: authResult.batches.batch_name,
                 courseId: authResult.batches.course_auto_id,
                 accessToken: accessToken,
               };
-              console.log(user);
               return user;
             }
           } else {
@@ -60,12 +58,10 @@ export const authOption: NextAuthOptions = {
               courseId: "2559933968",
               accessToken: accessToken,
             };
-            console.log(user);
             return user;
           }
         }
-        console.log("asdadsaasd");
-        return null;
+        return null; */
       },
     }),
   ],
