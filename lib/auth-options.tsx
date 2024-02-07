@@ -74,6 +74,7 @@ export const authOption: NextAuthOptions = {
       return baseUrl;
     },
     async jwt({ token, user }: any) {
+      /** proper way   return { ...token, ...user }; */
       if (user) {
         token.id = user.id;
         token.name = user.name;
@@ -89,6 +90,7 @@ export const authOption: NextAuthOptions = {
     },
 
     async session({ session, token }: any) {
+      /** proper way session.user = token */
       session.id = token.id;
       session.name = token.name;
       session.email = token.email;
