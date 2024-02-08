@@ -33,8 +33,8 @@ const SignIn = () => {
   const form = useForm<z.infer<typeof authSchema>>({
     resolver: zodResolver(authSchema),
     defaultValues: {
-      username: "admin",
-      password: "admin",
+      username: "",
+      password: "",
     },
   });
 
