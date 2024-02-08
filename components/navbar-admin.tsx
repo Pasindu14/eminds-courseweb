@@ -22,6 +22,8 @@ import { BellDot, LogOut, Menu, X } from "lucide-react";
 import { fetchPendingApprovalPayments } from "@/server/actions/payments.actions";
 import { Separator } from "./ui/separator";
 import NavBarItemAdmin from "./common/navbar-admin-item";
+import { set } from "react-hook-form";
+import { Loader } from "@/lib/spinners";
 
 const masterComponents: { title: string; href: string; description: string }[] =
   [
@@ -134,13 +136,16 @@ const paymentComponents: {
 
 export function NavigationAdmin() {
   const { data: session }: any = useSession();
+  const [loading, setLoading] = React.useState(false);
   const [pendingApprovals, setPendingApprovals] = React.useState<number>(0);
   const [isCollapsed, setCollapsed] = React.useState(false);
 
   React.useEffect(() => {
     const getPendingApprovals = async () => {
+      setLoading(true);
       const result = await fetchPendingApprovalPayments();
       setPendingApprovals(result ?? 0);
+      setLoading(false);
     };
     getPendingApprovals();
   }, []);
@@ -225,14 +230,16 @@ export function NavigationAdmin() {
           </NavigationMenuList>
         </NavigationMenu>
 
-        <div className="flex items-center space-x-2">
-          {session && pendingApprovals > 0 && (
+        <div className="flex items-center justify-center space-x-2">
+          {session && pendingApprovals > 0 && !loading && (
             <Button variant={"ghost"} className="rounded-full">
               <Link href="/payments">
                 <BellDot color="#2563EB" />
               </Link>
             </Button>
           )}
+
+          {loading && <Loader size={15} color="#2563EB" />}
 
           {session && (
             <Button
