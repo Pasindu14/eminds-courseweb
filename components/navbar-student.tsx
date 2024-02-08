@@ -16,117 +16,31 @@ import {
 import { motion } from "framer-motion";
 import { signOut, useSession } from "next-auth/react";
 import { Button } from "./ui/button";
-import { LogOut } from "lucide-react";
-
-const masterComponents: { title: string; href: string; description: string }[] =
-  [
-    {
-      title: "Student",
-      href: "/students",
-      description:
-        "You can efficiently manage and organize student details using this platform, ensuring easy access and updates to vital information",
-    },
-    {
-      title: "Courses",
-      href: "/courses",
-      description:
-        "Efficiently manage and organize course details, ensuring easy access and updates.",
-    },
-    {
-      title: "Batches",
-      href: "/batches",
-      description:
-        "Efficiently manage and organize batch details on this platform, ensuring easy access and updates to vital information.",
-    },
-    {
-      title: "Jobs",
-      href: "/jobs",
-      description:
-        "Easily manage and view job postings, keeping track of openings, application deadlines, and job details.",
-    },
-    {
-      title: "Exams",
-      href: "/exams",
-      description:
-        "Efficiently manage and organize exam details on this platform, ensuring easy access and updates to vital information.",
-    },
-    {
-      title: "Questions",
-      href: "/questions",
-      description:
-        "Efficiently manage and review exam questions, keeping tabs on various topics, difficulty levels, and correct answers for streamlined exam preparation and assessment",
-    },
-  ];
-
-const mappingComponents: {
-  title: string;
-  href: string;
-  description: string;
-}[] = [
-  {
-    title: "Student Mapping",
-    href: "/student-mapping",
-    description:
-      "Streamline the process of assigning students to courses and batches, facilitating effective management and tracking of student enrollments.",
-  },
-  {
-    title: "Sessions",
-    href: "/sessions",
-    description:
-      "Efficiently manage and organize session details on this platform, ensuring easy access and updates to vital information.",
-  },
-];
-
-const examComponents: {
-  title: string;
-  href: string;
-  description: string;
-}[] = [
-  {
-    title: "Exam Results",
-    href: "/exam-results",
-    description:
-      "View and manage exam results for students. Allow sorting, filtering and exporting results for analysis and tracking of student performance.",
-  },
-  {
-    title: "Final Submissions Results",
-    href: "/final-exams-submissions-results",
-    description:
-      "View and manage final exam submission results for all courses and other details for each submission.",
-  },
-];
-
-const paymentComponents: {
-  title: string;
-  href: string;
-  description: string;
-}[] = [
-  {
-    title: "Payments",
-    href: "/payments",
-    description:
-      "Streamline the management and tracking of payments, ensuring seamless transactions and easy access to crucial financial information.",
-  },
-  {
-    title: "Payment Report",
-    href: "/payment-report",
-    description:
-      "Manage and organize session details efficiently, ensuring convenient access and timely updates to essential information.",
-  },
-];
+import { LogOut, Menu, X } from "lucide-react";
+import { Separator } from "./ui/separator";
 
 export function NavigationStudent() {
   const { data: session }: any = useSession();
+  const [isCollapsed, setCollapsed] = React.useState(false);
+
+  const navigationItems = [
+    { url: "/dashboard", title: "Dashboard" },
+    { url: "/student-payment", title: "Payment" },
+    { url: "/student-events", title: "Events" },
+    { url: "/student-jobs", title: "Jobs" },
+    { url: "/student-exam", title: "Exams" },
+    { url: "/student-usage", title: "Usage" },
+  ];
 
   return (
     <motion.div
-      className="h-16 w-full flex items-center justify-center shadow-md px-8"
+      className="h-16 w-full flex items-center justify-center shadow-md px-8 "
       initial={{ opacity: 0, y: -50 }}
       animate={{ opacity: 1, y: 0 }}
     >
       {/*       {session && <AuthSessionValidator userId={session?.id!} />} */}
 
-      <div className="flex items-center justify-between w-full">
+      <div className="md:flex items-center justify-between w-full  hidden ">
         <div></div>
         <NavigationMenu>
           <NavigationMenuList>
@@ -185,6 +99,41 @@ export function NavigationStudent() {
               <LogOut />
             </Button>
           )}
+        </div>
+      </div>
+
+      <div className="flex items-center justify-between w-full md:hidden">
+        <h1 className="text-lg font-semibold">Eminds</h1>
+        <div onClick={() => setCollapsed(!isCollapsed)}>
+          <Menu />
+        </div>
+      </div>
+      <div
+        className={`absolute w-[calc(100vw-10px)] bg-slate-50 top-0 left-0 transition-all pb-12 z-50 duration-1000 ${
+          !isCollapsed
+            ? "-translate-y-full"
+            : "+translate-y-full shadow-2xl shadow-black"
+        }`}
+      >
+        <div>
+          <X
+            onClick={() => setCollapsed(false)}
+            className="absolute top-4 right-4"
+          />
+
+          <div className="flex flex-col items-start justify-center h-full mt-12 ml-12">
+            {navigationItems.map(({ url, title }, index) => (
+              <Link
+                href={url}
+                key={index}
+                onClick={() => setCollapsed(false)}
+                className="mb-8"
+              >
+                <div key={title}>{title}</div>
+                <Separator />
+              </Link>
+            ))}
+          </div>
         </div>
       </div>
     </motion.div>

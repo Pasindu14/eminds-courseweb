@@ -18,8 +18,10 @@ import {
 import { motion } from "framer-motion";
 import { signOut, useSession } from "next-auth/react";
 import { Button } from "./ui/button";
-import { BellDot, LogOut, Menu } from "lucide-react";
+import { BellDot, LogOut, Menu, X } from "lucide-react";
 import { fetchPendingApprovalPayments } from "@/server/actions/payments.actions";
+import { Separator } from "./ui/separator";
+import NavBarItemAdmin from "./common/navbar-admin-item";
 
 const masterComponents: { title: string; href: string; description: string }[] =
   [
@@ -133,7 +135,7 @@ const paymentComponents: {
 export function NavigationAdmin() {
   const { data: session }: any = useSession();
   const [pendingApprovals, setPendingApprovals] = React.useState<number>(0);
-  const [open, setOpen] = React.useState(false);
+  const [isCollapsed, setCollapsed] = React.useState(false);
 
   React.useEffect(() => {
     const getPendingApprovals = async () => {
@@ -220,13 +222,6 @@ export function NavigationAdmin() {
                 </ul>
               </NavigationMenuContent>
             </NavigationMenuItem>
-            <NavigationMenuItem>
-              <Link href="/payment-report" legacyBehavior passHref>
-                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                  Payment Report
-                </NavigationMenuLink>
-              </Link>
-            </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>
 
@@ -251,10 +246,51 @@ export function NavigationAdmin() {
         </div>
       </div>
 
-      <div className="md:hidden flex items-center justify-between w-full">
-        <Button variant="ghost" onClick={() => setOpen(!open)}>
+      <div className="flex items-center justify-between w-full md:hidden">
+        <h1 className="text-lg font-semibold">Eminds</h1>
+        <div onClick={() => setCollapsed(!isCollapsed)}>
           <Menu />
-        </Button>
+        </div>
+      </div>
+      <div
+        className={`absolute w-[calc(100vw-10px)] bg-slate-50 top-0 left-0 transition-all pb-12 z-50 duration-1000 ${
+          !isCollapsed
+            ? "-translate-y-full"
+            : "+translate-y-full shadow-2xl shadow-black"
+        }`}
+      >
+        <div>
+          <X
+            onClick={() => setCollapsed(false)}
+            className="absolute top-4 right-4"
+          />
+
+          <div className="flex flex-col items-start justify-center h-full mt-12 ml-8">
+            <NavBarItemAdmin
+              title="Masters"
+              itemList={masterComponents}
+              callback={() => setCollapsed(!isCollapsed)}
+            />
+
+            <NavBarItemAdmin
+              title="Mapping"
+              itemList={mappingComponents}
+              callback={() => setCollapsed(!isCollapsed)}
+            />
+
+            <NavBarItemAdmin
+              title="Payments"
+              itemList={paymentComponents}
+              callback={() => setCollapsed(!isCollapsed)}
+            />
+
+            <NavBarItemAdmin
+              title="Exams"
+              itemList={examComponents}
+              callback={() => setCollapsed(!isCollapsed)}
+            />
+          </div>
+        </div>
       </div>
     </motion.div>
   );

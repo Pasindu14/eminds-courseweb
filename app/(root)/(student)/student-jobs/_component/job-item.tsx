@@ -5,7 +5,6 @@ import Link from "next/link";
 import React from "react";
 
 const JobItem = ({ job }: { job: any }) => {
-  console.log(job);
   return (
     <Link href={job.link}>
       <div className="rounded-xl border-8 w-full px-8 py-4 mb-4">

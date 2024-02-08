@@ -30,7 +30,6 @@ export async function fetchJobsForStudents(): Promise<Job[]> {
         if (error) {
             return [];
         }
-
         return jobs ?? [];
     } catch (error) {
         return [];
