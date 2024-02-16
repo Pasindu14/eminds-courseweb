@@ -55,7 +55,7 @@ const SignIn = () => {
         if (values.username != "admin") {
           router.replace(studentDashboardPath);
         } else {
-          router.replace("/students");
+          router.replace("/admin-dashboard");
         }
       }
     } catch (error) {
