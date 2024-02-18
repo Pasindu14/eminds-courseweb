@@ -36,12 +36,12 @@ export function StudentForm({ data }: { data?: any }) {
       birthDay: data?.birthDay ?? new Date().toISOString().split("T")[0],
     },
   });
-
   async function onSubmit(values: z.infer<typeof studentSchema>) {
     try {
       setLoading(true);
       let result;
-      if (data.auto_id != null) {
+
+      if (data != undefined) {
         result = await updateStudent(data.auto_id, values);
       } else {
         result = await addStudent(values);
@@ -49,12 +49,13 @@ export function StudentForm({ data }: { data?: any }) {
       if (!result.success) {
         toastError(result.message);
       } else {
-        if (data.auto_id == null) {
+        if (data == undefined) {
           form.reset();
         }
         toastSuccess(successMessage);
       }
     } catch (error) {
+      console.log(error);
       toastError(errorMessage);
     } finally {
       setLoading(false);

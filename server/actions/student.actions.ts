@@ -26,13 +26,12 @@ export async function fetchStudents(): Promise<Student[]> {
 export async function addStudent(student: any) {
     try {
         const responseHandler = new ResponseHandler<any>();
-
         // Check if a student with the same phone number already exists
         const { data: existingStudent, error: searchError } = await supabaseCacheFreeClient
             .from('students')
             .select('phonenumber')
             .eq('phonenumber', student.phoneNumber)
-            .single();
+            .maybeSingle();
 
         if (searchError) {
             return responseHandler.setError(
@@ -51,6 +50,8 @@ export async function addStudent(student: any) {
                 { name: student.name, phonenumber: student.phoneNumber, address: student.address, nic: student.nic, email: student.email, birthday: student.birthDay },
             ])
             .select();
+
+
 
         if (error != null) {
             return responseHandler.setError(
@@ -126,7 +127,6 @@ export async function fetchStudentByAutoid(id: string) {
 export async function updateStudent(auto_id: string, student: any) {
     try {
         const responseHandler = new ResponseHandler<any>();
-        console.log(auto_id, student.auto_id);
         const { data, error } = await supabaseCacheFreeClient
             .from('students')
             .update({ name: student.name, phonenumber: student.phoneNumber, address: student.address, nic: student.nic, email: student.email, birthday: student.birthDay })

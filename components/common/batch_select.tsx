@@ -67,7 +67,7 @@ const BatchSelect = ({ control, name, filter }: BatchSelectProps) => {
                         key={batch.auto_id}
                         value={batch.auto_id!.toString()}
                       >
-                        {batch.batch_no}
+                        {batch.batch_name}
                       </SelectItem>
                     ))
                   ) : (
