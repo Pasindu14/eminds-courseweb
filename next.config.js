@@ -14,6 +14,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "courseweb.eminds.lk",
       },
+      {
+        protocol: "https",
+        hostname: "courseweb.eminds.au",
+      },
     ],
   },
   async redirects() {

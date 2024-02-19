@@ -19,6 +19,7 @@ import { Loader } from "@/lib/spinners";
 import { errorMessage, successMessage } from "@/constants/messages";
 import { addJob, updateJob } from "@/server/actions/jobs.actions";
 import { Switch } from "@/components/ui/switch";
+import { uploadHtmlContent } from "@/server/actions/file.actions";
 
 export function JobForm({ data }: { data?: any }) {
   const [loading, setLoading] = useState(false);
@@ -40,6 +41,7 @@ export function JobForm({ data }: { data?: any }) {
         result = await updateJob(data.job_auto_id, values);
       } else {
         result = await addJob(values);
+        //result = await uploadHtmlContent();
       }
       if (!result.success) {
         toastError(result.message);

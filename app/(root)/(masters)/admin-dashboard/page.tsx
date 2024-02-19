@@ -7,7 +7,7 @@ const AdminDashboard = () => {
   return (
     <div className="w-full flex flex-col justify-center items-center">
       <div className="text-5xl flex w-full justify-center items-center mt-4">
-        Welcome to Admin Dashboard
+        Welcome Administrator
       </div>
       <div className="md:w-[40vw]">
         <Lottie

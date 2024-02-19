@@ -17,10 +17,17 @@ import { DataTable } from "@/components/datatable";
 import { columns } from "./datatable/columns";
 import { fetchAllExamResults } from "@/server/actions/exam-marks.actions";
 import { resultsColumns } from "./datatable/resultsColumns";
+import { getServerSession } from "next-auth";
+import { authOption } from "@/lib/auth-options";
 
 const Dashboard = async () => {
-  const studentPhone = "0711803295";
-  const password = "1122334";
+  const session: any = await getServerSession(authOption);
+  const studentPhone = session?.phoneNumber;
+  const password = session?.password;
+
+  if (!session) {
+    return;
+  }
 
   const studentDetails = await fetchStudentByPhoneNumber(studentPhone);
   const batchDetails = await fetchBatchByPassword(password);

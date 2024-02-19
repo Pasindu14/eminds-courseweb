@@ -41,6 +41,7 @@ export const authOption: NextAuthOptions = {
                 batchName: authResult.batches.batch_name,
                 courseId: authResult.batches.course_auto_id,
                 accessToken: accessToken,
+                password: authResult.batches.password,
               };
               return user;
             }
@@ -85,6 +86,7 @@ export const authOption: NextAuthOptions = {
         token.batchName = user.batchName;
         token.courseId = user.courseId;
         token.accessToken = user.accessToken;
+        token.password = user.password;
       }
       return token;
     },
@@ -100,6 +102,7 @@ export const authOption: NextAuthOptions = {
       session.batchName = token.batchName;
       session.courseId = token.courseId;
       session.accessToken = token.accessToken;
+      session.password = token.password;
       return session;
     },
   },
