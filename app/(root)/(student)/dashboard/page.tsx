@@ -25,6 +25,7 @@ const Dashboard = async () => {
   const studentPhone = session?.phoneNumber;
   const password = session?.password;
 
+  console.log(session);
   if (!session) {
     return;
   }

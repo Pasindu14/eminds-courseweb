@@ -30,14 +30,14 @@ export async function uploadHtmlContent() {
 
     // Perform the file upload
     const response = await fetch(
-        "https://eminds.com.au/coursewebbadges/uploadbadge.php", // Ensure this endpoint can handle raw HTML in the request body
+        "https://eminds.com.au/coursewebfiles/uploadbadge.php", // Ensure this endpoint can handle raw HTML in the request body
         {
             method: "POST",
             body: htmlContent,
             headers: {
                 'Content-Type': 'text/html', // Specify the content type as HTML
-                'Cache-Control': 'no-store'
             },
+            cache: 'no-store'
         }
     );
 

@@ -16,8 +16,6 @@ import { toastError, toastSuccess } from "@/lib/toast/toast";
 import { useState } from "react";
 import { Loader } from "@/lib/spinners";
 import { errorMessage, successMessage } from "@/constants/messages";
-import { addSession } from "@/server/actions/sessions.actions"; // Adjust these action imports
-import eventSchema from "@/validations/event.validation";
 import { Switch } from "@/components/ui/switch";
 import { addEvent, updateEvent } from "@/server/actions/events.actions";
 import createEventSchema from "@/validations/event.validation";
@@ -28,11 +26,11 @@ export function EventForm({ data }: { data?: any }) {
   const form = useForm<z.infer<typeof eventSchema>>({
     resolver: zodResolver(eventSchema),
     defaultValues: {
-      name: data?.name ?? "hgfdghfdghdfg",
-      description: data?.description ?? "ghdghdfggfdfdgf",
+      name: data?.name ?? "",
+      description: data?.description ?? "",
       date: data?.start_date ?? new Date().toISOString().split("T")[0],
       status: data?.status != null ? (data?.status == 1 ? true : false) : true,
-      link: "https://www.google.com",
+      link: "",
       image: undefined,
     },
   });
