@@ -36,7 +36,7 @@ export function BatchForm({ data }: { data?: any }) {
       end_date: data?.end_date ?? new Date().toISOString().split("T")[0],
       status: data?.status ?? 1,
       price: data?.price ?? 0,
-      course_auto_id: data?.course_auto_id ?? "1",
+      course_auto_id: data?.course_auto_id.toString() ?? 1,
     },
   });
 

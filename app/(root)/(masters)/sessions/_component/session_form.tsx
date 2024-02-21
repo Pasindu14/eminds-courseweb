@@ -102,9 +102,9 @@ export function SessionForm({ data }: { data?: any }) {
           name="zoom_link"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Zoom link</FormLabel>
+              <FormLabel>Dropbox link</FormLabel>
               <FormControl>
-                <Input placeholder="Zoom link..." {...field} />
+                <Input placeholder="Dropbox link..." {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -116,9 +116,9 @@ export function SessionForm({ data }: { data?: any }) {
           name="zoom_password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Zoom password</FormLabel>
+              <FormLabel>Dropbox password</FormLabel>
               <FormControl>
-                <Input placeholder="Zoom password..." {...field} />
+                <Input placeholder="Dropbox password..." {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

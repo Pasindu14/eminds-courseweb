@@ -5,7 +5,7 @@ const studentSchema = z.object({
   name: z.string().min(2).max(500),
   phoneNumber: z.string().min(10).max(10),
   address: z.string().min(2).max(500),
-  nic: z.string().min(6).max(20),
+  nic: z.string().optional(),
   email: z.string().email(),
   birthDay: z.string().refine(
     (value) => {
