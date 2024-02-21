@@ -30,7 +30,7 @@ const Students = async () => {
 
   return (
     <div>
-      <Card className="w-full rounded-sm">
+      <Card className="w-full rounded-sm ">
         <CardHeader>
           <CardTitle className="text-4xl">Students</CardTitle>
           <CardDescription>

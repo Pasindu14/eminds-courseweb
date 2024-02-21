@@ -19,7 +19,7 @@ const RootLayout = async ({ children }: { children: React.ReactNode }) => {
 
   return (
     <Providers>
-      <div className="background-image min-h-screen flex flex-col">
+      <div className="background-image min-h-screen flex flex-col ">
         <div className="md:block">
           {session.role === "ADMIN" ? (
             <NavigationAdmin />

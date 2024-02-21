@@ -41,6 +41,7 @@ export async function uploadHtmlContent() {
         }
     );
 
+    console.log(response);
     // Assuming the server responds with JSON
     const jsonResponse = await response.json();
     return jsonResponse;

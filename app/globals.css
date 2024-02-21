@@ -66,3 +66,16 @@
   background-position: center bottom;
   background-repeat: no-repeat;
 }
+
+::-webkit-scrollbar {
+  width: 8px; /* Width of the scrollbar */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #2563eb; /* Color of the scrollbar thumb */
+  border-radius: 4px; /* Border radius of the scrollbar thumb */
+}
+
+::-webkit-scrollbar-track {
+  background-color: #cbd5e0; /* Color of the scrollbar track */
+}

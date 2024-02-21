@@ -16,14 +16,18 @@ import { motion } from "framer-motion";
 
 export function AddStudentDialog() {
   return (
-    <motion.div initial={{ opacity: 0, y: -50 }} animate={{ opacity: 1, y: 0 }}>
+    <motion.div
+      initial={{ opacity: 0, y: -50 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="custom-scrollbar"
+    >
       <Dialog>
         <DialogTrigger asChild>
           <Button>
             <PlusSquare className="mr-2 h-4 w-4" /> Add
           </Button>
         </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px] md:max-w-xl overflow-y-scroll max-h-[95vh]">
+        <DialogContent className="sm:max-w-[425px] md:max-w-xl max-h-[95vh]">
           <DialogHeader>
             <DialogTitle className="text-3xl">Add student</DialogTitle>
             <DialogDescription></DialogDescription>

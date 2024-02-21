@@ -53,6 +53,7 @@
     "simplex-noise": "^4.0.1",
     "supabase": "^1.127.4",
     "tailwind-merge": "^2.2.1",
+    "tailwind-scrollbar": "^3.1.0",
     "tailwindcss-animate": "^1.0.7",
     "uuid": "^9.0.1",
     "winston": "^3.11.0",
