@@ -10,7 +10,10 @@ export const paymentSchema = z.object({
 });
 
 export const paymentFilterSchema = z.object({
-  students: z.string().array().nonempty({ message: "Students are required" }),
+  studentMapping: z
+    .string()
+    .array()
+    .nonempty({ message: "Students are required" }),
 });
 
 export const studentPaymentSchema = z.object({

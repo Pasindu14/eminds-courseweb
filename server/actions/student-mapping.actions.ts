@@ -5,12 +5,20 @@ import { revalidatePath } from 'next/cache';
 import { errorMessage } from "@/constants/messages";
 import { StudentMapping } from "../types/student-mapping.type";
 
-export async function fetchStudentMappings(): Promise<StudentMapping[]> {
+
+export async function fetchStudentMappings(batchParam?: string): Promise<StudentMapping[]> {
     try {
-        let { data: mappings, error } = await supabaseCacheFreeClient
+        let query = supabaseCacheFreeClient
             .from('students_mapping')
-            .select(`* , students(name,phonenumber) , batches(batch_name)`)
+            .select(`* , students(name,phonenumber) , batches!inner(batch_name,auto_id)`)
             .order('auto_id', { ascending: true });
+
+
+        if (batchParam) {
+            query = query.eq('batch_auto_id', batchParam);
+        }
+
+        let { data: mappings, error } = await query;
 
         if (error) {
             return [];

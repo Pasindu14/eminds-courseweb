@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import {
   Card,
   CardContent,
@@ -8,14 +9,23 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { StudentMappingForm } from "./_component/student_mapping_form";
 import { AddMappingDialog } from "./_component/add_mapping_dialog";
 import { DataTable } from "@/components/datatable";
 import { columns } from "./datatable/columns";
 import { fetchStudentMappings } from "@/server/actions/student-mapping.actions";
+import { StudentMapping } from "@/server/types/student-mapping.type";
+import StudentMappingFilterForm from "./_component/student_mapping_filter_form";
 
-const StudentMapping = async () => {
-  const data = await fetchStudentMappings();
+const StudentMapping = () => {
+  const [StudentMappings, setStudentMappings] = useState<StudentMapping[]>([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await fetchStudentMappings();
+      setStudentMappings(data);
+    };
+    fetchData();
+  }, []);
+
   return (
     <div>
       <Card className="w-full rounded-sm">
@@ -32,7 +42,8 @@ const StudentMapping = async () => {
           <div className="flex mb-4">
             <AddMappingDialog />
           </div>
-          <DataTable columns={columns} data={data} />
+          <Separator />
+          <StudentMappingFilterForm />
         </CardContent>
         <CardFooter className="flex justify-between"></CardFooter>
       </Card>

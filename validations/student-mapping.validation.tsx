@@ -8,4 +8,8 @@ const studentMappingSchema = z.object({
   students: z.string().array().nonempty({ message: "Students are required" }),
 });
 
+export const studentMappingFilterSchema = z.object({
+  batchId: z.string().optional(),
+});
+
 export default studentMappingSchema;

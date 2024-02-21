@@ -29,7 +29,7 @@ const PaymentFilterForm = () => {
   const form = useForm<z.infer<typeof paymentFilterSchema>>({
     resolver: zodResolver(paymentFilterSchema),
     defaultValues: {
-      students: [],
+      studentMapping: [],
     },
   });
 
