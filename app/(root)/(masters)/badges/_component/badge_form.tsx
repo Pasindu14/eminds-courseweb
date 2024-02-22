@@ -37,7 +37,6 @@ export function BadgeForm({ data }: { data?: any }) {
 
   async function onSubmit(values: z.infer<typeof badgeSchema>) {
     try {
-      console.log(values);
       setLoading(true);
       let result;
       const fileFormData = new FormData();

@@ -1,7 +1,7 @@
 "use server";
 import { errorMessage } from "@/constants/messages";
 import ResponseHandler from "../models/response.model";
-import { uploadFile } from "./file.actions";
+import { uploadFile, uploadHtmlContent } from "./file.actions";
 import { supabaseCacheFreeClient } from "../server";
 import { revalidatePath } from "next/cache";
 import { cpdmBadgeImage, dpdmBadgeImage, emindsLogo, profileDetailsPath } from "@/constants/badge";
@@ -619,15 +619,17 @@ export async function addBadge(badge: FormData, fileFormData: FormData) {
 
     const fileId = jsonResponse.file_id;
 
-    const { data, error } = await supabaseCacheFreeClient
+    const { data: newBadge, error } = await supabaseCacheFreeClient
       .from('student_badge')
-      .insert([
+      .insert(
         {
           student_auto_id: studentId,
           course_auto_id: courseId,
           image_name: fileId
         }
-      ]);
+      ).select();
+
+    const id = newBadge?.[0].auto_id;
 
     if (error) {
       return responseHandler.setError(error.message);
@@ -637,18 +639,46 @@ export async function addBadge(badge: FormData, fileFormData: FormData) {
 
     const courseDetails = await getCourseByAutoId(courseId!.toString())
 
+    let result;
     if (courseDetails.course_code === 'DPDM') {
       const html = generateDPDMHtmlContent(studentDetails.name, courseDetails.course_code);
+      result = await uploadHtmlContent(html);
+
+      if (!result.success) {
+        return responseHandler.setError(result.message);
+      }
+      updateBadge(id!, result.filePath);
     } else {
       const html = generateCPDMHtmlContent(studentDetails.name, courseDetails.course_code);
+
+      result = await uploadHtmlContent(html);
+
+      if (!result.success) {
+        return responseHandler.setError(result.message);
+      }
+      updateBadge(id!, result.filePath);
     }
 
     revalidatePath('/badges', 'page');
 
-    return responseHandler.setSuccess("Badge added successfully");
+    return responseHandler.setSuccess("Badge added successfully", result);
 
   } catch (error: any) {
     return responseHandler.setSuccess(error.message);
+  }
+
+}
+
+async function updateBadge(auto_id: number, link: string) {
+
+  const { error } = await supabaseCacheFreeClient
+    .from('student_badge')
+    .update({ link: link })
+    .eq('auto_id', auto_id)
+    .select()
+
+  if (error) {
+    throw error;
   }
 
 }

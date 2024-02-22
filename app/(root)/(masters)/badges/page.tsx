@@ -18,27 +18,6 @@ import { fetchBadges } from "@/server/actions/badge.actions";
 const Badges = async () => {
   const data = await fetchBadges();
 
-  /*   useEffect(() => {
-    const fetchData = async () => {
-      const result = await fetchStudentByPhoneNumber("0711803295");
-      setStudent(result);
-    };
-    fetchData();
-  }, []); */
-
-  /*   const downloadHtmlFile = () => {
-    const content = generateDPDMHtmlContent();
-    const blob = new Blob([content], { type: "text/html" });
-    const url = URL.createObjectURL(blob);
-
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "mypage.html";
-    a.click();
-
-    URL.revokeObjectURL(url);
-  };
- */
   return (
     <div>
       <Card className="w-full rounded-sm">

@@ -16,7 +16,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { fetchBatches } from "@/server/actions/batch.actions";
 import { Batch } from "@/server/types/batch.type";
 import { Loader } from "@/lib/spinners";
@@ -32,14 +32,23 @@ const BatchSelect = ({ control, name, filter }: BatchSelectProps) => {
   const [batches, setBatches] = useState<Batch[]>([]);
 
   useEffect(() => {
+    // Define the async function inside the effect
     const fetchData = async () => {
       setLoading(true);
-      const data = await fetchBatches(filter);
-      setBatches(data);
-      setLoading(false);
+      try {
+        const data = await fetchBatches(filter); // Use the filter variable directly
+        setBatches(data); // Update your state with the fetched data
+      } catch (error) {
+        console.error("Failed to fetch batches:", error);
+        // Optionally, handle errors, e.g., by setting an error state
+      } finally {
+        setLoading(false); // Ensure loading is false after data is fetched or if an error occurs
+      }
     };
+
+    // Call the async function
     fetchData();
-  }, [filter]);
+  }, [filter]); // Dependency array includes filter, so effect runs when filter changes
 
   return (
     <div>
@@ -52,7 +61,7 @@ const BatchSelect = ({ control, name, filter }: BatchSelectProps) => {
             <div className="flex items-center justify-center gap-2">
               <Select
                 onValueChange={field.onChange}
-                defaultValue={field.value}
+                defaultValue={field.value ?? "1"}
                 disabled={loading}
               >
                 <FormControl>

@@ -34,9 +34,14 @@ const CourseSelect = ({ control, name }: CourseSelectProps) => {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      const data = await fetchCourses();
-      setCourses(data);
-      setLoading(false);
+      try {
+        const data = await fetchCourses();
+        setCourses(data);
+      } catch (error) {
+        console.error("Failed to fetch courses:", error);
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchData();
@@ -53,7 +58,7 @@ const CourseSelect = ({ control, name }: CourseSelectProps) => {
             <div className="flex items-center justify-center gap-2">
               <Select
                 onValueChange={field.onChange}
-                defaultValue={field.value.toString()}
+                defaultValue={field.value.toString() ?? "1"}
               >
                 <FormControl>
                   <SelectTrigger>

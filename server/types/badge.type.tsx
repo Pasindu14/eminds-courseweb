@@ -4,6 +4,7 @@ export type Badge = {
   course_auto_id: number;
   image_name: string;
   created_date: string;
+  link: string;
   students: {
     name: string;
     phonenumber: string;

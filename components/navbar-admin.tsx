@@ -75,6 +75,12 @@ const masterComponents: { title: string; href: string; description: string }[] =
       description:
         "View and expire badges that were previously earned by students for completing courses and other achievements",
     },
+    {
+      title: "Events",
+      href: "/events",
+      description:
+        "Discover and participate in our latest events, workshops, and webinars tailored for professional growth and networking.",
+    },
   ];
 
 const mappingComponents: {

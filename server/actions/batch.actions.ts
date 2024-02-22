@@ -51,9 +51,27 @@ export async function fetchBatchByPassword(
 
 
 export async function addBatch(batch: any) {
-
     try {
         const responseHandler = new ResponseHandler<any>();
+
+        // Check for existing batch with the same password
+        const { data: existingBatch, error: existingBatchError } = await supabaseCacheFreeClient
+            .from('batches')
+            .select()
+            .eq('password', batch.password)
+            .maybeSingle();
+
+        if (existingBatchError) {
+            return responseHandler.setError(existingBatchError.message);
+        }
+
+        if (existingBatch) {
+            // Handle the case where a batch with the same password exists
+            const errorMessage = 'A batch with the same password already exists.';
+            return responseHandler.setError(errorMessage);
+        }
+
+        // If no existing batch with the same password, proceed with insert
         const { data, error } = await supabaseCacheFreeClient
             .from('batches')
             .insert([
@@ -66,23 +84,24 @@ export async function addBatch(batch: any) {
                     end_date: batch.end_date,
                     status: batch.status,
                     password: batch.password,
-                    price: batch.price
+                    price: batch.price,
                 },
             ])
             .select();
 
-        console.log(error)
         if (error != null) {
-            return responseHandler.setError(
-                error.details ?? errorMessage,
-            );
+            return responseHandler.setError(error.details ?? errorMessage);
         }
+        // Here, assume revalidatePath is a function you've defined to handle ISR (Incremental Static Regeneration) or similar logic
         revalidatePath('/batches', 'page');
+
         return responseHandler.setSuccess("Success", data);
     } catch (error) {
+        // It's a good practice to handle and possibly log the error in a real application
         throw error;
     }
 }
+
 
 export async function updateBatch(auto_id: string, batch: any) {
 

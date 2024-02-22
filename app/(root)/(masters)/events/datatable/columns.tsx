@@ -48,7 +48,6 @@ export const columns: ColumnDef<Event>[] = [
     cell: ({ row }) => {
       return (
         <div>
-          <UpdateEventDialog data={row.original} />;
           <ConfirmDeleteAlertDialog
             event_auto_id={row.original.event_auto_id}
           />

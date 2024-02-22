@@ -5,7 +5,7 @@ const batchSchema = z.object({
   batch_no: z.string().min(2).max(50),
   batch_name: z.string().min(2).max(500),
   zoom_link: z.string().optional(),
-  course_auto_id: z.string().optional(),
+  course_auto_id: z.string(),
   start_date: z.string().refine(
     (date) => {
       return /^\d{4}-\d{2}-\d{2}$/.test(date);

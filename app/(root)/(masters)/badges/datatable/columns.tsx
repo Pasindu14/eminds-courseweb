@@ -1,10 +1,6 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Exam } from "@/server/types/exam.type"; // Make sure you have an Exam type defined
 import { ColumnDef } from "@tanstack/react-table";
-import { removeExam } from "@/server/actions/exams.actions";
-import { Session } from "@/server/types/sessions.type";
 import Link from "next/link";
 import { ConfirmDeleteAlertDialog } from "../_component/remove_badge_alert";
 import { Badge } from "@/server/types/badge.type";
@@ -22,15 +18,22 @@ export const columns: ColumnDef<Badge>[] = [
     accessorKey: "courses.course_name",
     header: "Course",
   },
-  {
-    accessorKey: "link",
-    header: "Slide Url",
+  /*   {
+    header: "Profile Link",
     cell: ({ row }) => (
       <Link
         href={`/profile/${row.original.course_auto_id}_${row.original.student_auto_id}`}
         target="_blank"
       >
-        <p className="text-blue-600">Slide</p>
+        <p className="text-blue-600">Link</p>
+      </Link>
+    ), // Use or create a component for exam updates
+  }, */
+  {
+    header: "Badge Link",
+    cell: ({ row }) => (
+      <Link href={`${row.original.link}`} target="_blank">
+        <p className="text-blue-600">Link</p>
       </Link>
     ), // Use or create a component for exam updates
   },

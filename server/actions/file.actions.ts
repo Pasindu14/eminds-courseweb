@@ -13,36 +13,21 @@ export async function uploadFile(fileFormData: FormData) {
 }
 
 
-export async function uploadHtmlContent() {
-    // Dynamically generate the HTML content
-    const htmlContent = `
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-</head>
-<body>
- <p>This is a test file</p>
-</body>
-</html>`;
+export async function uploadHtmlContent(htmlContent: string) {
 
     // Perform the file upload
     const response = await fetch(
-        "https://eminds.com.au/coursewebfiles/uploadbadge.php", // Ensure this endpoint can handle raw HTML in the request body
+        "https://eminds.com.au/coursewebbadges/upload.php", // Ensure this endpoint can handle raw HTML in the request body
         {
             method: "POST",
-            body: htmlContent,
+            body: 'htmlData=' + encodeURIComponent(htmlContent),
             headers: {
-                'Content-Type': 'text/html', // Specify the content type as HTML
+                'Content-Type': 'application/x-www-form-urlencoded', // Specify the content type as HTML
             },
             cache: 'no-store'
         }
     );
 
-    console.log(response);
-    // Assuming the server responds with JSON
     const jsonResponse = await response.json();
     return jsonResponse;
 }
