@@ -19,15 +19,16 @@ import { toastError } from "@/lib/toast/toast";
 import { errorMessage } from "@/constants/messages";
 import Image from "next/image";
 import animationData from "@/public/lottie/animation_02.json";
-import Lottie from "lottie-react";
 import { signIn, useSession } from "next-auth/react";
 import { Loader } from "@/lib/spinners";
 import { useRouter } from "next/navigation";
 import { studentDashboardPath } from "@/constants/paths";
+import dynamic from "next/dynamic";
+
+const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
 const SignIn = () => {
   const router = useRouter();
-  const { data: session } = useSession();
   const [loading, setLoading] = useState(false);
 
   const form = useForm<z.infer<typeof authSchema>>({

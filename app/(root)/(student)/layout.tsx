@@ -15,6 +15,10 @@ const RootLayout = async ({ children }: { children: React.ReactNode }) => {
 
   if (!session) {
     redirect(signIn);
+  } else {
+    if (session.role == "ADMIN") {
+      redirect("/admin-dashboard");
+    }
   }
 
   return (

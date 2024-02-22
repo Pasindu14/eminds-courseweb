@@ -1,7 +1,9 @@
 "use client";
 import React from "react";
 import animationData from "@/public/lottie/animation_06.json";
-import Lottie from "lottie-react";
+import dynamic from "next/dynamic";
+
+const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
 const AdminDashboard = () => {
   return (

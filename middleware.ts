@@ -2,23 +2,32 @@ import { withAuth } from "next-auth/middleware";
 import { NextResponse } from "next/server";
 
 export default withAuth(
-
     function middleware(req) {
-        if (
-            req.nextauth.token?.role != "ADMIN"
-        ) {
+
+        const path = new URL(req.url).pathname;
+        const userRole = req.nextauth.token?.role;
+
+        const adminPaths = [
+            , "/badges", "/batches", "/courses", "/events", "/exam-results", "/exams", "/expire-badges", "/final-exams-submissions-results", "/jobs", "/payment-report", "/payments", "/questions", "/sessions", "/student-mapping", "/students", "/admin-dashboard"
+        ];
+        const studentPaths = [
+            "/dashboard"
+        ];
+
+        if (userRole === "ADMIN" && adminPaths.includes(path)) {
+            return NextResponse.next();
+        } else if (userRole === "STUDENT" && studentPaths.includes(path)) {
+            return NextResponse.next();
+        } else {
             return NextResponse.redirect(new URL('/unauthorized', req.url));
         }
     },
     {
         callbacks: {
-            authorized: (params) => {
-                let { token } = params;
-                return !!token;
-            },
+            authorized: ({ token }) => !!token,
         },
     }
 );
 
 
-export const config = { matcher: ["/badges", "/batches", "/courses", "/events", "/exam-results", "/exams", "/expire-badges", "/final-exams-submissions-results", "/jobs", "/payment-report", "/payments", "/questions", "/sessions", "/student-mapping", "/students", "/admin-dashboard"] };
+export const config = { matcher: ["/badges", "/batches", "/courses", "/events", "/exam-results", "/exams", "/expire-badges", "/final-exams-submissions-results", "/jobs", "/payment-report", "/payments", "/questions", "/sessions", "/student-mapping", "/students", "/admin-dashboard", "/dashboard",] };

@@ -37,11 +37,11 @@ export async function fetchBatchByPassword(
             .from('batches')
             .select()
             .eq('password', password)
-            .single()
-
+            .maybeSingle()
         if (error) {
             return null;
         }
+
 
         return batch ?? null;
     } catch (error) {

@@ -24,13 +24,9 @@ const Dashboard = async () => {
   const session: any = await getServerSession(authOption);
   const studentPhone = session?.phoneNumber;
   const password = session?.password;
-
-  if (!session) {
-    return;
-  }
-
   const studentDetails = await fetchStudentByPhoneNumber(studentPhone);
   const batchDetails = await fetchBatchByPassword(password);
+
   const sessions = await fetchSessionsByBatchId(batchDetails.auto_id);
   const examResults = await fetchAllExamResults(studentPhone);
 

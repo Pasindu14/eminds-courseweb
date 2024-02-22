@@ -1,7 +1,9 @@
 "use client";
 import React from "react";
-import Lottie from "lottie-react";
 import animationData from "@/public/lottie/animation_05.json";
+import dynamic from "next/dynamic";
+
+const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
 const ForbiddenAnimationComponent = () => {
   return (

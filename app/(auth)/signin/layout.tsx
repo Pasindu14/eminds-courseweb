@@ -1,11 +1,24 @@
 import Providers from "@/app/Providers";
 import { NavigationAdmin } from "@/components/navbar-admin";
+import { signIn } from "@/constants/paths";
+import { authOption } from "@/lib/auth-options";
+import { getServerSession } from "next-auth";
 import { Jost } from "next/font/google";
+import { redirect } from "next/navigation";
 import React from "react";
 import { Toaster } from "react-hot-toast";
 const jost = Jost({ subsets: ["latin"] });
 
-const RootLayout = ({ children }: { children: React.ReactNode }) => {
+const RootLayout = async ({ children }: { children: React.ReactNode }) => {
+  const session: any = await getServerSession(authOption);
+
+  if (session) {
+    if (session.role == "ADMIN") {
+      redirect("/admin-dashboard");
+    } else if (session.role == "STUDENT") {
+      redirect("/dashboard");
+    }
+  }
   return (
     <div className={jost.className}>
       <div className="background-image min-h-screen flex flex-col">
