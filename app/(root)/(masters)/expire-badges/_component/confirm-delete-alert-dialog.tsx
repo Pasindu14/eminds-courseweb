@@ -22,9 +22,11 @@ import { useState } from "react";
 export function ConfirmDeleteAlertDialog({
   badge_auto_id,
   badges,
+  fileUrl,
 }: {
   badge_auto_id?: number | null;
   badges?: any[];
+  fileUrl: string;
 }) {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -37,7 +39,7 @@ export function ConfirmDeleteAlertDialog({
       );
       result = await deleteBadgesByIds(autoIdsAsStringArray);
     } else {
-      result = await deleteBadgeById(badge_auto_id!.toString());
+      result = await deleteBadgeById(badge_auto_id!.toString(), fileUrl);
     }
     if (!result.success) {
       toastError(result.message);

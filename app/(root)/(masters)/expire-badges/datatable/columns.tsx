@@ -28,7 +28,12 @@ export const columns: ColumnDef<any>[] = [
     accessorKey: "created_date",
     header: "Date",
     cell: ({ row }) => {
-      return <ConfirmDeleteAlertDialog badge_auto_id={row.original.auto_id} />;
+      return (
+        <ConfirmDeleteAlertDialog
+          badge_auto_id={row.original.auto_id}
+          fileUrl={row.original.link}
+        />
+      );
     },
   },
 ];
