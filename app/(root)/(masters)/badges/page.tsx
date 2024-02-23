@@ -31,14 +31,6 @@ const Badges = async () => {
             <AddBadgeDialog />
           </div>
           <DataTable columns={columns} data={data} />
-          {/*           <Button onClick={downloadHtmlFile}>Download</Button>
-
-          <iframe
-            srcDoc={generateDPDMHtmlContent()}
-            width="100%"
-            height="1000px"
-            style={{ border: "none" }}
-          ></iframe> */}
         </CardContent>
         <CardFooter className="flex justify-between"></CardFooter>
       </Card>

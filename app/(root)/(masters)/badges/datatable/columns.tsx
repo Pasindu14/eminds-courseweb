@@ -41,7 +41,10 @@ export const columns: ColumnDef<Badge>[] = [
     accessorKey: "exam_auto_id",
     header: () => <div>Actions</div>,
     cell: ({ row }) => (
-      <ConfirmDeleteAlertDialog badge_auto_id={row.original.auto_id} />
+      <ConfirmDeleteAlertDialog
+        badge_auto_id={row.original.auto_id}
+        fileUrl={row.original.link}
+      />
     ), // Use or create a component for exam updates
   },
 ];

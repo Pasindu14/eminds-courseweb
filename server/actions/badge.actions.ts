@@ -1,10 +1,10 @@
 "use server";
 import { errorMessage } from "@/constants/messages";
 import ResponseHandler from "../models/response.model";
-import { uploadFile, uploadHtmlContent } from "./file.actions";
+import { deleteHtmlFile, uploadFile, uploadHtmlContent } from "./file.actions";
 import { supabaseCacheFreeClient } from "../server";
 import { revalidatePath } from "next/cache";
-import { cpdmBadgeImage, dpdmBadgeImage, emindsLogo, profileDetailsPath } from "@/constants/badge";
+import { cpdmBadgeImage, cpdmOGBadgeImage, dpdmBadgeImage, dpdmOGBadgeImage, emindsLogo, profileDetailsPath } from "@/constants/badge";
 import { fetchStudentByAutoid } from "./student.actions";
 import { getCourseByAutoId } from "./course.actions";
 
@@ -34,7 +34,7 @@ const headTags = (courseCode: any) =>
 
 <!-- Facebook and Twitter integration -->
 <meta property="og:title" content="CPDM : Certificate in Practical Digital Marketing, eMinds Certified Digital Marketing Specialist">
-<meta property="og:image" content="${courseCode == "CPDM" ? cpdmBadgeImage : dpdmBadgeImage}">
+<meta property="og:image" content="${courseCode == "CPDM" ? cpdmOGBadgeImage : dpdmOGBadgeImage}">
 <meta property="og:url" content="">
 <meta property="og:site_name" content="Eminds CourseWeb">
 <meta property="og:description" content="">
@@ -358,7 +358,7 @@ li.active a {
 <title>Eminds Profile</title>
 </head>`;
 
-const generateCPDMHtmlContent = (name: string, courseCode: string) => {
+const generateCPDMHtmlContent = (name: string, courseCode: string, studentId: number) => {
   return `<html lang="en">
     
     ${headTags(courseCode)}
@@ -374,7 +374,7 @@ const generateCPDMHtmlContent = (name: string, courseCode: string) => {
     <div class="row align-items-start mb-4">
       <div class="col-lg-4 text-center pb-lg-0 pb-5">
         <img src="${cpdmBadgeImage}" class="img-fluid w-100" id="profile-image">
-        <h1 class="fw-bold student-name mt-4 mb-4"><a href="${profileDetailsPath}">${name}</a></h1>
+        <h1 class="fw-bold student-name mt-4 mb-4"><a href="http://courseweb.eminds.com.au/profile/${studentId}">${name}</a></h1>
     
         <div class="d-flex justify-content-center">
           <h4>Type :<small> Validation</small></h4>
@@ -469,7 +469,7 @@ const generateCPDMHtmlContent = (name: string, courseCode: string) => {
     </body></html>';`;
 };
 
-const generateDPDMHtmlContent = (name: string, courseCode: string) => {
+const generateDPDMHtmlContent = (name: string, courseCode: string, studentId: number) => {
   return `<html lang="en">
     ${headTags(courseCode)}
     
@@ -484,7 +484,7 @@ const generateDPDMHtmlContent = (name: string, courseCode: string) => {
     <div class="row align-items-start mb-4">
       <div class="col-lg-4 text-center pb-lg-0 pb-5">
         <img src="${dpdmBadgeImage}" class="img-fluid w-100" id="profile-image">
-        <h1 class="fw-bold student-name mt-4 mb-4"><a href="${profileDetailsPath}">${name}</a></h1>
+        <h1 class="fw-bold student-name mt-4 mb-4"><a href="http://courseweb.eminds.com.au/profile/${studentId}">${name}</a></h1>
     
         <div class="d-flex justify-content-center">
           <h4>Type :<small> Validation</small></h4>
@@ -641,7 +641,7 @@ export async function addBadge(badge: FormData, fileFormData: FormData) {
 
     let result;
     if (courseDetails.course_code === 'DPDM') {
-      const html = generateDPDMHtmlContent(studentDetails.name, courseDetails.course_code);
+      const html = generateDPDMHtmlContent(studentDetails.name, courseDetails.course_code, studentDetails.auto_id);
       result = await uploadHtmlContent(html);
 
       if (!result.success) {
@@ -649,7 +649,7 @@ export async function addBadge(badge: FormData, fileFormData: FormData) {
       }
       updateBadge(id!, result.filePath);
     } else {
-      const html = generateCPDMHtmlContent(studentDetails.name, courseDetails.course_code);
+      const html = generateCPDMHtmlContent(studentDetails.name, courseDetails.course_code, studentDetails.auto_id);
 
       result = await uploadHtmlContent(html);
 
@@ -683,7 +683,7 @@ async function updateBadge(auto_id: number, link: string) {
 
 }
 
-export async function deleteBadgeById(id: string) {
+export async function deleteBadgeById(id: string, fileId: string) {
   const responseHandler = new ResponseHandler<any>();
   try {
     const { error } = await supabaseCacheFreeClient
@@ -693,6 +693,14 @@ export async function deleteBadgeById(id: string) {
 
     if (error) {
       return responseHandler.setError(error.message);
+    }
+
+    const deleteResult = await deleteHtmlFile(
+      fileId
+    );
+
+    if (deleteResult.success !== true) {
+      return responseHandler.setError(deleteResult.message);
     }
 
     revalidatePath('/badges', 'page');

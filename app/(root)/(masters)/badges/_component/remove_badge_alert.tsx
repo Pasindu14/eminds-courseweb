@@ -11,24 +11,27 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Loader } from "@/lib/spinners";
-import { toastError } from "@/lib/toast/toast";
+import { toastError, toastSuccess } from "@/lib/toast/toast";
 import { deleteBadgeById } from "@/server/actions/badge.actions";
 
 import { useState } from "react";
 
 export function ConfirmDeleteAlertDialog({
   badge_auto_id,
+  fileUrl,
 }: {
   badge_auto_id: number | null;
+  fileUrl: string;
 }) {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const deleteFunction = async () => {
     setLoading(true);
-    const result = await deleteBadgeById(badge_auto_id!.toString());
+    const result = await deleteBadgeById(badge_auto_id!.toString(), fileUrl);
     if (!result.success) {
       toastError(result.message);
     } else {
+      toastSuccess(result.message);
       setOpen(false);
     }
     setLoading(false);

@@ -31,3 +31,27 @@ export async function uploadHtmlContent(htmlContent: string) {
     const jsonResponse = await response.json();
     return jsonResponse;
 }
+
+
+export async function deleteHtmlFile(url: string) {
+
+    const parsedUrl = new URL(url);
+
+    const pathSegments = parsedUrl.pathname.split('/');
+    const finalPath = pathSegments.filter(segment => segment.length > 0).slice(-2).join('/');
+
+    const response = await fetch(
+        "https://eminds.com.au/coursewebbadges/delete.php",
+        {
+            method: "POST",
+            body: 'filePath=' + encodeURIComponent(finalPath),
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded', // Specify the content type as HTML
+            },
+            cache: 'no-store'
+        }
+    );
+
+    const jsonResponse = await response.json();
+    return jsonResponse;
+}

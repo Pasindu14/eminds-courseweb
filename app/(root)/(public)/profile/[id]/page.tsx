@@ -1,5 +1,5 @@
 import { fetchStudentDetails } from "@/server/actions/student.actions";
-import { Bebas_Neue, Jost } from "next/font/google";
+import { Bebas_Neue } from "next/font/google";
 import React from "react";
 import Image from "next/image";
 import { Separator } from "@/components/ui/separator";
@@ -7,9 +7,11 @@ import { fetchBadgesByStudentAutoId } from "@/server/actions/badge.actions";
 
 const jost = Bebas_Neue({ weight: "400", subsets: ["latin"] });
 
-const Profile = async () => {
-  const studentDetails = await fetchStudentDetails(11);
-  const badges = await fetchBadgesByStudentAutoId(11);
+const Profile = async ({ params }: { params: { id: number } }) => {
+  const studentDetails = await fetchStudentDetails(params.id);
+  const badges = await fetchBadgesByStudentAutoId(params.id);
+
+  const image = badges[0].image_name;
 
   return (
     <div
@@ -22,7 +24,10 @@ const Profile = async () => {
           </h1>
           <div className="p-4 text-black">
             <Image
-              src="https://eminds.com.au/coursewebfiles/downloadfiles.php?id=65"
+              src={
+                `https://eminds.com.au/coursewebfiles/downloadfiles.php?id=` +
+                image
+              }
               alt="profile image"
               width={0}
               height={0}
