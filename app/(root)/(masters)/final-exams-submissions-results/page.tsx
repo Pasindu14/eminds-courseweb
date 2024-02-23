@@ -8,17 +8,9 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { DataTable } from "../../../../components/datatable";
-import { fetchSessions } from "@/server/actions/sessions.actions";
-import { fetchEvents } from "@/server/actions/events.actions";
-import Image from "next/image";
-import { columns } from "./datatable/columns";
-import { fetchFinalSubmissionMarks } from "@/server/actions/exams.actions";
 import { FilteringForm } from "./_component/filtering-form";
 
 const FinalExamSubmission = async () => {
-  /*   const data = await fetchFinalSubmissionMarks(10); */
-  /*  console.log(data); */
   return (
     <div>
       <Card className="w-full rounded-sm">

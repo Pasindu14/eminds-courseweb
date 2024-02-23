@@ -4,7 +4,6 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -12,15 +11,11 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { PlusSquare } from "lucide-react";
 import { StudentForm } from "./student_form";
-import { motion } from "framer-motion";
+import AnimatedComponent from "@/components/common/animated-component";
 
 export function AddStudentDialog() {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: -50 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="custom-scrollbar"
-    >
+    <AnimatedComponent>
       <Dialog>
         <DialogTrigger asChild>
           <Button>
@@ -36,6 +31,6 @@ export function AddStudentDialog() {
           <StudentForm />
         </DialogContent>
       </Dialog>
-    </motion.div>
+    </AnimatedComponent>
   );
 }

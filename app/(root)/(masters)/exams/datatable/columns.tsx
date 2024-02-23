@@ -1,10 +1,8 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { Exam } from "@/server/types/exam.type"; // Make sure you have an Exam type defined
 import { ColumnDef } from "@tanstack/react-table";
 import { ConfirmDeleteAlertDialog } from "../_components/remove_exam_alert";
-import { removeExam } from "@/server/actions/exams.actions";
 // Assuming you have an update dialog for exams
 
 export const columns: ColumnDef<Exam>[] = [

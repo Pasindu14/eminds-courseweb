@@ -48,7 +48,6 @@ export function BadgeForm({ data }: { data?: any }) {
           formData.append(key, value);
         }
       }
-
       result = await addBadge(formData, fileFormData);
       if (!result.success) {
         toastError(result.message);

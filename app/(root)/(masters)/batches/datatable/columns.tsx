@@ -1,6 +1,5 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { Batch } from "@/server/types/batch.type"; // Make sure you have a Batch type defined
 import { ColumnDef } from "@tanstack/react-table";
 import { UpdateBatchDialog } from "../_components/update_batch_dialog"; // Assuming you have an update dialog for batches

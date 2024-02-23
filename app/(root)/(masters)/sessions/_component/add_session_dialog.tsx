@@ -4,7 +4,6 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -13,10 +12,11 @@ import { Separator } from "@/components/ui/separator";
 import { PlusSquare } from "lucide-react";
 import { motion } from "framer-motion";
 import { SessionForm } from "./session_form";
+import AnimatedComponent from "@/components/common/animated-component";
 
 export function AddSessionDialog() {
   return (
-    <motion.div initial={{ opacity: 0, y: -50 }} animate={{ opacity: 1, y: 0 }}>
+    <AnimatedComponent>
       <Dialog>
         <DialogTrigger asChild>
           <Button>
@@ -32,6 +32,6 @@ export function AddSessionDialog() {
           <SessionForm />
         </DialogContent>
       </Dialog>
-    </motion.div>
+    </AnimatedComponent>
   );
 }

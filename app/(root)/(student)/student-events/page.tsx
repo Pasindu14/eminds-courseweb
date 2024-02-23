@@ -8,7 +8,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { fetchJobs } from "@/server/actions/jobs.actions";
 import EventItem from "./_component/event-item";
 import { fetchEvents } from "@/server/actions/events.actions";
 import NotFoundAnimationComponent from "@/components/common/not-found-component";

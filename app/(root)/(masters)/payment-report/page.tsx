@@ -1,12 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import React from "react";
 import {
   Card,
   CardContent,
@@ -15,12 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { ArrowUpDown, PlusSquare } from "lucide-react";
-import { ColumnDef } from "@tanstack/react-table";
-import { fetchSessions } from "@/server/actions/sessions.actions";
 import PaymentFilterForm from "./_component/payment_report_filter_form";
 
 const PaymentReport = async () => {

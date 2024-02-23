@@ -1,21 +1,18 @@
 "use client";
 import { DataTable } from "@/components/datatable";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { columns } from "../datatable/columns";
-import { set, useForm, useWatch } from "react-hook-form";
-import { successMessage, errorMessage } from "@/constants/messages";
-import { toastError, toastSuccess } from "@/lib/toast/toast";
-import {
-  addExam,
-  fetchFinalSubmissionMarks,
-} from "@/server/actions/exams.actions";
+import { useForm } from "react-hook-form";
+import { errorMessage } from "@/constants/messages";
+import { toastError } from "@/lib/toast/toast";
+import { fetchFinalSubmissionMarks } from "@/server/actions/exams.actions";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { finalSubmissionFilterSchema } from "@/validations/final-submission.validation";
 import { Form } from "@/components/ui/form";
 import BatchSelect from "@/components/common/batch_select";
-import { Loader, LoaderFull } from "@/lib/spinners";
+import { LoaderFull } from "@/lib/spinners";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 

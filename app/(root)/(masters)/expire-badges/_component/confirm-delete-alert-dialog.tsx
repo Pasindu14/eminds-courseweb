@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Loader } from "@/lib/spinners";
-import { toastError } from "@/lib/toast/toast";
+import { toastError, toastSuccess } from "@/lib/toast/toast";
 import {
   deleteBadgeById,
   deleteBadgesByIds,
@@ -41,9 +41,11 @@ export function ConfirmDeleteAlertDialog({
     } else {
       result = await deleteBadgeById(badge_auto_id!.toString(), fileUrl);
     }
+
     if (!result.success) {
       toastError(result.message);
     } else {
+      toastSuccess(result.message);
       setOpen(false);
     }
     setLoading(false);

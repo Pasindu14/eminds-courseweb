@@ -1,12 +1,4 @@
 import React from "react";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import {
   Card,
   CardContent,
@@ -15,12 +7,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { ArrowUpDown, PlusSquare } from "lucide-react";
 import { DataTable } from "../../../../components/datatable";
-import { ColumnDef } from "@tanstack/react-table"; // Updated/Added component
 import { columns } from "./datatable/columns"; // Ensure this is updated for exams
 import { fetchExams } from "@/server/actions/exams.actions";
 import { AddExamDialog } from "./_components/add_exam_dialog";

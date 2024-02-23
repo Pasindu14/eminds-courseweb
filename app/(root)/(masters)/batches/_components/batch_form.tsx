@@ -58,7 +58,6 @@ export function BatchForm({ data }: { data?: any }) {
         toastSuccess(successMessage);
       }
     } catch (error) {
-      console.log(error);
       toastError(errorMessage);
     } finally {
       setLoading(false);

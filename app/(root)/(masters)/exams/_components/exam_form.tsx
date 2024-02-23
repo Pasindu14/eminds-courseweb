@@ -17,7 +17,7 @@ import { toastError, toastSuccess } from "@/lib/toast/toast";
 import { useState } from "react";
 import { Loader } from "@/lib/spinners";
 import { errorMessage, successMessage } from "@/constants/messages";
-import { addExam, removeExam } from "@/server/actions/exams.actions";
+import { addExam } from "@/server/actions/exams.actions";
 import CourseSelect from "@/components/common/course_select";
 import BatchSelect from "@/components/common/batch_select";
 

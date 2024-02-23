@@ -635,9 +635,10 @@ export async function addBadge(badge: FormData, fileFormData: FormData) {
       return responseHandler.setError(error.message);
     }
 
-    const studentDetails = await fetchStudentByAutoid(studentId!.toString())
-
-    const courseDetails = await getCourseByAutoId(courseId!.toString())
+    const [studentDetails, courseDetails] = await Promise.all([
+      fetchStudentByAutoid(studentId!.toString()),
+      getCourseByAutoId(courseId!.toString())
+    ]);
 
     let result;
     if (courseDetails.course_code === 'DPDM') {
@@ -748,21 +749,41 @@ export async function getStudentBadgesOlderThan3Years() {
 export async function deleteBadgesByIds(ids: string[]) {
   const responseHandler = new ResponseHandler<any>();
   try {
-    const { error } = await supabaseCacheFreeClient
+
+    let { data: links, error } = await supabaseCacheFreeClient
       .from('student_badge')
-      .delete()
-      .in('auto_id', ids);
+      .select('link')
+      .in('auto_id', ids)
 
     if (error) {
       return responseHandler.setError(error.message);
     }
 
+    const { error: deleteError } = await supabaseCacheFreeClient
+      .from('student_badge')
+      .delete()
+      .in('auto_id', ids);
+
+    if (error) {
+      return responseHandler.setError(deleteError?.message ?? errorMessage);
+    }
+
+    if (links != null) {
+      for (const link of links) {
+        const deleteResult = await deleteHtmlFile(
+          link.link
+        );
+        if (deleteResult.success !== true) {
+          return responseHandler.setError(deleteResult.message);
+        }
+
+      }
+    }
     revalidatePath('/badges', 'page');
     revalidatePath('/expire-badges', 'page');
     return responseHandler.setSuccess("Badges deleted successfully");
 
   } catch (error: any) {
-    // Adjust the error handling as needed
     return responseHandler.setError(error.message || "An unexpected error occurred");
   }
 }

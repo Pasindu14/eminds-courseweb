@@ -16,7 +16,6 @@ import {
 import { Input } from "@/components/ui/input";
 import studentSchema from "@/validations/student.validation";
 import { addStudent, updateStudent } from "@/server/actions/student.actions";
-import toast from "react-hot-toast";
 import { toastError, toastSuccess } from "@/lib/toast/toast";
 import { useState } from "react";
 import { Loader } from "@/lib/spinners";

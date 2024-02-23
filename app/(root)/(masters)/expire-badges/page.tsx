@@ -12,7 +12,6 @@ import { Separator } from "@/components/ui/separator";
 import { getStudentBadgesOlderThan3Years } from "@/server/actions/badge.actions";
 import { DataTable } from "@/components/datatable";
 import { columns } from "./datatable/columns";
-import { Button } from "@/components/ui/button";
 import { ConfirmDeleteAlertDialog } from "./_component/confirm-delete-alert-dialog";
 
 const ExpireBadges = async () => {

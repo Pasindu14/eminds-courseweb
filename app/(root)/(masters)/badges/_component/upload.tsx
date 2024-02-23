@@ -1,10 +1,8 @@
 "use client";
 import { Input } from "@/components/ui/input";
-import React, { useState } from "react";
+import React from "react";
 import { Control } from "react-hook-form";
-import { Button } from "@/components/ui/button";
 import {
-  Form,
   FormControl,
   FormField,
   FormItem,
@@ -17,7 +15,7 @@ type FileUploadProps = {
   name: string;
 };
 
-const FileUpload = ({ control, name }: FileUploadProps) => {
+const FileUpload = ({ control }: FileUploadProps) => {
   return (
     <FormField
       control={control}

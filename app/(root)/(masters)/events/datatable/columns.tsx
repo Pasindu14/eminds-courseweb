@@ -1,14 +1,10 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Exam } from "@/server/types/exam.type"; // Make sure you have an Exam type defined
 import { ColumnDef } from "@tanstack/react-table";
-import { removeExam } from "@/server/actions/exams.actions";
 import { ConfirmDeleteAlertDialog } from "../_component/remove_session_alert";
 import Link from "next/link";
 import { Event } from "@/server/types/events.type"; // Make sure you have an Event type defined
-import { convertToLocaleDateTime, formatDate } from "@/lib/utils";
-import { UpdateEventDialog } from "../_component/update_event_dialog";
+import { formatDate } from "@/lib/utils";
 
 export const columns: ColumnDef<Event>[] = [
   {

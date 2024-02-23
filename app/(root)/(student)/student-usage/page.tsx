@@ -16,11 +16,10 @@ import {
 } from "@/server/actions/student-usage.actions";
 import { DataTable } from "@/components/datatable";
 import { columns } from "./datatable/columns";
-import { Loader, LoaderFull } from "@/lib/spinners";
-import toast from "react-hot-toast";
-import { set } from "react-hook-form";
+import { LoaderFull } from "@/lib/spinners";
 import { ProgressBar } from "./_component/progress";
 import { getUserLoginActivity } from "@/server/actions/auth.action";
+import { toastError } from "@/lib/toast/toast";
 
 interface State {
   usageData: any[];
@@ -100,7 +99,7 @@ const StudentUsage = () => {
         userLoginActivity: userLoginActivity,
       });
     } catch (error) {
-      toast.error("Something went wrong, please try again later");
+      toastError("Something went wrong, please try again later");
     } finally {
       setLoading(false);
     }

@@ -10,9 +10,6 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { AddPaymentsDialog } from "./_component/add_payments_dialog";
 import PaymentFilterForm from "./_component/payment_filter_form";
-import { fetchPaymentLinesWithBatchNo } from "@/server/actions/payments.actions";
-import { DataTable } from "@/components/datatable";
-import { columns } from "./datatable/columns";
 
 const Payment = async () => {
   return (

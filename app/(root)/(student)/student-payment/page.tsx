@@ -8,7 +8,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import PaymentForm from "./_component/payment_form";
 import { AddPaymentDialog } from "./_component/add_payment_dialog";
 import { DataTable } from "@/components/datatable";
 import { columns } from "./datatable/columns";

@@ -22,6 +22,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { motion } from "framer-motion";
+import AnimatedComponent from "./common/animated-component";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -52,7 +53,7 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }}>
+    <AnimatedComponent>
       <div className="flex items-center py-4">
         <Input
           placeholder="Search ..."
@@ -131,6 +132,6 @@ export function DataTable<TData, TValue>({
           Next
         </Button>
       </div>
-    </motion.div>
+    </AnimatedComponent>
   );
 }

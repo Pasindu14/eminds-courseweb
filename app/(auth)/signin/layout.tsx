@@ -6,7 +6,6 @@ import { getServerSession } from "next-auth";
 import { Jost } from "next/font/google";
 import { redirect } from "next/navigation";
 import React from "react";
-import { Toaster } from "react-hot-toast";
 const jost = Jost({ subsets: ["latin"] });
 
 const RootLayout = async ({ children }: { children: React.ReactNode }) => {
@@ -25,7 +24,6 @@ const RootLayout = async ({ children }: { children: React.ReactNode }) => {
         <div className="container mx-auto pt-4">
           <Providers>{children}</Providers>
         </div>
-        <Toaster />
       </div>
     </div>
   );

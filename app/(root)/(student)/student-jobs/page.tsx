@@ -8,7 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { fetchJobs, fetchJobsForStudents } from "@/server/actions/jobs.actions";
+import { fetchJobsForStudents } from "@/server/actions/jobs.actions";
 import JobItem from "./_component/job-item";
 import NotFoundAnimationComponent from "@/components/common/not-found-component";
 

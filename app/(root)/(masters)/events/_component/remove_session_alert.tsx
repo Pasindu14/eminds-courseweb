@@ -1,7 +1,6 @@
 "use client";
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
@@ -14,7 +13,6 @@ import { Button } from "@/components/ui/button";
 import { Loader } from "@/lib/spinners";
 import { toastError } from "@/lib/toast/toast";
 import { deleteEvent } from "@/server/actions/events.actions";
-import { removeExam } from "@/server/actions/exams.actions";
 
 import { useState } from "react";
 

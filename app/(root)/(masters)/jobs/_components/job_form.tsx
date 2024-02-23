@@ -19,7 +19,6 @@ import { Loader } from "@/lib/spinners";
 import { errorMessage, successMessage } from "@/constants/messages";
 import { addJob, updateJob } from "@/server/actions/jobs.actions";
 import { Switch } from "@/components/ui/switch";
-import { deleteHtmlFile } from "@/server/actions/file.actions";
 
 export function JobForm({ data }: { data?: any }) {
   const [loading, setLoading] = useState(false);

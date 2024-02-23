@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   Card,
   CardContent,
@@ -8,8 +8,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Button } from "@/components/ui/button";
-import { fetchStudentByPhoneNumber } from "@/server/actions/student.actions";
 import { AddBadgeDialog } from "./_component/add_badge_dialog";
 import { DataTable } from "@/components/datatable";
 import { columns } from "./datatable/columns";

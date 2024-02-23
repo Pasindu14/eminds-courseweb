@@ -15,7 +15,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { toastError, toastSuccess } from "@/lib/toast/toast";
-import { addSession } from "@/server/actions/sessions.actions";
 import { errorMessage, successMessage } from "@/constants/messages";
 import { Loader } from "@/lib/spinners";
 import { useSession } from "next-auth/react";

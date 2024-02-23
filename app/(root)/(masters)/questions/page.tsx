@@ -8,7 +8,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { QuestionForm } from "./_component/question_form";
 import { AddQuestionDialog } from "./_component/add_question_dialog";
 import { DataTable } from "@/components/datatable";
 import { columns } from "./datatable/columns";

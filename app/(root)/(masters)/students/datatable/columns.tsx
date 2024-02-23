@@ -1,6 +1,5 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { Student } from "@/server/types/student.type";
 import { ColumnDef } from "@tanstack/react-table";
 import { UpdateStudentDialog } from "../_components/update_student_dialog";

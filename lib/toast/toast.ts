@@ -1,4 +1,4 @@
-import toast from "react-hot-toast";
+import { Toaster, toast } from 'sonner'
 
 export const toastSuccess = (message: string) => {
     toast.success(message, { position: "top-right" });

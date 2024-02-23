@@ -4,19 +4,18 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
 import { PlusSquare } from "lucide-react";
-import { motion } from "framer-motion";
 import { EventForm } from "./event_form";
+import AnimatedComponent from "@/components/common/animated-component";
 
 export function AddEventDialog() {
   return (
-    <motion.div initial={{ opacity: 0, y: -50 }} animate={{ opacity: 1, y: 0 }}>
+    <AnimatedComponent>
       <Dialog>
         <DialogTrigger asChild>
           <Button>
@@ -32,6 +31,6 @@ export function AddEventDialog() {
           <EventForm />
         </DialogContent>
       </Dialog>
-    </motion.div>
+    </AnimatedComponent>
   );
 }

@@ -13,10 +13,11 @@ import { Separator } from "@/components/ui/separator";
 import { PlusSquare } from "lucide-react";
 import { ExamForm } from "./exam_form";
 import { motion } from "framer-motion";
+import AnimatedComponent from "@/components/common/animated-component";
 
 export function AddExamDialog() {
   return (
-    <motion.div initial={{ opacity: 0, y: -50 }} animate={{ opacity: 1, y: 0 }}>
+    <AnimatedComponent>
       <Dialog>
         <DialogTrigger asChild>
           <Button>
@@ -32,6 +33,6 @@ export function AddExamDialog() {
           <ExamForm />
         </DialogContent>
       </Dialog>
-    </motion.div>
+    </AnimatedComponent>
   );
 }
