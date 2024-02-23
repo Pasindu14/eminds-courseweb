@@ -31,7 +31,7 @@ const ExpireBadges = async () => {
         <Separator />
 
         <CardContent className="pt-4">
-          <ConfirmDeleteAlertDialog badges={data} />
+          <ConfirmDeleteAlertDialog badges={data} fileUrl="" />
           <div className="flex mb-4"></div>
           <DataTable columns={columns} data={data} />
         </CardContent>
