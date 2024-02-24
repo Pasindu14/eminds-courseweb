@@ -134,3 +134,21 @@ export async function updateBatch(auto_id: string, batch: any) {
     }
 }
 
+
+export async function fetchBatchById(id?: string): Promise<Batch | null> {
+    try {
+        let query = supabaseCacheFreeClient
+            .from('batches')
+            .select(`*`)
+            .eq('auto_id', id).maybeSingle();
+        let { data: batch, error } = await query;
+
+        if (error) {
+            return null;
+        }
+
+        return batch ?? null;
+    } catch (error) {
+        return null;
+    }
+}

@@ -33,8 +33,8 @@ async function initClient() {
     authEndpoint: "http://localhost:3000/zoom",
     sdkKey: "b6cgqw6sQR2ffYq7oiXXw",
     signature: "",
-    meetingNumber: "78538305676", // actual meeting number: user need to input
-    passWord: "RRhu0TNXJKiVlLsiwOrSKCoFgHGwao.1", // actual password for the meeting: user need to input
+    meetingNumber: "73104215226", // actual meeting number: user need to input
+    passWord: "gdmsnY5sQerNvxbznjRwftIjvFUgaH.1", // actual password for the meeting: user need to input
     role: 0, // 0 implies client, 1 implies host
     userName: "React", // username: user need to input
     userEmail: "", // user email: user need to input

@@ -1,10 +1,39 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
+import { fetchBatchById } from "@/server/actions/batch.actions";
 
 const ZoomComponent = () => {
+  const { data: session }: any = useSession();
+
+  const [zoomDetails, setZoomDetails] = useState({
+    meetingId: "",
+    password: "",
+  });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await fetchBatchById(session.batchId);
+      const regex = /\/j\/(\d+)\?pwd=([\w.]+)/;
+      const matches = result?.zoom_link.match(regex);
+
+      if (matches) {
+        const meetingId = matches[1];
+        const password = matches[2];
+
+        setZoomDetails({ meetingId, password });
+      } else {
+        console.log("Zoom link format does not match expected pattern.");
+      }
+    };
+
+    if (session) {
+      fetchData();
+    }
+  });
+
   return (
     <div className="relative">
       <Button className="rounded-xl" onClick={initZoomApp}>
@@ -13,123 +42,123 @@ const ZoomComponent = () => {
       <div id="meetingSDKElement" className="relative "></div>
     </div>
   );
-};
 
-async function initZoomApp() {
-  const { client, clientConf } = await initClient();
-  startMeeting(client, clientConf);
-}
+  async function initZoomApp() {
+    const { client, clientConf } = await initClient();
+    startMeeting(client, clientConf);
+  }
 
-async function initClient() {
-  const ZoomMtgEmbedded = await (
-    await import("@zoomus/websdk/embedded")
-  ).default;
-  const client = ZoomMtgEmbedded.createClient();
+  async function initClient() {
+    const ZoomMtgEmbedded = await (
+      await import("@zoomus/websdk/embedded")
+    ).default;
+    const client = ZoomMtgEmbedded.createClient();
 
-  const clientConf = {
-    authEndpoint: "http://localhost:3000/zoom",
-    sdkKey: "b6cgqw6sQR2ffYq7oiXXw",
-    signature: "",
-    meetingNumber: "79915606272", // actual meeting number: user need to input
-    passWord: "pLGehFTXyLYYQ9nc7kyc4YeTH6oqL6.1", // actual password for the meeting: user need to input
-    role: 0, // 0 implies client, 1 implies host
-    userName: "React", // username: user need to input
-    userEmail: "", // user email: user need to input
-  };
-  // fetch signature to your auth endpoint. Check the sample repo.
-  // https://github.com/zoom/meetingsdk-auth-endpoint-sample
-  const signature = await getSignature(
-    clientConf.meetingNumber,
-    clientConf.role
-  );
+    const clientConf = {
+      authEndpoint: "http://localhost:3000/zoom",
+      sdkKey: "b6cgqw6sQR2ffYq7oiXXw",
+      signature: "",
+      meetingNumber: zoomDetails.meetingId, // actual meeting number: user need to input
+      passWord: zoomDetails.password, // actual password for the meeting: user need to input
+      role: 0, // 0 implies client, 1 implies host
+      userName: "React", // username: user need to input
+      userEmail: "", // user email: user need to input
+    };
+    // fetch signature to your auth endpoint. Check the sample repo.
+    // https://github.com/zoom/meetingsdk-auth-endpoint-sample
+    const signature = await getSignature(
+      clientConf.meetingNumber,
+      clientConf.role
+    );
 
-  clientConf.signature = signature;
+    clientConf.signature = signature;
 
-  const meetingSDKElement = document.getElementById("meetingSDKElement");
-  client.init({
-    debug: true,
-    zoomAppRoot: meetingSDKElement!,
-    language: "en-US",
-    customize: {
-      video: {
-        isResizable: true,
-        viewSizes: {
-          default: {
-            width: 1000,
-            height: 600,
-          },
-          ribbon: {
-            width: 300,
-            height: 700,
-          },
-        },
-      },
-      meetingInfo: [
-        "topic",
-        "host",
-        "mn",
-        "pwd",
-        "telPwd",
-        "invite",
-        "participant",
-        "dc",
-        "enctype",
-      ],
-      toolbar: {
-        buttons: [
-          {
-            text: "Custom Button",
-            className: "CustomButton",
-            onClick: () => {
-              console.log("Hi, mom");
+    const meetingSDKElement = document.getElementById("meetingSDKElement");
+    client.init({
+      debug: true,
+      zoomAppRoot: meetingSDKElement!,
+      language: "en-US",
+      customize: {
+        video: {
+          isResizable: true,
+          viewSizes: {
+            default: {
+              width: 1000,
+              height: 600,
+            },
+            ribbon: {
+              width: 300,
+              height: 700,
             },
           },
+        },
+        meetingInfo: [
+          "topic",
+          "host",
+          "mn",
+          "pwd",
+          "telPwd",
+          "invite",
+          "participant",
+          "dc",
+          "enctype",
         ],
+        toolbar: {
+          buttons: [
+            {
+              text: "Custom Button",
+              className: "CustomButton",
+              onClick: () => {
+                console.log("Hi, mom");
+              },
+            },
+          ],
+        },
       },
-    },
-  });
+    });
 
-  return { client: client, clientConf: clientConf };
-}
+    return { client: client, clientConf: clientConf };
+  }
 
-async function getSignature(meetingNumber: any, role: any): Promise<string> {
-  const iat = Math.round(new Date().getTime() / 1000) - 30;
-  const exp = iat + 60 * 60 * 2;
+  async function getSignature(meetingNumber: any, role: any): Promise<string> {
+    const iat = Math.round(new Date().getTime() / 1000) - 30;
+    const exp = iat + 60 * 60 * 2;
 
-  const oHeader = { alg: "HS256", typ: "JWT" };
+    const oHeader = { alg: "HS256", typ: "JWT" };
 
-  const oPayload = {
-    sdkKey: "b6cgqw6sQR2ffYq7oiXXw",
-    mn: meetingNumber,
-    role: role,
-    iat: iat,
-    exp: exp,
-    tokenExp: iat + 60 * 60 * 2,
-  };
+    const oPayload = {
+      sdkKey: "b6cgqw6sQR2ffYq7oiXXw",
+      mn: meetingNumber,
+      role: role,
+      iat: iat,
+      exp: exp,
+      tokenExp: iat + 60 * 60 * 2,
+    };
 
-  var KJUR = require("jsrsasign");
+    var KJUR = require("jsrsasign");
 
-  const sHeader = JSON.stringify(oHeader);
-  const sPayload = JSON.stringify(oPayload);
-  const signature = KJUR.jws.JWS.sign(
-    "HS256",
-    sHeader,
-    sPayload,
-    "LBPRCSWEWUeE2GSatwooZaubnfcRYskC"
-  );
+    const sHeader = JSON.stringify(oHeader);
+    const sPayload = JSON.stringify(oPayload);
+    const signature = KJUR.jws.JWS.sign(
+      "HS256",
+      sHeader,
+      sPayload,
+      "LBPRCSWEWUeE2GSatwooZaubnfcRYskC"
+    );
 
-  return signature;
-}
+    return signature;
+  }
 
-function startMeeting(client: any, clientConf: any) {
-  client.join({
-    signature: clientConf.signature,
-    sdkKey: clientConf.sdkKey,
-    meetingNumber: clientConf.meetingNumber,
-    password: clientConf.passWord,
-    userName: clientConf.userName,
-    userEmail: clientConf.userEmail,
-  });
-}
+  function startMeeting(client: any, clientConf: any) {
+    client.join({
+      signature: clientConf.signature,
+      sdkKey: clientConf.sdkKey,
+      meetingNumber: clientConf.meetingNumber,
+      password: clientConf.passWord,
+      userName: clientConf.userName,
+      userEmail: clientConf.userEmail,
+    });
+  }
+};
 
 export default ZoomComponent;
