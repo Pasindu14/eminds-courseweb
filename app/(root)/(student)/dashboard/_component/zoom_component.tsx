@@ -39,7 +39,7 @@ const ZoomComponent = () => {
       <Button className="rounded-xl" onClick={initZoomApp}>
         Live Class
       </Button>
-      <div id="meetingSDKElement" className="relative "></div>
+      <div id="meetingSDKElement"></div>
     </div>
   );
 
@@ -83,12 +83,12 @@ const ZoomComponent = () => {
           isResizable: true,
           viewSizes: {
             default: {
-              width: 1000,
-              height: 600,
+              width: 100,
+              height: 300,
             },
             ribbon: {
-              width: 300,
-              height: 700,
+              width: 100,
+              height: 300,
             },
           },
         },
@@ -109,7 +109,7 @@ const ZoomComponent = () => {
               text: "Custom Button",
               className: "CustomButton",
               onClick: () => {
-                console.log("Hi, mom");
+                console.log("custom button clicked");
               },
             },
           ],

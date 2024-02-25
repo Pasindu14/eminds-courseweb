@@ -41,7 +41,11 @@ const StudentDetails = ({
           <h1>Email: {studentData.email}</h1>
           <h1>Birth Day: {studentData.birthday}</h1>
 
-          <ZoomComponent />
+          <Button asChild className="rounded-xl">
+            <Link href="/zoom" target="_blank">
+              Live Class
+            </Link>
+          </Button>
         </div>
       )}
     </motion.div>

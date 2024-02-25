@@ -34,7 +34,7 @@ export function NavigationStudent() {
 
   return (
     <motion.div
-      className="h-16 w-full flex items-center justify-center shadow-md px-8 "
+      className="h-16 w-full flex items-center justify-center shadow-md px-8"
       initial={{ opacity: 0, y: -50 }}
       animate={{ opacity: 1, y: 0 }}
     >
@@ -42,7 +42,7 @@ export function NavigationStudent() {
 
       <div className="md:flex items-center justify-between w-full  hidden ">
         <div></div>
-        <NavigationMenu>
+        <NavigationMenu className="-z-20">
           <NavigationMenuList>
             <NavigationMenuItem>
               <Link href="/dashboard" legacyBehavior passHref>
