@@ -12,13 +12,13 @@ const RootLayout = async ({ children }: { children: React.ReactNode }) => {
   const session: any = await getServerSession(authOption);
   console.log(session);
 
-  if (session) {
+  /*   if (session) {
     if (session.role == "ADMIN") {
       redirect("/admin-dashboard");
     } else if (session.role == "STUDENT") {
       redirect("/dashboard");
     }
-  }
+  } */
   return (
     <div className={jost.className}>
       <div className="background-image min-h-screen flex flex-col">
