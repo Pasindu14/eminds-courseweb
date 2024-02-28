@@ -7,6 +7,7 @@ export default withAuth(
         const path = new URL(req.url).pathname;
         const userRole = req.nextauth.token?.role;
 
+        console.log(path);
         const adminPaths = [
             , "/badges", "/batches", "/courses", "/events", "/exam-results", "/exams", "/expire-badges", "/final-exams-submissions-results", "/jobs", "/payment-report", "/payments", "/questions", "/sessions", "/student-mapping", "/students", "/admin-dashboard"
         ];
