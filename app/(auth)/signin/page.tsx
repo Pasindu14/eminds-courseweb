@@ -53,10 +53,11 @@ const SignIn = () => {
         toastError("Invalid credentials please try again!");
         setLoading(false);
       } else {
+        console.log(res);
         if (values.username != "admin") {
-          router.replace(studentDashboardPath);
+          //router.replace(studentDashboardPath);
         } else {
-          router.replace("/admin-dashboard");
+          //router.replace("/admin-dashboard");
         }
       }
     } catch (error) {
