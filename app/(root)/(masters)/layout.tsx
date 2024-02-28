@@ -14,8 +14,11 @@ const RootLayout = async ({ children }: { children: React.ReactNode }) => {
 
   if (!session) {
     redirect(signIn);
+  } else {
+    if (session.role == "STUDENT") {
+      redirect("/dashboard");
+    }
   }
-
   return (
     <Providers>
       <div className="background-image min-h-screen flex flex-col ">
