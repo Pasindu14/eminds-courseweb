@@ -14,13 +14,14 @@ export default withAuth(
             "/dashboard"
         ];
 
-        if (userRole === "ADMIN" && adminPaths.includes(path)) {
-            return NextResponse.next();
-        } else if (userRole === "STUDENT" && studentPaths.includes(path)) {
-            return NextResponse.next();
-        } else {
-            return NextResponse.redirect(new URL('/unauthorized', req.url));
-        }
+        return NextResponse.next();
+        /*         if (userRole === "ADMIN" && adminPaths.includes(path)) {
+                    return NextResponse.next();
+                } else if (userRole === "STUDENT" && studentPaths.includes(path)) {
+                    return NextResponse.next();
+                } else {
+                    return NextResponse.redirect(new URL('/unauthorized', req.url));
+                } */
     },
     {
         callbacks: {

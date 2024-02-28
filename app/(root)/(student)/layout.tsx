@@ -12,13 +12,13 @@ import { authOption } from "@/lib/auth-options";
 const RootLayout = async ({ children }: { children: React.ReactNode }) => {
   const session: any = await getServerSession(authOption);
   console.log(session);
-  if (!session) {
+  /*   if (!session) {
     redirect(signIn);
   } else {
     if (session.role == "ADMIN") {
       redirect("/admin-dashboard");
     }
-  }
+  } */
 
   return (
     <Providers>
