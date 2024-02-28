@@ -10,7 +10,6 @@ const jost = Jost({ subsets: ["latin"] });
 
 const RootLayout = async ({ children }: { children: React.ReactNode }) => {
   const session: any = await getServerSession(authOption);
-  console.log(session);
 
   if (session) {
     if (session.role == "ADMIN") {

@@ -14,14 +14,13 @@ export default withAuth(
             "/dashboard"
         ];
 
-        return NextResponse.next();
-        /*         if (userRole === "ADMIN" && adminPaths.includes(path)) {
-                    return NextResponse.next();
-                } else if (userRole === "STUDENT" && studentPaths.includes(path)) {
-                    return NextResponse.next();
-                } else {
-                    return NextResponse.redirect(new URL('/unauthorized', req.url));
-                } */
+        if (userRole === "ADMIN" && adminPaths.includes(path)) {
+            return NextResponse.next();
+        } else if (userRole === "STUDENT" && studentPaths.includes(path)) {
+            return NextResponse.next();
+        } else {
+            return NextResponse.redirect(new URL('/unauthorized', req.url));
+        }
     },
     {
         callbacks: {
@@ -31,4 +30,4 @@ export default withAuth(
 );
 
 
-/* export const config = { matcher: ["/badges", "/batches", "/courses", "/events", "/exam-results", "/exams", "/expire-badges", "/final-exams-submissions-results", "/jobs", "/payment-report", "/payments", "/questions", "/sessions", "/student-mapping", "/students", "/admin-dashboard", "/dashboard",] }; */
+export const config = { matcher: ["/badges", "/batches", "/courses", "/events", "/exam-results", "/exams", "/expire-badges", "/final-exams-submissions-results", "/jobs", "/payment-report", "/payments", "/questions", "/sessions", "/student-mapping", "/students", "/admin-dashboard", "/dashboard",] };
