@@ -1,4 +1,4 @@
-/* import { withAuth } from "next-auth/middleware";
+import { withAuth } from "next-auth/middleware";
 import { NextResponse } from "next/server";
 
 export default withAuth(
@@ -30,4 +30,4 @@ export default withAuth(
 );
 
 
-export const config = { matcher: ["/badges", "/batches", "/courses", "/events", "/exam-results", "/exams", "/expire-badges", "/final-exams-submissions-results", "/jobs", "/payment-report", "/payments", "/questions", "/sessions", "/student-mapping", "/students", "/admin-dashboard", "/dashboard",] }; */
+export const config = { matcher: ["/badges", "/batches", "/courses", "/events", "/exam-results", "/exams", "/expire-badges", "/final-exams-submissions-results", "/jobs", "/payment-report", "/payments", "/questions", "/sessions", "/student-mapping", "/students", "/admin-dashboard", "/dashboard",] };
