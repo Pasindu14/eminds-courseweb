@@ -30,7 +30,16 @@ export const columns: ColumnDef<PaymentLines>[] = [
     accessorKey: "image_url",
     header: "Receipt Url",
     cell: ({ row }) => {
-      if (row.original.image_url) {
+      if (row.original.image_ext) {
+        return (
+          <Link
+            href={`https://courseweb.eminds.lk/paymentUploads/${row.original.image_url}.${row.original.image_ext}`}
+            target="_blank"
+          >
+            <Badge>Receipt</Badge>
+          </Link>
+        );
+      } else if (row.original.image_url) {
         return (
           <Link
             href={`https://eminds.com.au/coursewebfiles/downloadfiles.php?id=${row.original.image_url}`}

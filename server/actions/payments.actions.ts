@@ -15,6 +15,7 @@ export async function fetchPaymentLinesWithBatchNo(batch_auto_id?: number, stude
                 payments_line_auto_id,
                 amount,
                 image_url,
+                image_ext,
                 is_admin,
                 approve_status,
                 created_at,

@@ -95,7 +95,7 @@ const PaymentFilterForm = () => {
 
               <Button
                 type="button"
-                disabled={loading}
+                disabled={form.formState.isSubmitting}
                 onClick={fetchPaymentLines}
                 className={`md:mt-8 mt-2 ${!hasErrors && "md:mt-1"}`}
               >
