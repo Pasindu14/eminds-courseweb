@@ -40,7 +40,7 @@ const PaymentFilterForm = () => {
     setPaymentLines([]);
     const result = await fetchPaymentLinesWithBatchNo(
       undefined,
-      Number(values.students[0]),
+      Number(values.studentMapping[0]),
       undefined
     );
     setPaymentLines(result);
@@ -71,7 +71,11 @@ const PaymentFilterForm = () => {
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
           <div className="md:flex flex-row  gap-2">
             <div className="w-1/3">
-              <MultiSelect control={form.control} name="students" max={1} />
+              <MultiSelect
+                control={form.control}
+                name="studentMapping"
+                max={1}
+              />
             </div>
             <div className="gap-2 flex flex-col md:flex-row md:items-center">
               <Button

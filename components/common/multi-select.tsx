@@ -75,7 +75,10 @@ export const MultiSelect = ({ control, name, max }: MultiSelectProps) => {
                 }}
                 isMulti
                 options={options}
-                isOptionDisabled={() => field.value.length >= (max ?? Infinity)}
+                isOptionDisabled={() =>
+                  Array.isArray(field.value) &&
+                  field.value.length >= (max ?? Infinity)
+                }
               />
               {loading && <Loader size={13} color="black" />}
             </div>

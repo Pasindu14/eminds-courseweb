@@ -104,7 +104,6 @@ export const authOption: NextAuthOptions = {
       session.accessToken = token.accessToken;
       session.password = token.password;
 
-      console.log(session);
       return session;
     },
   },

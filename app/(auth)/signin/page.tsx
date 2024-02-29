@@ -66,7 +66,7 @@ const SignIn = () => {
   }
 
   return (
-    <div className="w-full h-screen mx-auto flex justify-center items-center md:py-32 md:px-32 py-6">
+    <div className="w-full h-screen mx-auto flex justify-center items-center md:py-16 md:px-32 py-6">
       <div className="md:w-1/2 bg-white h-full md:rounded-l-3xl flex flex-1 flex-col items-center justify-center px-6 py-12 lg:px-8 border-2 border-gray-200">
         <div className="relative rounded-md md:w-1/3">
           <Image
