@@ -20,6 +20,7 @@ import { LoaderFull } from "@/lib/spinners";
 import { ProgressBar } from "./_component/progress";
 import { getUserLoginActivity } from "@/server/actions/auth.action";
 import { toastError } from "@/lib/toast/toast";
+import NotFoundAnimationComponent from "@/components/common/not-found-component";
 
 interface State {
   usageData: any[];
@@ -135,6 +136,10 @@ const StudentUsage = () => {
                 Times logged in to the system: {state.userLoginActivity}
               </p>
             </>
+          )}
+
+          {!loading && state.usageData.length == 0 && (
+            <NotFoundAnimationComponent />
           )}
         </CardContent>
         <CardFooter className="flex justify-between"></CardFooter>

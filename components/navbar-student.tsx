@@ -40,7 +40,7 @@ export function NavigationStudent() {
     >
       {/*       {session && <AuthSessionValidator userId={session?.id!} />} */}
 
-      <div className="md:flex items-center justify-between w-full  hidden ">
+      <div className="md:flex items-center justify-between w-full hidden z-50">
         <div></div>
         <NavigationMenu className="-z-20">
           <NavigationMenuList>
