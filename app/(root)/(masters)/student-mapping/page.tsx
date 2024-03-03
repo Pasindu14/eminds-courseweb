@@ -13,19 +13,9 @@ import { AddMappingDialog } from "./_component/add_mapping_dialog";
 import { DataTable } from "@/components/datatable";
 import { columns } from "./datatable/columns";
 import { fetchStudentMappings } from "@/server/actions/student-mapping.actions";
-import { StudentMapping } from "@/server/types/student-mapping.type";
 import StudentMappingFilterForm from "./_component/student_mapping_filter_form";
 
 const StudentMapping = () => {
-  const [StudentMappings, setStudentMappings] = useState<StudentMapping[]>([]);
-  useEffect(() => {
-    const fetchData = async () => {
-      const data = await fetchStudentMappings();
-      setStudentMappings(data);
-    };
-    fetchData();
-  }, []);
-
   return (
     <div>
       <Card className="w-full rounded-sm">

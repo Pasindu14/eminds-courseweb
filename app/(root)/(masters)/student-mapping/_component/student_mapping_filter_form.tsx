@@ -43,10 +43,6 @@ const StudentMappingFilterForm = () => {
     }
   };
 
-  useEffect(() => {
-    fetchBatches();
-  }, []);
-
   const hasErrors = Object.keys(form.formState.errors).length === 0;
 
   return (
