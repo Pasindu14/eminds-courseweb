@@ -48,6 +48,7 @@ export async function addSession(session: FormData, fileFormData: FormData) {
     try {
         const responseHandler = new ResponseHandler<any>();
 
+        throw new Error('Not implemented');
         const jsonResponse = await uploadFile(fileFormData);
 
         if (jsonResponse.success !== true) {
@@ -63,6 +64,7 @@ export async function addSession(session: FormData, fileFormData: FormData) {
         const courseAutoId = session.get('course_auto_id');
 
         const fileId = jsonResponse.file_id;
+
 
         const { data, error } = await supabaseCacheFreeClient
             .from('sessions')
@@ -80,7 +82,7 @@ export async function addSession(session: FormData, fileFormData: FormData) {
 
         if (error != null) {
             return responseHandler.setError(
-                error.details ?? errorMessage,
+                error?.details ?? errorMessage,
             );
         }
         revalidatePath('/sessions', 'page');
