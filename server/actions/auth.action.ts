@@ -6,7 +6,7 @@ export async function validateUser(phoneNumber: string, password: string): Promi
         let { data: student, error } = await supabaseCacheFreeClient
             .from('students_mapping')
             .select(`* , batches!inner(auto_id,batch_name,password,course_auto_id) , students!inner(auto_id,name,phonenumber,email)`)
-            .eq('students.phonenumber', phoneNumber).eq('batches.password', password).eq('batches.status', 1).eq('block_status', 0).maybeSingle();
+            .eq('students.phonenumber', phoneNumber).eq('batches.password', password).eq('batches.status', 1).eq('block_status', 1).maybeSingle();
 
         if (error) {
             return null;

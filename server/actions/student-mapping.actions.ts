@@ -78,7 +78,7 @@ export async function updateMapping(auto_id: number, status: boolean) {
         const { data, error } = await supabaseCacheFreeClient
             .from('students_mapping')
             .update({
-                block_status: status == true ? 1 : 0,
+                block_status: status == false ? 1 : 0,
             })
             .eq('auto_id', auto_id)
             .select();

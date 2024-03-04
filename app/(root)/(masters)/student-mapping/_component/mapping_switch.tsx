@@ -10,7 +10,7 @@ const MappginSwitch = ({
   auto_id: number;
   block_status: number;
 }) => {
-  const [checked, setChecked] = useState(block_status == 1 ? false : true);
+  const [checked, setChecked] = useState(block_status == 0 ? false : true);
 
   const onCheckedChange = async (value: boolean) => {
     setChecked(value);
