@@ -26,12 +26,12 @@ export function SessionForm({ data }: { data?: any }) {
   const form = useForm<z.infer<typeof sessionSchema>>({
     resolver: zodResolver(sessionSchema),
     defaultValues: {
-      title: "",
-      zoom_link: "",
-      zoom_password: "",
+      title: "sadsadasd",
+      zoom_link: "http://localhost:3000/sessions",
+      zoom_password: "1122334",
       slide_extension: "",
-      batch_auto_id: "",
-      course_auto_id: "",
+      batch_auto_id: "1",
+      course_auto_id: "10",
       file: undefined,
     },
   });

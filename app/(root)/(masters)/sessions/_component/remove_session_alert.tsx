@@ -10,25 +10,30 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
+import { successMessage } from "@/constants/messages";
 import { Loader } from "@/lib/spinners";
-import { toastError } from "@/lib/toast/toast";
+import { toastError, toastSuccess } from "@/lib/toast/toast";
 import { removeExam } from "@/server/actions/exams.actions";
+import { removeSession } from "@/server/actions/sessions.actions";
 
 import { useState } from "react";
 
 export function ConfirmDeleteAlertDialog({
-  exam_auto_id,
+  session_auto_id,
+  filePath,
 }: {
-  exam_auto_id: number | null;
+  session_auto_id: number | null;
+  filePath: string;
 }) {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const deleteFunction = async () => {
     setLoading(true);
-    const result = await removeExam(exam_auto_id!.toString());
+    const result = await removeSession(session_auto_id!.toString(), filePath);
     if (!result.success) {
       toastError(result.message);
     } else {
+      toastSuccess(successMessage);
       setOpen(false);
     }
     setLoading(false);

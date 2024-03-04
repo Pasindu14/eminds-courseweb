@@ -4,7 +4,7 @@ import { supabase, supabaseCacheFreeClient } from "../server";
 import { revalidatePath } from 'next/cache';
 import { errorMessage } from "@/constants/messages";
 import { Session } from "../types/sessions.type";
-import { uploadFile } from "./file.actions";
+import { deleteSlide, uploadSlide } from "./file.actions";
 
 export async function fetchSessions(batchParam?: string): Promise<Session[]> {
     try {
@@ -48,8 +48,7 @@ export async function addSession(session: FormData, fileFormData: FormData) {
     try {
         const responseHandler = new ResponseHandler<any>();
 
-        throw new Error('Not implemented');
-        const jsonResponse = await uploadFile(fileFormData);
+        const jsonResponse = await uploadSlide(fileFormData);
 
         if (jsonResponse.success !== true) {
             return responseHandler.setError(
@@ -63,10 +62,10 @@ export async function addSession(session: FormData, fileFormData: FormData) {
         const batchAutoId = session.get('batch_auto_id');
         const courseAutoId = session.get('course_auto_id');
 
-        const fileId = jsonResponse.file_id;
+        const filePath = jsonResponse.filePath;
 
 
-        const { data, error } = await supabaseCacheFreeClient
+        const { error } = await supabaseCacheFreeClient
             .from('sessions')
             .insert([
                 {
@@ -75,7 +74,7 @@ export async function addSession(session: FormData, fileFormData: FormData) {
                     zoom_password: zoomPassword,
                     batch_auto_id: batchAutoId,
                     course_auto_id: courseAutoId,
-                    new_url: fileId
+                    new_url: filePath
                 },
             ])
             .select();
@@ -92,9 +91,17 @@ export async function addSession(session: FormData, fileFormData: FormData) {
     }
 }
 
-export async function removeSession(session_auto_id: string) {
+export async function removeSession(session_auto_id: string, filePath: string) {
     try {
         const responseHandler = new ResponseHandler<any>();
+
+        const jsonResponse = await deleteSlide("slides/" + filePath);
+
+        if (jsonResponse.success !== true) {
+            return responseHandler.setError(
+                jsonResponse.message ?? errorMessage,
+            );
+        }
 
         const { error } = await supabase
             .from('sessions')
@@ -102,12 +109,11 @@ export async function removeSession(session_auto_id: string) {
             .eq('session_auto_id', session_auto_id)
 
         if (error != null) {
-            console.log(error);
             return responseHandler.setError(
                 error.details ?? errorMessage,
             );
         }
-        revalidatePath('/sessions', 'page'); // Adjust the path as needed
+        revalidatePath('/sessions', 'page');
         return responseHandler.setSuccess("Success");
     } catch (error) {
         throw error;

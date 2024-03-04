@@ -39,7 +39,7 @@ export const columns: ColumnDef<Session>[] = [
       if (row.original.slide_extension == null) {
         return (
           <Link
-            href={`https://eminds.com.au/coursewebfiles/downloadfiles.php?id=${row.original.new_url}`}
+            href={`https://eminds.com.au/coursewebslides/slides/${row.original.new_url}`}
             target="_blank"
           >
             <p className="text-blue-600">Slide</p>
@@ -48,7 +48,7 @@ export const columns: ColumnDef<Session>[] = [
       } else {
         return (
           <Link
-            href={`https://courseweb.eminds.lk/upload/${row.original.session_auto_id}.${row.original.slide_extension}`}
+            href={`https://eminds.com.au/coursewebslides/slides/${row.original.session_auto_id}.${row.original.slide_extension}`}
             target="_blank"
           >
             <p className="text-blue-600">Slide</p>
@@ -61,7 +61,10 @@ export const columns: ColumnDef<Session>[] = [
     accessorKey: "exam_auto_id",
     header: () => <div>Actions</div>,
     cell: ({ row }) => (
-      <ConfirmDeleteAlertDialog exam_auto_id={row.original.session_auto_id} />
+      <ConfirmDeleteAlertDialog
+        session_auto_id={row.original.session_auto_id}
+        filePath={row.original.new_url}
+      />
     ), // Use or create a component for exam updates
   },
 ];
