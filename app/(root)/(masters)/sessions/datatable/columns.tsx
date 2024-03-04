@@ -35,14 +35,27 @@ export const columns: ColumnDef<Session>[] = [
   {
     accessorKey: "slide_extension",
     header: "Slide Url",
-    cell: ({ row }) => (
-      <Link
-        href={`https://eminds.com.au/coursewebfiles/downloadfiles.php?id=${row.original.slide_extension}`}
-        target="_blank"
-      >
-        <p className="text-blue-600">Slide</p>
-      </Link>
-    ), // Use or create a component for exam updates
+    cell: ({ row }) => {
+      if (row.original.slide_extension == null) {
+        return (
+          <Link
+            href={`https://eminds.com.au/coursewebfiles/downloadfiles.php?id=${row.original.new_url}`}
+            target="_blank"
+          >
+            <p className="text-blue-600">Slide</p>
+          </Link>
+        );
+      } else {
+        return (
+          <Link
+            href={`https://courseweb.eminds.lk/upload/${row.original.session_auto_id}.${row.original.slide_extension}`}
+            target="_blank"
+          >
+            <p className="text-blue-600">Slide</p>
+          </Link>
+        );
+      }
+    },
   },
   {
     accessorKey: "exam_auto_id",

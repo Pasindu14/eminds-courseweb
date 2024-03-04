@@ -34,7 +34,9 @@ const CustomButton = ({ row, type }: { row: any; type: string }) => {
         <Link
           href={
             type == "slide"
-              ? `https://eminds.com.au/coursewebfiles/downloadfiles.php?id=${row.original.slide_extension}`
+              ? row.original.slide_extension == null
+                ? `https://eminds.com.au/coursewebfiles/downloadfiles.php?id=${row.original.new_url}`
+                : `https://courseweb.eminds.lk/upload/${row.original.session_auto_id}.${row.original.slide_extension}`
               : `${row.original.zoom_link}`
           }
           target="_blank"

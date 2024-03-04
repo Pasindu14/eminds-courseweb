@@ -73,7 +73,7 @@ export async function addSession(session: FormData, fileFormData: FormData) {
                     zoom_password: zoomPassword,
                     batch_auto_id: batchAutoId,
                     course_auto_id: courseAutoId,
-                    slide_extension: fileId
+                    new_url: fileId
                 },
             ])
             .select();

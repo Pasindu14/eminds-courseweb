@@ -6,6 +6,7 @@ export type Session = {
   batch_auto_id: number;
   course_auto_id: number;
   slide_extension: string;
+  new_url: string;
   batches?: {
     // Optional, assuming you might join with a batches table
     batch_name: string;
