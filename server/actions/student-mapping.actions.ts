@@ -53,7 +53,7 @@ export async function addStudentMapping(mapping: any) {
                     .insert([{
                         student_auto_id: studentId,
                         batch_auto_id: mapping.batch_auto_id,
-                        block_status: 0
+                        block_status: 1
                     }])
                     .single();
 
