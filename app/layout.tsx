@@ -8,9 +8,6 @@ const jost = Jost({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Eminds",
   description: "Eminds Academy",
-  icons: {
-    icon: "/icon.ico",
-  },
 };
 
 export default function RootLayout({
