@@ -12,7 +12,7 @@ export async function fetchSessions(batchParam?: string): Promise<Session[]> {
         let query = supabaseCacheFreeClient
             .from('sessions')
             .select(`*, batches(batch_name,batch_no)`)
-            .order('session_auto_id', { ascending: true });
+            .order('session_auto_id', { ascending: false });
 
         if (batchParam) {
             query = query.eq('batch_auto_id', batchParam);
@@ -34,7 +34,7 @@ export async function fetchSessionsByBatchId(batch_auto_id: number): Promise<Ses
         let { data: sessions, error } = await supabaseCacheFreeClient
             .from('sessions')
             .select()
-            .order('session_auto_id', { ascending: true }).eq('batch_auto_id', batch_auto_id);
+            .order('title', { ascending: true }).eq('batch_auto_id', batch_auto_id);
 
         if (error) {
             return [];

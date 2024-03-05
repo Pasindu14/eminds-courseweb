@@ -10,7 +10,7 @@ export async function fetchStudentMappings(batchParam?: string): Promise<Student
     try {
         let query = supabaseCacheFreeClient
             .from('students_mapping')
-            .select(`* , students(name,phonenumber) , batches!inner(batch_name,auto_id)`)
+            .select(`* , students!inner(name,phonenumber) , batches!inner(batch_name,auto_id)`)
             .order('auto_id', { ascending: true });
 
 

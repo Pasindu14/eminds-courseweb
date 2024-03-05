@@ -14,6 +14,10 @@ export const columns: ColumnDef<StudentMapping>[] = [
     header: "Student",
   },
   {
+    accessorKey: "students.phonenumber",
+    header: "Phone",
+  },
+  {
     accessorKey: "batches.batch_name",
     header: "Batch",
   },

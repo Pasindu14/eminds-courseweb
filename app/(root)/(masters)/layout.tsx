@@ -1,6 +1,6 @@
 import { NavigationAdmin } from "@/components/navbar-admin";
 import { getServerSession } from "next-auth";
-import React from "react";
+import React, { Suspense } from "react";
 
 import { redirect } from "next/navigation";
 import { signIn } from "@/constants/paths";
@@ -8,6 +8,7 @@ import { NavigationStudent } from "@/components/navbar-student";
 
 import Providers from "@/app/Providers";
 import { authOption } from "@/lib/auth-options";
+import { Loader, LoaderFull } from "@/lib/spinners";
 
 const RootLayout = async ({ children }: { children: React.ReactNode }) => {
   const session: any = await getServerSession(authOption);
@@ -29,8 +30,11 @@ const RootLayout = async ({ children }: { children: React.ReactNode }) => {
             <NavigationStudent />
           )}
         </div>
-
-        <div className="container mx-auto pt-4 pb-4">{children}</div>
+        <div className="container mx-auto pt-4 pb-4 min-h-[50vh]">
+          <Suspense fallback={<LoaderFull size={25} color="#2563eb" />}>
+            {children}
+          </Suspense>
+        </div>
       </div>
     </Providers>
   );
