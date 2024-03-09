@@ -13,6 +13,13 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 import { toastError, toastSuccess } from "@/lib/toast/toast";
 import { useState } from "react";
@@ -32,6 +39,7 @@ export function BadgeForm({ data }: { data?: any }) {
       course_auto_id: data?.course_auto_id ?? "",
       students: [],
       file: undefined,
+      badge_type: data?.badge_type ?? "",
     },
   });
 
@@ -69,6 +77,28 @@ export function BadgeForm({ data }: { data?: any }) {
         <CourseSelect control={form.control} name="course_auto_id" />
 
         <MultiSelect control={form.control} name="students" max={1} />
+
+        <FormField
+          control={form.control}
+          name="badge_type"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Badge Type</FormLabel>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a Badge Type" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  <SelectItem value="AUS">Australian</SelectItem>
+                  <SelectItem value="SL">Sri Lankan</SelectItem>
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
         <FormField
           control={form.control}

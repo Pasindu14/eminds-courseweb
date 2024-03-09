@@ -10,6 +10,12 @@ export const dpdmBadgeImage =
 export const cpdmBadgeImage =
   "https://eminds.com.au/courseweb/badges/badge_4.png?4";
 
+export const dpdmBadgeImageSL =
+  "https://courseweb.eminds.lk/profile/img/badges/badge_5.png?4";
+
+export const cpdmBadgeImageSL =
+  "https://courseweb.eminds.lk/profile/img/badges/badge_4.png?4";
+
 export const dpdmOGBadgeImage =
   "https://courseweb.eminds.lk/profile/img/badges/badge_5.jpg?4";
 

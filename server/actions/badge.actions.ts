@@ -4,7 +4,7 @@ import ResponseHandler from "../models/response.model";
 import { deleteHtmlFile, uploadFile, uploadHtmlContent } from "./file.actions";
 import { supabaseCacheFreeClient } from "../server";
 import { revalidatePath } from "next/cache";
-import { cpdmBadgeImage, cpdmOGBadgeImage, dpdmBadgeImage, dpdmOGBadgeImage, emindsLogo, profileDetailsPath } from "@/constants/badge";
+import { cpdmBadgeImage, cpdmBadgeImageSL, cpdmOGBadgeImage, dpdmBadgeImage, dpdmBadgeImageSL, dpdmOGBadgeImage, emindsLogo, profileDetailsPath } from "@/constants/badge";
 import { fetchStudentByAutoid } from "./student.actions";
 import { getCourseByAutoId } from "./course.actions";
 
@@ -358,7 +358,7 @@ li.active a {
 <title>Eminds Profile</title>
 </head>`;
 
-const generateCPDMHtmlContent = (name: string, courseCode: string, studentId: number) => {
+const generateCPDMHtmlContent = (name: string, courseCode: string, studentId: number, badgeType: string) => {
   return `<html lang="en">
     
     ${headTags(courseCode)}
@@ -373,7 +373,7 @@ const generateCPDMHtmlContent = (name: string, courseCode: string, studentId: nu
     <div class="container default-margin-top">
     <div class="row align-items-start mb-4">
       <div class="col-lg-4 text-center pb-lg-0 pb-5">
-        <img src="${cpdmBadgeImage}" class="img-fluid w-100" id="profile-image">
+        <img src="${badgeType == "AUS" ? cpdmBadgeImage : cpdmBadgeImageSL}" class="img-fluid w-100" id="profile-image">
         <h1 class="fw-bold student-name mt-4 mb-4"><a href="http://courseweb.eminds.com.au/profile/${studentId}">${name}</a></h1>
     
         <div class="d-flex justify-content-center">
@@ -469,7 +469,7 @@ const generateCPDMHtmlContent = (name: string, courseCode: string, studentId: nu
     </body></html>';`;
 };
 
-const generateDPDMHtmlContent = (name: string, courseCode: string, studentId: number) => {
+const generateDPDMHtmlContent = (name: string, courseCode: string, studentId: number, badgeType: string) => {
   return `<html lang="en">
     ${headTags(courseCode)}
     
@@ -483,7 +483,7 @@ const generateDPDMHtmlContent = (name: string, courseCode: string, studentId: nu
     <div class="container default-margin-top">
     <div class="row align-items-start mb-4">
       <div class="col-lg-4 text-center pb-lg-0 pb-5">
-        <img src="${dpdmBadgeImage}" class="img-fluid w-100" id="profile-image">
+        <img src="${badgeType == "AUS" ? dpdmBadgeImage : dpdmBadgeImageSL}" class="img-fluid w-100" id="profile-image">
         <h1 class="fw-bold student-name mt-4 mb-4"><a href="http://courseweb.eminds.com.au/profile/${studentId}">${name}</a></h1>
     
         <div class="d-flex justify-content-center">
@@ -600,6 +600,7 @@ export async function addBadge(badge: FormData, fileFormData: FormData) {
 
     const courseId = badge.get('course_auto_id');
     const studentId = badge.get('students');
+    const badgetType = badge.get('badge_type') as string;
 
     // Check if badge already exists
     const { data: existing, error: existingError } = await supabaseCacheFreeClient
@@ -642,7 +643,7 @@ export async function addBadge(badge: FormData, fileFormData: FormData) {
 
     let result;
     if (courseDetails.course_code === 'DPDM') {
-      const html = generateDPDMHtmlContent(studentDetails.name, courseDetails.course_code, studentDetails.auto_id);
+      const html = generateDPDMHtmlContent(studentDetails.name, courseDetails.course_code, studentDetails.auto_id, badgetType);
       result = await uploadHtmlContent(html);
 
       if (!result.success) {
@@ -650,7 +651,7 @@ export async function addBadge(badge: FormData, fileFormData: FormData) {
       }
       updateBadge(id!, result.filePath);
     } else {
-      const html = generateCPDMHtmlContent(studentDetails.name, courseDetails.course_code, studentDetails.auto_id);
+      const html = generateCPDMHtmlContent(studentDetails.name, courseDetails.course_code, studentDetails.auto_id, badgetType);
 
       result = await uploadHtmlContent(html);
 
