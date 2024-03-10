@@ -51,8 +51,6 @@ export async function addStudent(student: any) {
             ])
             .select();
 
-
-
         if (error != null) {
             return responseHandler.setError(
                 error.details ?? errorMessage,
