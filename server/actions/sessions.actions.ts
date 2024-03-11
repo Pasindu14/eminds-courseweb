@@ -44,26 +44,15 @@ export async function fetchSessionsByBatchId(batch_auto_id: number): Promise<Ses
     }
 }
 
-export async function addSession(session: FormData, fileFormData: FormData) {
+export async function addSession(session: FormData, filePath: string) {
     try {
         const responseHandler = new ResponseHandler<any>();
-
-        const jsonResponse = await uploadSlide(fileFormData);
-
-        if (jsonResponse.success !== true) {
-            return responseHandler.setError(
-                jsonResponse.message ?? errorMessage,
-            );
-        }
 
         const title = session.get('title');
         const zoomLink = session.get('zoom_link');
         const zoomPassword = session.get('zoom_password');
         const batchAutoId = session.get('batch_auto_id');
         const courseAutoId = session.get('course_auto_id');
-
-        const filePath = jsonResponse.filePath;
-
 
         const { error } = await supabaseCacheFreeClient
             .from('sessions')

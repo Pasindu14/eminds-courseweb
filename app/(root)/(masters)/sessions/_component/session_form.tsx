@@ -55,7 +55,24 @@ export function SessionForm({ data }: { data?: any }) {
         }
       }
 
-      result = await addSession(formData, fileFormData);
+      const response = await fetch(
+        "https://eminds.com.au/coursewebslides/upload.php",
+        {
+          method: "POST",
+          body: fileFormData,
+          cache: "no-store",
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Something went wrong while uploading the slide.");
+      }
+
+      const jsonResponse = await response.json();
+
+      const filePath = jsonResponse.filePath;
+
+      result = await addSession(formData, filePath);
 
       if (!result.success) {
         toastError(result.message);

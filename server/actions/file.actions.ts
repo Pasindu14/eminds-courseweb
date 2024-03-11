@@ -1,4 +1,4 @@
-'use client';
+
 export async function uploadFile(fileFormData: FormData) {
 
     const response = await fetch(
