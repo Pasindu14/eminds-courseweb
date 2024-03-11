@@ -9,7 +9,6 @@ const studentSchema = z.object({
   email: z.string().email(),
   birthDay: z.string().refine(
     (value) => {
-      // Use a regular expression to validate the format (YYYY-MM-DD)
       const datePattern = /^\d{4}-\d{2}-\d{2}$/;
       return datePattern.test(value);
     },
