@@ -3,7 +3,7 @@ import { z } from "zod";
 const studentSchema = z.object({
   auto_id: z.number().nullable().optional(),
   name: z.string().min(2).max(500),
-  phoneNumber: z.string().min(10).max(10),
+  phoneNumber: z.string().min(5).max(20),
   address: z.string().min(2).max(500),
   nic: z.string().optional(),
   email: z.string().email(),
