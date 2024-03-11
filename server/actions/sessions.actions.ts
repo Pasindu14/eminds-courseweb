@@ -5,7 +5,6 @@ import { revalidatePath } from 'next/cache';
 import { errorMessage } from "@/constants/messages";
 import { Session } from "../types/sessions.type";
 import { deleteSlide, uploadSlide } from "./file.actions";
-import { json } from "node:stream/consumers";
 
 export async function fetchSessions(batchParam?: string): Promise<Session[]> {
     try {
