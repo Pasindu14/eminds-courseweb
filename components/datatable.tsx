@@ -9,6 +9,7 @@ import {
   useReactTable,
   getPaginationRowModel,
   getSortedRowModel,
+  PaginationState,
 } from "@tanstack/react-table";
 
 import {
@@ -21,8 +22,14 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { motion } from "framer-motion";
 import AnimatedComponent from "./common/animated-component";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -37,6 +44,11 @@ export function DataTable<TData, TValue>({
 
   const [filtering, setFiltering] = React.useState("");
 
+  const [pagination, setPagination] = React.useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 10,
+  });
+
   const table = useReactTable({
     data,
     columns,
@@ -48,8 +60,10 @@ export function DataTable<TData, TValue>({
     state: {
       sorting,
       globalFilter: filtering,
+      pagination,
     },
     onGlobalFilterChange: setFiltering,
+    onPaginationChange: setPagination,
   });
 
   return (
@@ -114,23 +128,69 @@ export function DataTable<TData, TValue>({
         </Table>
       </div>
 
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-        >
-          Previous
-        </Button>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
-        >
-          Next
-        </Button>
+      <div className="flex items-center justify-between space-x-2 py-4">
+        <div className="text-xs">Total rows: {data.length.toString()}</div>
+        <div>
+          <div className="flex items-center gap-2">
+            <Select
+              defaultValue={table.getState().pagination.pageSize.toString()}
+              onValueChange={(value) => {
+                table.setPageSize(Number(value));
+              }}
+            >
+              <SelectTrigger className="w-[100px] text-xs">
+                <SelectValue
+                  placeholder={table.getState().pagination.pageSize.toString()}
+                />
+              </SelectTrigger>
+              <SelectContent>
+                {[10, 20, 30, 40, 50].map((pageSize) => (
+                  <SelectItem
+                    value={pageSize.toString()}
+                    key={pageSize}
+                    className="text-xs"
+                  >
+                    Show {pageSize}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <Button
+              variant={"outline"}
+              size={"sm"}
+              onClick={() => table.previousPage()}
+              disabled={!table.getCanPreviousPage()}
+            >
+              {"<"}
+            </Button>
+            <Button
+              variant={"outline"}
+              size={"sm"}
+              onClick={() => table.nextPage()}
+              disabled={!table.getCanNextPage()}
+            >
+              {">"}
+            </Button>
+
+            <span className="flex items-center gap-1 text-xs">
+              <div>Page</div>
+              {table.getState().pagination.pageIndex + 1} of{" "}
+              {table.getPageCount().toLocaleString()}
+            </span>
+            {/*  <span className="flex items-center gap-1 text-xs">
+              | Go to page:
+              <Input
+                type="number"
+                defaultValue={table.getState().pagination.pageIndex + 1}
+                onChange={(e) => {
+                  const page = e.target.value ? Number(e.target.value) - 1 : 0;
+                  table.setPageIndex(page);
+                }}
+                className="border p-1 rounded w-16"
+              />
+            </span> */}
+          </div>
+        </div>
       </div>
     </AnimatedComponent>
   );

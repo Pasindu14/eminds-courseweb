@@ -16,6 +16,7 @@ import { fetchStudentMappings } from "@/server/actions/student-mapping.actions";
 import { studentMappingFilterSchema } from "@/validations/student-mapping.validation";
 import { columns } from "../datatable/columns";
 import BatchSelect from "@/components/common/batch_select";
+import { motion } from "framer-motion";
 
 const StudentMappingFilterForm = () => {
   const [loading, setLoading] = useState(false);
@@ -47,33 +48,38 @@ const StudentMappingFilterForm = () => {
 
   return (
     <div className="mt-2">
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
-          <div className="md:flex flex-row  gap-2">
-            <div className="w-1/3">
-              <BatchSelect control={form.control} name="batchId" />
+      <motion.div
+        initial={{ opacity: 0, y: -50 }}
+        animate={{ opacity: 1, y: 0 }}
+      >
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
+            <div className="md:flex flex-row  gap-2">
+              <div className="w-1/3">
+                <BatchSelect control={form.control} name="batchId" />
+              </div>
+              <div className="gap-2 flex flex-col md:flex-row md:items-center">
+                <Button
+                  type="submit"
+                  disabled={loading}
+                  className={`md:mt-8 mt-2 ${!hasErrors && "md:mt-1"}`}
+                >
+                  {loading ? (
+                    <div className="md:flex items-center justify-center gap-2">
+                      <p>Filter</p>
+                      <Loader size={13} />
+                    </div>
+                  ) : (
+                    "Filter"
+                  )}
+                </Button>
+              </div>
             </div>
-            <div className="gap-2 flex flex-col md:flex-row md:items-center">
-              <Button
-                type="submit"
-                disabled={loading}
-                className={`md:mt-8 mt-2 ${!hasErrors && "md:mt-1"}`}
-              >
-                {loading ? (
-                  <div className="md:flex items-center justify-center gap-2">
-                    <p>Filter</p>
-                    <Loader size={13} />
-                  </div>
-                ) : (
-                  "Filter"
-                )}
-              </Button>
-            </div>
-          </div>
-        </form>
-      </Form>
-      <Separator className="mt-2" />
-      <DataTable columns={columns} data={studentMapping} />
+          </form>
+        </Form>
+        <Separator className="mt-2" />
+        <DataTable columns={columns} data={studentMapping} />
+      </motion.div>
     </div>
   );
 };

@@ -12,10 +12,13 @@ export const columns: ColumnDef<Batch>[] = [
   {
     accessorKey: "batch_name",
     header: "Batch Name",
+    cell: ({ row }) => (
+      <div className="w-[350px]">{row.getValue("batch_name")}</div>
+    ),
   },
   {
     accessorKey: "courses.course_code",
-    header: "Course Code",
+    header: "Code",
   },
   {
     accessorKey: "courses.course_name",
@@ -23,25 +26,26 @@ export const columns: ColumnDef<Batch>[] = [
   },
   {
     accessorKey: "zoom_link",
-    header: "Zoom Link",
+    header: "Zoom",
     cell: ({ row }) => (
       <a href={row.original.zoom_link} className="text-blue-500">
-        Zoom Link
+        Link
       </a>
     ), // Use or create a component for batch updates
-  },
-
-  {
-    accessorKey: "course_auto_id",
-    header: "Course ID",
   },
   {
     accessorKey: "start_date",
     header: "Start Date",
+    cell: ({ row }) => (
+      <div className="w-[100px]">{row.getValue("start_date")}</div>
+    ),
   },
   {
     accessorKey: "end_date",
     header: "End Date",
+    cell: ({ row }) => (
+      <div className="w-[100px]">{row.getValue("start_date")}</div>
+    ),
   },
   {
     accessorKey: "status",
