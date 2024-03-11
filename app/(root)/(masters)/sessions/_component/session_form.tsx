@@ -20,6 +20,7 @@ import { errorMessage, successMessage } from "@/constants/messages";
 import { addSession } from "@/server/actions/sessions.actions"; // Adjust these action imports
 import CourseSelect from "@/components/common/course_select";
 import BatchSelect from "@/components/common/batch_select";
+import { slideUploadPath } from "@/constants/paths";
 
 export function SessionForm({ data }: { data?: any }) {
   const [loading, setLoading] = useState(false);
@@ -55,22 +56,7 @@ export function SessionForm({ data }: { data?: any }) {
         }
       }
 
-      const response = await fetch(
-        "https://eminds.com.au/coursewebslides/upload.php",
-        {
-          method: "POST",
-          body: fileFormData,
-          cache: "no-store",
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Something went wrong while uploading the slide.");
-      }
-
-      const jsonResponse = await response.json();
-
-      const filePath = jsonResponse.filePath;
+      const filePath = await uploadSlide(fileFormData);
 
       result = await addSession(formData, filePath);
 
@@ -87,6 +73,21 @@ export function SessionForm({ data }: { data?: any }) {
     } finally {
       setLoading(false);
     }
+  }
+
+  async function uploadSlide(fileFormData: FormData): Promise<string> {
+    const response = await fetch(slideUploadPath, {
+      method: "POST",
+      body: fileFormData,
+      cache: "no-store",
+    });
+
+    if (!response.ok) {
+      throw new Error("Something went wrong while uploading the slide.");
+    }
+
+    const jsonResponse = await response.json();
+    return jsonResponse.filePath;
   }
 
   return (
