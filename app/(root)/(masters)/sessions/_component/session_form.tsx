@@ -48,7 +48,19 @@ export function SessionForm({ data }: { data?: any }) {
       const fileFormData = new FormData();
       fileFormData.append("file", values.file[0]);
 
-      const formData = new FormData();
+      const response = await fetch(
+        "https://eminds.com.au/coursewebslides/upload.php",
+        {
+          method: "POST",
+          body: fileFormData,
+          cache: "no-store",
+        }
+      );
+
+      console.log(response.ok);
+
+      toastError(response.statusText + response.ok + response.status);
+      /*       const formData = new FormData();
       for (const [key, value] of Object.entries(values)) {
         if (key !== "file") {
           formData.append(key, value);
@@ -64,7 +76,7 @@ export function SessionForm({ data }: { data?: any }) {
           //form.reset();
         }
         toastSuccess(successMessage);
-      }
+      } */
     } catch (error) {
       toastError(errorMessage);
     } finally {
