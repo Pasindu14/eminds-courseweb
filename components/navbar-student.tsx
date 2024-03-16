@@ -133,6 +133,16 @@ export function NavigationStudent() {
                 <Separator />
               </Link>
             ))}
+
+            {session && (
+              <Button
+                variant={"destructive"}
+                onClick={() => signOut()}
+                className="rounded-lg mt-4"
+              >
+                Logout
+              </Button>
+            )}
           </div>
         </div>
       </div>
