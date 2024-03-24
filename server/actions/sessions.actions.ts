@@ -84,13 +84,13 @@ export async function removeSession(session_auto_id: string, filePath: string) {
     try {
         const responseHandler = new ResponseHandler<any>();
 
-        const jsonResponse = await deleteSlide("slides/" + filePath);
+        await deleteSlide("slides/" + filePath);
 
-        if (jsonResponse.success !== true) {
-            return responseHandler.setError(
-                jsonResponse.message ?? errorMessage,
-            );
-        }
+        /*         if (jsonResponse.success !== true) {
+                    return responseHandler.setError(
+                        jsonResponse.message ?? errorMessage,
+                    );
+                } */
 
         const { error } = await supabase
             .from('sessions')
