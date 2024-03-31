@@ -128,3 +128,96 @@ export async function getSessionValidity(user_id: number, session_token: string)
 
 
 }
+
+export async function validateFingerprint(userId: string, phoneNumber: string, fingerprint: string, batchAutoId: string) {
+
+    let { data: user_fingerprints, error } = await supabaseCacheFreeClient
+        .from('fingerprint')
+        .select("*").eq('user_id', userId).maybeSingle();
+
+
+    if (error) {
+        throw error;
+    }
+
+    const fingerprint_01 = user_fingerprints?.fingerprint_01;
+    const fingerprint_02 = user_fingerprints?.fingerprint_02;
+
+    if ((fingerprint_01 && fingerprint_02) && (fingerprint_01 != fingerprint && fingerprint_02 != fingerprint)) {
+        await blockUser(userId, batchAutoId);
+        throw new Error('More than two fingerprints are not allowed, Please contact the administrator');
+    }
+
+
+    if (fingerprint_01 == fingerprint || fingerprint_02 == fingerprint) {
+        return true;
+    }
+
+    if (((!fingerprint_01 && !fingerprint_02) && (fingerprint_01 != null && fingerprint_02 != null)) || !user_fingerprints) {
+
+        let { error } = await supabaseCacheFreeClient
+            .from('fingerprint')
+            .insert([{ user_id: userId, phone_number: phoneNumber, fingerprint_01: fingerprint }]);
+
+        if (error) {
+            throw new Error('Error occured while handling fingerprint');
+        }
+
+        return;
+    }
+
+    if (fingerprint_01 == null) {
+        let { error } = await supabaseCacheFreeClient
+            .from('fingerprint')
+            .update([{ user_id: userId, phone_number: phoneNumber, fingerprint_01: fingerprint }]).eq('user_id', userId);
+        if (error) {
+            throw new Error('Error occured while handling fingerprint');
+        }
+        return;
+    }
+    if (fingerprint_02 == null) {
+        let { error } = await supabaseCacheFreeClient
+            .from('fingerprint')
+            .update([{ user_id: userId, phone_number: phoneNumber, fingerprint_02: fingerprint }]).eq('user_id', userId);
+        if (error) {
+            throw error;
+        }
+        return;
+    }
+}
+
+export async function resetFingerprint(userId: string) {
+    let { data: user_fingerprints, error } = await supabaseCacheFreeClient
+        .from('fingerprint')
+        .select("*").eq('user_id', userId).maybeSingle();
+
+    if (error) {
+        throw error;
+    }
+
+    if (!user_fingerprints) {
+        throw new Error('No fingerprints found for this user');
+    }
+
+    if (user_fingerprints) {
+        const resetCount = user_fingerprints.reset_count;
+
+        let { error } = await supabaseCacheFreeClient
+            .from('fingerprint')
+            .update([{ user_id: userId, fingerprint_01: null, fingerprint_02: null, reset_count: resetCount + 1 }]).eq('user_id', userId);
+        if (error) {
+            throw error;
+        }
+        return;
+    }
+
+}
+
+async function blockUser(userId: string, batchAutoId: string) {
+    let { error } = await supabaseCacheFreeClient
+        .from('students_mapping')
+        .update([{ block_status: 0 }]).eq('student_auto_id', userId).eq('batch_auto_id', batchAutoId);;
+    if (error) {
+        throw error;
+    }
+}

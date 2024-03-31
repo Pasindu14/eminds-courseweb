@@ -19,6 +19,7 @@ import { fetchAllExamResults } from "@/server/actions/exam-marks.actions";
 import { resultsColumns } from "./datatable/resultsColumns";
 import { getServerSession } from "next-auth";
 import { authOption } from "@/lib/auth-options";
+import FingerprintComponent from "./_component/fingerprint_component";
 
 const Dashboard = async () => {
   const session: any = await getServerSession(authOption);
@@ -36,6 +37,11 @@ const Dashboard = async () => {
         <CardHeader>
           <CardTitle className="text-4xl">
             Welcome, {studentDetails.name}
+            <FingerprintComponent
+              phoneNumber={studentPhone}
+              userId={studentDetails.auto_id}
+              batchId={batchDetails.auto_id}
+            />
           </CardTitle>
         </CardHeader>
         <Separator />

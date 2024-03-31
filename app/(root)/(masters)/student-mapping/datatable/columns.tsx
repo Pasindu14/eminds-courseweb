@@ -7,6 +7,7 @@ import { removeExam } from "@/server/actions/exams.actions";
 import { StudentMapping } from "@/server/types/student-mapping.type";
 import { ConfirmDeleteAlertDialog } from "../_component/remove_mapping_alert";
 import MappginSwitch from "../_component/mapping_switch";
+import { ResetFingerprintAlertDIalog } from "../_component/reset_fingerprint_alert";
 
 export const columns: ColumnDef<StudentMapping>[] = [
   {
@@ -35,7 +36,10 @@ export const columns: ColumnDef<StudentMapping>[] = [
     accessorKey: "auto_id",
     header: () => <div>Actions</div>,
     cell: ({ row }) => (
-      <ConfirmDeleteAlertDialog auto_id={row.original.auto_id} />
+      <>
+        <ConfirmDeleteAlertDialog auto_id={row.original.auto_id} />
+        <ResetFingerprintAlertDIalog auto_id={row.original.student_auto_id} />
+      </>
     ),
   },
 ];

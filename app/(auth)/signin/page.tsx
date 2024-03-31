@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, use } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -24,6 +24,7 @@ import { Loader } from "@/lib/spinners";
 import { useRouter } from "next/navigation";
 import { studentDashboardPath } from "@/constants/paths";
 import dynamic from "next/dynamic";
+import { getCurrentBrowserFingerPrint } from "@rajesh896/broprint.js";
 
 const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
