@@ -34,6 +34,10 @@ const Dashboard = async () => {
   const sessions = await fetchSessionsByBatchId(batchDetails.auto_id);
   const examResults = await fetchAllExamResults(studentPhone);
 
+  ///////// due to invalid data insertion in the database, we have to use the following code to get the valid data
+  const startDate = new Date(batchDetails.start_date);
+  const currentDate = new Date("2024-04-01");
+
   return (
     <div>
       <Card className="w-full rounded-sm">
@@ -57,13 +61,26 @@ const Dashboard = async () => {
             <AnimationComponent />
           </div>
 
-          <AnimatedComponent>
-            <div className="flex gap-4">
-              <AccountRestrictionComponent />
-              <StudentGuideComponent courseId={"4"} />
-              <StudentGuideComponent courseId={"5"} />
-            </div>
-          </AnimatedComponent>
+          {/* showing the guides based on the start date of the batch */}
+          {startDate < currentDate && (
+            <AnimatedComponent>
+              <div className="flex gap-4">
+                <AccountRestrictionComponent />
+                <StudentGuideComponent courseId={"4"} />
+                <StudentGuideComponent courseId={"5"} />
+              </div>
+            </AnimatedComponent>
+          )}
+
+          {startDate >= currentDate && (
+            <AnimatedComponent>
+              <div className="flex gap-4">
+                <AccountRestrictionComponent />
+                <StudentGuideComponent courseId={batchDetails.course_auto_id} />
+              </div>
+            </AnimatedComponent>
+          )}
+
           <h1 className="text-2xl mt-2 mb-2 font-semibold">Sessions</h1>
           <Separator className="mt-3" />
           <div>
