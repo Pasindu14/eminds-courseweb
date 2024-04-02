@@ -22,6 +22,7 @@ import { authOption } from "@/lib/auth-options";
 import FingerprintComponent from "./_component/fingerprint_component";
 import AccountRestrictionComponent from "./_component/account_restriction_component";
 import StudentGuideComponent from "./_component/student_guide";
+import AnimatedComponent from "@/components/common/animated-component";
 
 const Dashboard = async () => {
   const session: any = await getServerSession(authOption);
@@ -56,11 +57,12 @@ const Dashboard = async () => {
             <AnimationComponent />
           </div>
 
-          <div className="flex gap-4">
-            <AccountRestrictionComponent />
-            <StudentGuideComponent courseId={session.courseId} />
-          </div>
-
+          <AnimatedComponent>
+            <div className="flex gap-4">
+              <AccountRestrictionComponent />
+              <StudentGuideComponent courseId={session.courseId} />
+            </div>
+          </AnimatedComponent>
           <h1 className="text-2xl mt-2 mb-2 font-semibold">Sessions</h1>
           <Separator className="mt-3" />
           <div>
