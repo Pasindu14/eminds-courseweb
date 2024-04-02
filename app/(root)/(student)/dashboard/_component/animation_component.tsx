@@ -5,7 +5,7 @@ import dynamic from "next/dynamic";
 const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 const AnimationComponent = () => {
   return (
-    <div className="md:w-80">
+    <div className="md:w-72">
       <Lottie animationData={animationData} loop={true} />
     </div>
   );

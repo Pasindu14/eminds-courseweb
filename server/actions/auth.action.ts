@@ -11,6 +11,7 @@ export async function validateUser(phoneNumber: string, password: string): Promi
         if (error) {
             return null;
         }
+
         const updateResult = await updateLoginActivity(phoneNumber);
 
         if (updateResult == null) {

@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button";
 import ZoomComponent from "./zoom_component";
 import { signOut, useSession } from "next-auth/react";
 import { getSessionValidity } from "@/server/actions/auth.action";
+import AccountRestrictionComponent from "./account_restriction_component";
+import StudentGuideComponent from "./student_guide";
 
 const StudentDetails = ({
   studentData,
@@ -41,7 +43,7 @@ const StudentDetails = ({
           <h1>Email: {studentData.email}</h1>
           <h1>Birth Day: {studentData.birthday}</h1>
 
-          <Button asChild className="rounded-xl">
+          <Button asChild className="rounded-xl md:w-[200px]">
             <Link href="/zoom" target="_blank">
               Live Class
             </Link>
