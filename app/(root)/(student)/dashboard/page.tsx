@@ -37,11 +37,11 @@ const Dashboard = async () => {
         <CardHeader>
           <CardTitle className="text-4xl">
             Welcome, {studentDetails.name}
-            <FingerprintComponent
+            {/*             <FingerprintComponent
               phoneNumber={studentPhone}
               userId={studentDetails.auto_id}
               batchId={batchDetails.auto_id}
-            />
+            /> */}
           </CardTitle>
         </CardHeader>
         <Separator />
