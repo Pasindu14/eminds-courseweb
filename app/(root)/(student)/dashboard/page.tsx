@@ -60,7 +60,8 @@ const Dashboard = async () => {
           <AnimatedComponent>
             <div className="flex gap-4">
               <AccountRestrictionComponent />
-              <StudentGuideComponent courseId={session.courseId} />
+              <StudentGuideComponent courseId={"4"} />
+              <StudentGuideComponent courseId={"5"} />
             </div>
           </AnimatedComponent>
           <h1 className="text-2xl mt-2 mb-2 font-semibold">Sessions</h1>

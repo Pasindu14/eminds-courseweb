@@ -18,7 +18,9 @@ const StudentGuideComponent = ({ courseId }: { courseId: string }) => {
     <div>
       <Dialog>
         <DialogTrigger asChild>
-          <Button className="rounded-xl md:w-[200px]">Student Guide</Button>
+          <Button className="rounded-xl md:w-[200px]">
+            Student Guide {courseId == "4" ? "CPDM" : "DPDM"}
+          </Button>
         </DialogTrigger>
         <DialogContent
           className={"lg:max-w-screen-lg overflow-y-scroll max-h-screen"}
