@@ -44,7 +44,7 @@ export const columns: ColumnDef<Batch>[] = [
     accessorKey: "end_date",
     header: "End Date",
     cell: ({ row }) => (
-      <div className="w-[100px]">{row.getValue("start_date")}</div>
+      <div className="w-[100px]">{row.getValue("end_date")}</div>
     ),
   },
   {

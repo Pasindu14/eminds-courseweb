@@ -35,7 +35,7 @@ const StudentDetails = ({
   return (
     <motion.div initial={{ opacity: 0, y: -50 }} animate={{ opacity: 1, y: 0 }}>
       {studentData && (
-        <div className="text-xl flex flex-col gap-3">
+        <div className="text-xl flex flex-col gap-3 w-full">
           <h1>Name: {studentData.name}</h1>
           <h1>Phone: {studentData.phonenumber}</h1>
           <h1>NIC: {studentData.nic}</h1>
@@ -43,7 +43,7 @@ const StudentDetails = ({
           <h1>Email: {studentData.email}</h1>
           <h1>Birth Day: {studentData.birthday}</h1>
 
-          <Button asChild className="rounded-xl md:w-[200px]">
+          <Button asChild className="rounded-xl md:w-[200px] w-[200px] mb-1">
             <Link href="/zoom" target="_blank">
               Live Class
             </Link>

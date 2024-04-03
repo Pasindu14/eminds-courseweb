@@ -18,7 +18,7 @@ const StudentGuideComponent = ({ courseId }: { courseId: string }) => {
     <div>
       <Dialog>
         <DialogTrigger asChild>
-          <Button className="rounded-xl md:w-[200px]">
+          <Button className="rounded-xl md:w-[200px] w-[200px] mb-1">
             Student Guide {courseId == "4" ? "CPDM" : "DPDM"}
           </Button>
         </DialogTrigger>

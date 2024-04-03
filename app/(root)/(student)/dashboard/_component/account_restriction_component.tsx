@@ -18,7 +18,7 @@ const AccountRestrictionComponent = () => {
     <div>
       <Dialog>
         <DialogTrigger asChild>
-          <Button className="rounded-xl md:w-[200px]">
+          <Button className="rounded-xl md:w-[200px] w-[200px] mb-1">
             Account Restriction Guide
           </Button>
         </DialogTrigger>
