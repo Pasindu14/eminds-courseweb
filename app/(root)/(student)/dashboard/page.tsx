@@ -64,7 +64,7 @@ const Dashboard = async () => {
           {/* showing the guides based on the start date of the batch */}
           {startDate < currentDate && (
             <AnimatedComponent>
-              <div className="md:flex gap-4 ">
+              <div className="md:flex gap-4">
                 <AccountRestrictionComponent />
                 <StudentGuideComponent courseId={"4"} />
                 <StudentGuideComponent courseId={"5"} />
