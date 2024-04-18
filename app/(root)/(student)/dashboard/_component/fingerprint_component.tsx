@@ -24,7 +24,7 @@ const FingerprintComponent = ({
       } catch (error: any) {
         if (
           error.message ==
-          "More than two fingerprints are not allowed, Please contact the administrator"
+          "More than two devices are not allowed, Please contact the administrator"
         ) {
           setTimeout(async () => {
             await signOut();
