@@ -21,7 +21,6 @@ const FingerprintComponent = ({
       try {
         const fingerPrint = await getCurrentBrowserFingerPrint();
         await validateFingerprint(userId, phoneNumber, fingerPrint, batchId);
-        await unblockUser(userId, batchId);
       } catch (error: any) {
         if (
           error.message ==

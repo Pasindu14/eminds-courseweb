@@ -13,14 +13,18 @@ import {
 import { Button } from "@/components/ui/button";
 import { Loader } from "@/lib/spinners";
 import { toastError, toastSuccess } from "@/lib/toast/toast";
-import { resetFingerprint } from "@/server/actions/auth.action";
+import { resetFingerprint, unblockUser } from "@/server/actions/auth.action";
 
 import { useState } from "react";
 
 export function ResetFingerprintAlertDIalog({
   auto_id,
+  batch_auto_id,
+  student_auto_id,
 }: {
   auto_id: number | null;
+  batch_auto_id: string;
+  student_auto_id: string;
 }) {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -28,6 +32,7 @@ export function ResetFingerprintAlertDIalog({
     try {
       setLoading(true);
       await resetFingerprint(auto_id!.toString());
+      await unblockUser(student_auto_id, batch_auto_id);
       toastSuccess("Fingerprint reset successfully");
     } catch (error: any) {
       toastError(error.message);
