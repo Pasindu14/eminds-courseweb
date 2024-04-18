@@ -28,7 +28,7 @@ const FingerprintComponent = ({
         ) {
           setTimeout(async () => {
             await signOut();
-          }, 3000);
+          }, 1000);
         }
         toastError(error.message);
       }

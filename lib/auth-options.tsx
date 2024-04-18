@@ -25,7 +25,18 @@ export const authOption: NextAuthOptions = {
               credentials.username,
               credentials.password
             );
+
             if (authResult) {
+              if (authResult.multiple_device_lock == 1) {
+                throw new Error(
+                  "Your account has been locked because it was accessed from multiple devices. Please get in touch with the administrator."
+                );
+              }
+
+              if (authResult.block_status == 0) {
+                throw new Error("Your account has been locked.");
+              }
+
               const accessToken = uuidv4();
               await insertOrUpdateSession(
                 authResult.students.auto_id,

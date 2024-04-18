@@ -6,7 +6,7 @@ export async function validateUser(phoneNumber: string, password: string): Promi
         let { data: student, error } = await supabaseCacheFreeClient
             .from('students_mapping')
             .select(`* , batches!inner(auto_id,batch_name,password,course_auto_id) , students!inner(auto_id,name,phonenumber,email)`)
-            .eq('students.phonenumber', phoneNumber).eq('batches.password', password).eq('batches.status', 1).eq('block_status', 1).maybeSingle();
+            .eq('students.phonenumber', phoneNumber).eq('batches.password', password).eq('batches.status', 1).maybeSingle();
 
         if (error) {
             return null;
@@ -146,7 +146,7 @@ export async function validateFingerprint(userId: string, phoneNumber: string, f
 
     if ((fingerprint_01 && fingerprint_02) && (fingerprint_01 != fingerprint && fingerprint_02 != fingerprint)) {
         await blockUser(userId, batchAutoId);
-        throw new Error('More than two fingerprints are not allowed, Please contact the administrator');
+        throw new Error('More than two devices are not allowed, Please contact the administrator');
     }
 
 
@@ -197,7 +197,7 @@ export async function resetFingerprint(userId: string) {
     }
 
     if (!user_fingerprints) {
-        throw new Error('No fingerprints found for this user');
+        throw new Error('No devices found for this user');
     }
 
     if (user_fingerprints) {
@@ -205,7 +205,7 @@ export async function resetFingerprint(userId: string) {
 
         let { error } = await supabaseCacheFreeClient
             .from('fingerprint')
-            .update([{ user_id: userId, fingerprint_01: null, fingerprint_02: null, reset_count: resetCount + 1 }]).eq('user_id', userId);
+            .update([{ user_id: userId, fingerprint_01: null, fingerprint_02: null, reset_count: resetCount + 1, multiple_device_lock: 0 }]).eq('user_id', userId);
         if (error) {
             throw error;
         }
@@ -217,7 +217,7 @@ export async function resetFingerprint(userId: string) {
 async function blockUser(userId: string, batchAutoId: string) {
     let { error } = await supabaseCacheFreeClient
         .from('students_mapping')
-        .update([{ block_status: 0 }]).eq('student_auto_id', userId).eq('batch_auto_id', batchAutoId);;
+        .update([{ block_status: 0, multiple_device_lock: 1 }]).eq('student_auto_id', userId).eq('batch_auto_id', batchAutoId);;
     if (error) {
         throw error;
     }

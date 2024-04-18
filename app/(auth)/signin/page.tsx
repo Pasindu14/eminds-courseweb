@@ -51,7 +51,12 @@ const SignIn = () => {
       });
 
       if (res?.ok === false) {
-        toastError("Invalid credentials please try again!");
+        if (res?.error == "CredentialsSignin") {
+          toastError("Invalid credentials please try again!");
+        } else {
+          toastError(res.error ?? "Invalid credentials please try again!");
+        }
+
         setLoading(false);
       } else {
         if (values.username != "admin") {
