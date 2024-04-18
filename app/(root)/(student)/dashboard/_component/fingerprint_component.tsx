@@ -1,6 +1,6 @@
 "use client";
 import { toastError } from "@/lib/toast/toast";
-import { validateFingerprint } from "@/server/actions/auth.action";
+import { unblockUser, validateFingerprint } from "@/server/actions/auth.action";
 import { getCurrentBrowserFingerPrint } from "@rajesh896/broprint.js";
 import { signOut } from "next-auth/react";
 import React, { useEffect } from "react";
@@ -21,6 +21,7 @@ const FingerprintComponent = ({
       try {
         const fingerPrint = await getCurrentBrowserFingerPrint();
         await validateFingerprint(userId, phoneNumber, fingerPrint, batchId);
+        await unblockUser(userId, batchId);
       } catch (error: any) {
         if (
           error.message ==
