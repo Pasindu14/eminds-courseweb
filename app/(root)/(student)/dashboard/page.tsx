@@ -23,6 +23,7 @@ import FingerprintComponent from "./_component/fingerprint_component";
 import AccountRestrictionComponent from "./_component/account_restriction_component";
 import StudentGuideComponent from "./_component/student_guide";
 import AnimatedComponent from "@/components/common/animated-component";
+import GoodToKnowComponent from "./_component/good-to-know";
 
 const Dashboard = async () => {
   const session: any = await getServerSession(authOption);
@@ -68,6 +69,7 @@ const Dashboard = async () => {
                 <AccountRestrictionComponent />
                 <StudentGuideComponent courseId={"4"} />
                 <StudentGuideComponent courseId={"5"} />
+                <GoodToKnowComponent />
               </div>
             </AnimatedComponent>
           )}
