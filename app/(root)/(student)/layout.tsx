@@ -12,7 +12,6 @@ import { LoaderFull } from "@/lib/spinners";
 
 const RootLayout = async ({ children }: { children: React.ReactNode }) => {
   const session: any = await getServerSession(authOption);
-
   if (!session) {
     redirect(signIn);
   } else {

@@ -15,7 +15,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import authSchema from "@/validations/auth.validation";
-import { toastError } from "@/lib/toast/toast";
+import { toastError, toastSuccess } from "@/lib/toast/toast";
 import { errorMessage } from "@/constants/messages";
 import Image from "next/image";
 import animationData from "@/public/lottie/animation_02.json";
@@ -24,7 +24,7 @@ import { Loader } from "@/lib/spinners";
 import { useRouter } from "next/navigation";
 import { studentDashboardPath } from "@/constants/paths";
 import dynamic from "next/dynamic";
-import { getCurrentBrowserFingerPrint } from "@rajesh896/broprint.js";
+import { validateStudent } from "@/server/actions/students-auth.actions";
 
 const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
@@ -35,39 +35,51 @@ const SignIn = () => {
   const form = useForm<z.infer<typeof authSchema>>({
     resolver: zodResolver(authSchema),
     defaultValues: {
-      username: "",
-      password: "",
+      username: "0711803296",
+      password: "1122334",
     },
   });
 
   async function onSubmit(values: z.infer<typeof authSchema>) {
     try {
       setLoading(true);
-      const res = await signIn("credentials", {
-        redirect: false,
-        username: values.username,
-        password: values.password,
-        callbackUrl: studentDashboardPath,
-      });
 
-      if (res?.ok === false) {
-        if (res?.error == "CredentialsSignin") {
-          toastError("Invalid credentials please try again!");
+      const result = await validateStudent(values.username, values.password);
+
+      if (result == null) {
+        const res = await signIn("credentials", {
+          redirect: false,
+          username: values.username,
+          password: values.password,
+          callbackUrl: studentDashboardPath,
+        });
+
+        if (res?.ok === false) {
+          if (res?.error == "CredentialsSignin") {
+            toastError("Invalid credentials please try again!");
+          } else {
+            toastError(res.error ?? "Invalid credentials please try again!");
+          }
+
+          setLoading(false);
         } else {
-          toastError(res.error ?? "Invalid credentials please try again!");
+          if (values.username != "admin") {
+            router.replace(studentDashboardPath);
+          } else {
+            router.replace("/admin-dashboard");
+          }
         }
-
-        setLoading(false);
       } else {
-        if (values.username != "admin") {
-          router.replace(studentDashboardPath);
-        } else {
-          router.replace("/admin-dashboard");
-        }
+        router.replace("/student-choose-course");
       }
-    } catch (error) {
-      toastError(errorMessage);
+    } catch (error: any) {
+      if (error.message === "Invalid credentials please try again!") {
+        toastError(error.message);
+      } else {
+        toastError(errorMessage);
+      }
     } finally {
+      setLoading(false);
     }
   }
 

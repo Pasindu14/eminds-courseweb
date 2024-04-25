@@ -4,6 +4,7 @@ import ResponseHandler from "../models/response.model";
 import { supabase, supabaseCacheFreeClient } from "../server";
 import { Student } from "../types/student.type";
 import { revalidatePath } from 'next/cache'
+import { Course } from "../types/course.type";
 
 export async function fetchStudents(): Promise<Student[]> {
     try {
@@ -17,6 +18,23 @@ export async function fetchStudents(): Promise<Student[]> {
         }
 
         return students ?? [];
+    } catch (error) {
+        return [];
+    }
+}
+
+
+export async function fetchCoursesByStudent(): Promise<Course[]> {
+    try {
+        let { data: courses, error } = await supabaseCacheFreeClient
+            .from('courses')
+            .select('*').order('auto_id', { ascending: true });
+
+        if (error) {
+            return [];
+        }
+
+        return courses ?? [];
     } catch (error) {
         return [];
     }

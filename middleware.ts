@@ -11,7 +11,7 @@ export default withAuth(
             , "/badges", "/batches", "/courses", "/events", "/exam-results", "/exams", "/expire-badges", "/final-exams-submissions-results", "/jobs", "/payment-report", "/payments", "/questions", "/sessions", "/student-mapping", "/students", "/admin-dashboard"
         ];
         const studentPaths = [
-            "/dashboard", "/student-events", "/student-exams", "/student-payments", "/student-jobs", "/student-usage", "/zoom"
+            "/dashboard", "/student-events", "/student-exams", "/student-payments", "/student-jobs", "/student-usage", "/zoom",
         ];
 
         if (userRole === "ADMIN" && adminPaths.includes(path)) {
