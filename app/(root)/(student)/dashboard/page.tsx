@@ -42,7 +42,7 @@ const Dashboard = async () => {
 
   return (
     <div>
-      {/*       <WelcomeAlertDialog /> */}
+      {/*       <WelcomeAlertDialog />  */}
       <Card className="w-full rounded-sm">
         <CardHeader>
           <CardTitle className="text-4xl">
