@@ -9,6 +9,7 @@ export async function validateStudent(phoneNumber: string, password: string): Pr
             .select(`*`)
             .eq('phone_number', phoneNumber).maybeSingle();
 
+
         if (error) {
             throw error;
         }

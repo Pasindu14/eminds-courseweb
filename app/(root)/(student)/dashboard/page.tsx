@@ -24,6 +24,7 @@ import AccountRestrictionComponent from "./_component/account_restriction_compon
 import StudentGuideComponent from "./_component/student_guide";
 import AnimatedComponent from "@/components/common/animated-component";
 import GoodToKnowComponent from "./_component/good-to-know";
+import WelcomeAlertDialog from "@/components/common/welcome-message";
 
 const Dashboard = async () => {
   const session: any = await getServerSession(authOption);
@@ -41,6 +42,7 @@ const Dashboard = async () => {
 
   return (
     <div>
+      <WelcomeAlertDialog />
       <Card className="w-full rounded-sm">
         <CardHeader>
           <CardTitle className="text-4xl">

@@ -179,7 +179,7 @@ export async function updateStudentPassword(studentAutoId: string, phoneNumber: 
         }
 
         if (data == null) {
-            const { error: insertError } = await supabaseCacheFreeClient.from('students_auth').insert({ phone_number: phoneNumber, password: newPassword }).select();
+            const { error: insertError } = await supabaseCacheFreeClient.from('students_auth').insert({ phone_number: phoneNumber, password: newPassword, student_auto_id: studentAutoId }).select();
 
             if (insertError != null) {
                 throw new Error(insertError.details ?? "Error updating student password.");

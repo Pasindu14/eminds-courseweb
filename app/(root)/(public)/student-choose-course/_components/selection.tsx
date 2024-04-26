@@ -13,7 +13,6 @@ import { toastError } from "@/lib/toast/toast";
 import { useRouter } from "next/navigation";
 import { studentDashboardPath } from "@/constants/paths";
 import { Loader } from "@/lib/spinners";
-import { set } from "react-hook-form";
 
 const SelectionComponent = ({ courses }: { courses: any }) => {
   const [coursePassword, setCoursePassword] = useState<any>(undefined);
