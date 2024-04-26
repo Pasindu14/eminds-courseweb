@@ -25,6 +25,7 @@ import { useRouter } from "next/navigation";
 import { studentDashboardPath } from "@/constants/paths";
 import dynamic from "next/dynamic";
 import { validateStudent } from "@/server/actions/students-auth.actions";
+import { encryptToken } from "@/lib/encrypter";
 
 const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
@@ -70,9 +71,11 @@ const SignIn = () => {
           }
         }
       } else {
-        router.replace("/student-choose-course");
+        const encrypted = encryptToken(result.student_auto_id);
+        router.replace(`/student-choose-course/${encrypted}`);
       }
     } catch (error: any) {
+      console.log(error);
       if (error.message === "Invalid credentials please try again!") {
         toastError(error.message);
       } else {

@@ -8,12 +8,44 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
+import { signIn } from "next-auth/react";
+import { toastError } from "@/lib/toast/toast";
+import { useRouter } from "next/navigation";
+import { studentDashboardPath } from "@/constants/paths";
+import { Loader } from "@/lib/spinners";
+import { set } from "react-hook-form";
 
 const SelectionComponent = ({ courses }: { courses: any }) => {
   const [coursePassword, setCoursePassword] = useState<any>(undefined);
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   const handleSubmit = async () => {
-    console.log(coursePassword);
+    setLoading(true);
+    try {
+      const res = await signIn("credentials", {
+        redirect: false,
+        username: "0711803296",
+        password: coursePassword,
+        callbackUrl: studentDashboardPath,
+      });
+
+      if (res?.ok === false) {
+        if (res?.error == "CredentialsSignin") {
+          toastError("Invalid credentials please try again!");
+        } else {
+          toastError(res.error ?? "Invalid credentials please try again!");
+        }
+        setLoading(false);
+      } else {
+        router.replace(studentDashboardPath);
+      }
+    } catch (error: any) {
+      setLoading(false);
+      toastError(error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -35,12 +67,20 @@ const SelectionComponent = ({ courses }: { courses: any }) => {
           </SelectContent>
         </Select>
       </div>
+
       <Button
-        className="mt-4"
-        disabled={coursePassword == undefined ? true : false}
         onClick={handleSubmit}
+        disabled={(coursePassword == undefined ? true : false) || loading}
+        className="mt-4"
       >
-        Go To Dashboard
+        {loading ? (
+          <div className="flex items-center justify-center gap-2">
+            <p> Go To Dashboard </p>
+            <Loader size={13} />
+          </div>
+        ) : (
+          " Go To Dashboard"
+        )}
       </Button>
     </>
   );

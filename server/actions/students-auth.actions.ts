@@ -28,7 +28,7 @@ export async function validateStudent(phoneNumber: string, password: string): Pr
     }
 }
 
-export async function fetchStudentMappingsByAutoId(studentAutoId: number): Promise<StudentMapping[]> {
+export async function fetchStudentMappingsByAutoId(studentAutoId: string): Promise<StudentMapping[]> {
     try {
         let query = supabaseCacheFreeClient
             .from('students_mapping')

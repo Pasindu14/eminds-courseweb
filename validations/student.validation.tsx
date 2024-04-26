@@ -18,4 +18,10 @@ const studentSchema = z.object({
   ),
 });
 
+export const studentPasswordSchema = z.object({
+  oldPassword: z.string().min(5).max(50),
+  confirmPassword: z.string().min(5).max(50),
+  password: z.string().min(5).max(50),
+});
+
 export default studentSchema;

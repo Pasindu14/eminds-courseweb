@@ -161,3 +161,42 @@ export async function updateStudent(auto_id: string, student: any) {
         throw error
     }
 }
+
+export async function updateStudentPassword(studentAutoId: string, phoneNumber: string, oldPassword: string, newPassword: string, confirmPassword: string) {
+    try {
+
+        if (confirmPassword != newPassword) {
+            throw new Error("Passwords do not match.");
+        }
+
+        const { data, error } = await supabaseCacheFreeClient
+            .from('students_auth')
+            .select().
+            eq('phone_number', phoneNumber).maybeSingle()
+
+        if (error != null) {
+            throw new Error(error.details ?? "Error fetching student details.");
+        }
+
+        if (data == null) {
+            const { error: insertError } = await supabaseCacheFreeClient.from('students_auth').insert({ phone_number: phoneNumber, password: newPassword }).select();
+
+            if (insertError != null) {
+                throw new Error(insertError.details ?? "Error updating student password.");
+            }
+            return;
+        }
+        if (data.password != oldPassword) {
+            throw new Error("Incorrect old password.")
+        }
+
+        const { error: updateError } = await supabaseCacheFreeClient.from('students_auth').update({ password: newPassword }).eq('phone_number', phoneNumber).select();
+
+        if (updateError != null) {
+            throw new Error(updateError.details ?? "Error updating student password.");
+        }
+    } catch (error) {
+        throw error
+    }
+}
+

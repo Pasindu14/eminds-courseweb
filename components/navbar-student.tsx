@@ -16,7 +16,7 @@ import {
 import { motion } from "framer-motion";
 import { signOut, useSession } from "next-auth/react";
 import { Button } from "./ui/button";
-import { LogOut, Menu, X } from "lucide-react";
+import { LogOut, Menu, X, KeyRound } from "lucide-react";
 import { Separator } from "./ui/separator";
 
 export function NavigationStudent() {
@@ -91,13 +91,20 @@ export function NavigationStudent() {
 
         <div>
           {session && (
-            <Button
-              variant={"ghost"}
-              onClick={() => signOut()}
-              className="rounded-full"
-            >
-              <LogOut />
-            </Button>
+            <>
+              <Button asChild variant={"ghost"} className="rounded-full">
+                <Link href="/password-reset">
+                  <KeyRound />
+                </Link>
+              </Button>
+              <Button
+                variant={"ghost"}
+                onClick={() => signOut()}
+                className="rounded-full"
+              >
+                <LogOut />
+              </Button>
+            </>
           )}
         </div>
       </div>
@@ -135,13 +142,15 @@ export function NavigationStudent() {
             ))}
 
             {session && (
-              <Button
-                variant={"destructive"}
-                onClick={() => signOut()}
-                className="rounded-lg mt-4"
-              >
-                Logout
-              </Button>
+              <>
+                <Button
+                  variant={"destructive"}
+                  onClick={() => signOut()}
+                  className="rounded-lg mt-4"
+                >
+                  Logout
+                </Button>
+              </>
             )}
           </div>
         </div>
