@@ -11,8 +11,11 @@ const StudentChooseCourse = async ({ params }: { params: { id: string } }) => {
   return (
     <div className="w-full h-screen flex flex-col items-center justify-center">
       <h1 className="text-7xl mb-4">Choose your course</h1>
-
-      <SelectionComponent courses={courses} />
+      {courses && courses.length > 0 ? (
+        <SelectionComponent courses={courses} />
+      ) : (
+        <h1 className="text-3xl mb-4">No courses available</h1>
+      )}
     </div>
   );
 };

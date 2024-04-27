@@ -60,7 +60,9 @@ const SelectionComponent = ({ courses }: { courses: any }) => {
                 value={course.batches.password}
                 key={course.batches.password}
               >
-                {course.batches.courses.course_name}
+                {course.batches.courses.course_name +
+                  " - " +
+                  course.batches.batch_name}
               </SelectItem>
             ))}
           </SelectContent>

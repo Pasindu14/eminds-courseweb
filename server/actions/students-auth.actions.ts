@@ -33,9 +33,8 @@ export async function fetchStudentMappingsByAutoId(studentAutoId: string): Promi
     try {
         let query = supabaseCacheFreeClient
             .from('students_mapping')
-            .select(`* , students!inner(name,phonenumber) , batches!inner(batch_name,password,auto_id,courses!inner(course_name,course_code,auto_id))`)
+            .select(`* , students!inner(name,phonenumber) , batches!inner(end_date,batch_name,password,auto_id,courses!inner(course_name,course_code,auto_id))`)
             .order('auto_id', { ascending: true });
-
 
         if (studentAutoId) {
             query = query.eq('student_auto_id', studentAutoId);
@@ -43,12 +42,24 @@ export async function fetchStudentMappingsByAutoId(studentAutoId: string): Promi
 
         let { data: mappings, error } = await query;
 
-        if (error) {
+        if (error || !mappings) {
             return [];
         }
 
-        return mappings ?? [];
+        // Filter out mappings where batch end_date is more than 60 days ago
+        const filteredMappings = mappings.filter(mapping => {
+            if (mapping.batches && mapping.batches.end_date) {
+                const endDate = new Date(mapping.batches.end_date);
+                const sixtyDaysAgo = new Date();
+                sixtyDaysAgo.setDate(sixtyDaysAgo.getDate() - 60);
+                return endDate >= sixtyDaysAgo;
+            }
+            return true;
+        });
+
+        return filteredMappings;
     } catch (error) {
+        console.error('Error fetching student mappings:', error);
         return [];
     }
 }

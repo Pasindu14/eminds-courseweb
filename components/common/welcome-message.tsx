@@ -15,13 +15,11 @@ const WelcomeAlertDialog = () => {
 
   useEffect(() => {
     // Retrieve the dialog show count from localStorage
-    const showDialogCount = parseInt(
-      localStorage.getItem("showDialogCount") || "0"
-    );
+    const isShowDialog = localStorage.getItem("isShowDialog");
 
-    if (showDialogCount < 4) {
+    if (!isShowDialog) {
       setIsOpen(true); // Open the dialog if it has been shown less than 3 times
-      localStorage.setItem("showDialogCount", (showDialogCount + 1).toString()); // Increment the show count
+      localStorage.setItem("isShowDialog", "true"); // Increment the show count
     }
   }, []);
 
