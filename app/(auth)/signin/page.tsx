@@ -36,8 +36,8 @@ const SignIn = () => {
   const form = useForm<z.infer<typeof authSchema>>({
     resolver: zodResolver(authSchema),
     defaultValues: {
-      username: "0711803296",
-      password: "1122334",
+      username: "",
+      password: "",
     },
   });
 
@@ -65,6 +65,7 @@ const SignIn = () => {
           setLoading(false);
         } else {
           if (values.username != "admin") {
+            //router.replace("/password-reset");
             router.replace(studentDashboardPath);
           } else {
             router.replace("/admin-dashboard");
