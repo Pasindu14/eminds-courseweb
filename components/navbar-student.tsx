@@ -4,7 +4,7 @@ import * as React from "react";
 import Link from "next/link";
 
 import { cn } from "@/lib/utils";
-
+import { usePathname } from "next/navigation";
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -22,6 +22,7 @@ import { Separator } from "./ui/separator";
 export function NavigationStudent() {
   const { data: session }: any = useSession();
   const [isCollapsed, setCollapsed] = React.useState(false);
+  const pathname = usePathname();
 
   const navigationItems = [
     { url: "/dashboard", title: "Dashboard" },
@@ -31,6 +32,10 @@ export function NavigationStudent() {
     { url: "/student-exam", title: "Exams" },
     { url: "/student-usage", title: "Usage" },
   ];
+
+  if (pathname === "/password-reset-initial" && pathname) {
+    return;
+  }
 
   return (
     <motion.div

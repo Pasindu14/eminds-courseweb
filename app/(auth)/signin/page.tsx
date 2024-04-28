@@ -36,8 +36,8 @@ const SignIn = () => {
   const form = useForm<z.infer<typeof authSchema>>({
     resolver: zodResolver(authSchema),
     defaultValues: {
-      username: "",
-      password: "",
+      username: "0711803296",
+      password: "112233447",
     },
   });
 
@@ -65,8 +65,8 @@ const SignIn = () => {
           setLoading(false);
         } else {
           if (values.username != "admin") {
-            //router.replace("/password-reset");
-            router.replace(studentDashboardPath);
+            router.replace("/password-reset-initial");
+            //router.replace(studentDashboardPath);
           } else {
             router.replace("/admin-dashboard");
           }
@@ -76,7 +76,6 @@ const SignIn = () => {
         router.replace(`/student-choose-course/${encrypted}`);
       }
     } catch (error: any) {
-      console.log(error);
       if (error.message === "Invalid credentials please try again!") {
         toastError(error.message);
       } else {

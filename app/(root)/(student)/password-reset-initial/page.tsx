@@ -12,14 +12,14 @@ import { getServerSession } from "next-auth";
 import { authOption } from "@/lib/auth-options";
 import PasswordResetForm from "./_component/reset-form";
 
-const PasswordReset = async () => {
+const PasswordResetInitial = async () => {
   const session: any = await getServerSession(authOption);
 
   return (
     <div>
       <Card className="w-full rounded-sm">
         <CardHeader>
-          <CardTitle className="text-4xl">Password Change</CardTitle>
+          <CardTitle className="text-4xl">Change your password</CardTitle>
           <CardDescription>Manage your own password here</CardDescription>
         </CardHeader>
         <Separator />
@@ -35,4 +35,4 @@ const PasswordReset = async () => {
   );
 };
 
-export default PasswordReset;
+export default PasswordResetInitial;

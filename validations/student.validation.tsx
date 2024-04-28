@@ -24,4 +24,9 @@ export const studentPasswordSchema = z.object({
   password: z.string().min(5).max(50),
 });
 
+export const studentPasswordInitialSchema = z.object({
+  confirmPassword: z.string().min(5).max(50),
+  password: z.string().min(5).max(50),
+});
+
 export default studentSchema;
