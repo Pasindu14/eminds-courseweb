@@ -24,7 +24,7 @@ const SelectionComponent = ({ courses }: { courses: any }) => {
     try {
       const res = await signIn("credentials", {
         redirect: false,
-        username: "0711803296",
+        username: courses[0].students.phonenumber,
         password: coursePassword,
         callbackUrl: studentDashboardPath,
       });

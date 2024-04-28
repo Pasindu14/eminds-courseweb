@@ -1,6 +1,4 @@
 import { supabaseCacheFreeClient } from "../server";
-import { StudentMapping } from "../types/student-mapping.type";
-
 
 export async function validateStudent(phoneNumber: string, password: string): Promise<any> {
     try {
@@ -29,7 +27,7 @@ export async function validateStudent(phoneNumber: string, password: string): Pr
     }
 }
 
-export async function fetchStudentMappingsByAutoId(studentAutoId: string): Promise<StudentMapping[]> {
+export async function fetchStudentMappingsByAutoId(studentAutoId: string): Promise<any[]> {
     try {
         let query = supabaseCacheFreeClient
             .from('students_mapping')
