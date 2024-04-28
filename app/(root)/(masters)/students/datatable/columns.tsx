@@ -3,7 +3,8 @@
 import { Student } from "@/server/types/student.type";
 import { ColumnDef } from "@tanstack/react-table";
 import { UpdateStudentDialog } from "../_components/update_student_dialog";
-export const columns: ColumnDef<Student>[] = [
+import { ConfirmResetPasswordAlertDialog } from "../_components/reset_password_alert";
+export const columns: ColumnDef<any>[] = [
   {
     accessorKey: "name",
     header: "Name",
@@ -30,9 +31,14 @@ export const columns: ColumnDef<Student>[] = [
   },
   {
     accessorKey: "auto_id",
-    header: () => <div>Actions</div>,
-    cell: ({ row }) => {
-      return <UpdateStudentDialog data={row.original} />;
-    },
+    header: () => <div>Reset Password</div>,
+    cell: ({ row }) => (
+      <div className="flex gap-2">
+        <ConfirmResetPasswordAlertDialog
+          phoneNumber={row.original.phonenumber}
+        />
+        <UpdateStudentDialog data={row.original} />
+      </div>
+    ),
   },
 ];

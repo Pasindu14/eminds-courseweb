@@ -13,8 +13,6 @@ import { authOption } from "@/lib/auth-options";
 import PasswordResetForm from "./_component/reset-form";
 
 const PasswordResetInitial = async () => {
-  const session: any = await getServerSession(authOption);
-
   return (
     <div>
       <Card className="w-full rounded-sm">

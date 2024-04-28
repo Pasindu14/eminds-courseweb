@@ -57,7 +57,29 @@ export async function fetchStudentMappingsByAutoId(studentAutoId: string): Promi
 
         return filteredMappings;
     } catch (error) {
-        console.error('Error fetching student mappings:', error);
         return [];
+    }
+}
+
+export async function resetPassword(phoneNumber: string): Promise<any> {
+    try {
+        const { data, error, count } = await supabaseCacheFreeClient
+            .from('students_auth')
+            .update({ password: 'abc@123' })
+            .eq('phone_number', phoneNumber).select();
+
+        if (error) {
+            throw error;  // If there's a system error, throw it
+        }
+
+        if (data.length === 0) {
+            // If no rows were updated, throw or return a specific error/message
+            throw new Error("No account found with the provided phone number.");
+        }
+
+        return data; // Optionally return the data if needed
+
+    } catch (error) {
+        throw error; // Propagate the error further
     }
 }
