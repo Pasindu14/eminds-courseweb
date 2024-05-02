@@ -186,9 +186,6 @@ export async function updateStudentPassword(studentAutoId: string, phoneNumber: 
             }
             return;
         }
-        if (data.password != oldPassword) {
-            throw new Error("Incorrect old password.")
-        }
 
         const { error: updateError } = await supabaseCacheFreeClient.from('students_auth').update({ password: newPassword }).eq('phone_number', phoneNumber).select();
 

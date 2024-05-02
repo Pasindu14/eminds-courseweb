@@ -18,11 +18,16 @@ const studentSchema = z.object({
   ),
 });
 
-export const studentPasswordSchema = z.object({
-  oldPassword: z.string().min(5).max(50),
-  confirmPassword: z.string().min(5).max(50),
-  password: z.string().min(5).max(50),
-});
+export const studentPasswordSchema = z
+  .object({
+    oldPassword: z.string().min(5).max(50),
+    password: z.string().min(5).max(50),
+    confirmPassword: z.string().min(5).max(50),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords must match.", // Custom error message
+    path: ["confirmPassword"], // This will highlight the confirmPassword field as the error source
+  });
 
 export const studentPasswordInitialSchema = z.object({
   confirmPassword: z.string().min(5).max(50),
