@@ -38,16 +38,21 @@ const PasswordResetForm = () => {
     try {
       setLoading(true);
 
-      await updateStudentPassword(
+      const result = await updateStudentPassword(
         session?.id,
         session.phoneNumber,
         values.oldPassword,
         values.password,
         values.confirmPassword
       );
+
+      if (result?.error) {
+        toastError(result.error);
+        return;
+      }
       toastSuccess("Password updated successfully");
     } catch (error: any) {
-      toastError(error.message);
+      toastError(error);
     } finally {
       setLoading(false);
     }

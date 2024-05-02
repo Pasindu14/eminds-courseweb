@@ -164,7 +164,6 @@ export async function updateStudent(auto_id: string, student: any) {
 
 export async function updateStudentPassword(studentAutoId: string, phoneNumber: string, oldPassword: string, newPassword: string, confirmPassword: string) {
     try {
-
         const { data, error } = await supabaseCacheFreeClient
             .from('students_auth')
             .select().
@@ -192,8 +191,8 @@ export async function updateStudentPassword(studentAutoId: string, phoneNumber: 
         if (updateError != null) {
             throw new Error(updateError.details ?? "Error updating student password.");
         }
-    } catch (error) {
-        throw error
+    } catch (error: any) {
+        return { error: error.message || "An error occurred" };
     }
 }
 
