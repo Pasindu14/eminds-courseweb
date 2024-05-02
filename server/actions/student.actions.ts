@@ -165,10 +165,6 @@ export async function updateStudent(auto_id: string, student: any) {
 export async function updateStudentPassword(studentAutoId: string, phoneNumber: string, oldPassword: string, newPassword: string, confirmPassword: string) {
     try {
 
-        if (confirmPassword != newPassword) {
-            throw new Error("Passwords do not match.");
-        }
-
         const { data, error } = await supabaseCacheFreeClient
             .from('students_auth')
             .select().
@@ -185,6 +181,10 @@ export async function updateStudentPassword(studentAutoId: string, phoneNumber: 
                 throw new Error(insertError.details ?? "Error updating student password.");
             }
             return;
+        }
+
+        if (data.password != oldPassword) {
+            throw new Error("Incorrect old password.")
         }
 
         const { error: updateError } = await supabaseCacheFreeClient.from('students_auth').update({ password: newPassword }).eq('phone_number', phoneNumber).select();
