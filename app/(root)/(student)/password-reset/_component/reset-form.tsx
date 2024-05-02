@@ -47,7 +47,7 @@ const PasswordResetForm = () => {
       );
       toastSuccess("Password updated successfully");
     } catch (error: any) {
-      toastError(error.message);
+      toastError("Error while updating the password");
     } finally {
       setLoading(false);
     }
