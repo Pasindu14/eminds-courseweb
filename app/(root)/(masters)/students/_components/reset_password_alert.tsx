@@ -1,7 +1,6 @@
 "use client";
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
@@ -13,7 +12,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Loader } from "@/lib/spinners";
 import { toastError, toastSuccess } from "@/lib/toast/toast";
-import { removeMapping } from "@/server/actions/student-mapping.actions";
 import { resetPassword } from "@/server/actions/students-auth.actions";
 
 import { useState } from "react";
@@ -25,6 +23,7 @@ export function ConfirmResetPasswordAlertDialog({
 }) {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+
   const resetFunction = async () => {
     try {
       setLoading(true);
@@ -38,11 +37,12 @@ export function ConfirmResetPasswordAlertDialog({
       setLoading(false);
     }
   };
+
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>
         <Button variant="destructive" size={"sm"}>
-          Reset
+          Reset Password
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>

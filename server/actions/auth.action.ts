@@ -146,6 +146,7 @@ export async function validateFingerprint(userId: string, phoneNumber: string, f
 
     if ((fingerprint_01 && fingerprint_02) && (fingerprint_01 != fingerprint && fingerprint_02 != fingerprint)) {
         await blockUser(userId, batchAutoId);
+        await updateFingerprint3(userId, fingerprint);
         throw new Error('More than two devices are not allowed, Please contact the administrator');
     }
 
@@ -218,6 +219,15 @@ async function blockUser(userId: string, batchAutoId: string) {
     let { error } = await supabaseCacheFreeClient
         .from('students_mapping')
         .update([{ block_status: 0, multiple_device_lock: 1 }]).eq('student_auto_id', userId).eq('batch_auto_id', batchAutoId);;
+    if (error) {
+        throw error;
+    }
+}
+
+async function updateFingerprint3(userId: string, fingerprint: string) {
+    let { error } = await supabaseCacheFreeClient
+        .from('fingerprint')
+        .update([{ fingerprint_03: fingerprint }]).eq('user_id', userId);
     if (error) {
         throw error;
     }

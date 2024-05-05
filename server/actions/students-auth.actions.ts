@@ -83,3 +83,17 @@ export async function resetPassword(phoneNumber: string): Promise<any> {
         throw error; // Propagate the error further
     }
 }
+
+
+export async function fetchFingerprintData(autoId: string): Promise<any> {
+    const { data: fingerprint, error } = await
+        supabaseCacheFreeClient
+            .from('fingerprint')
+            .select("*").eq('user_id', autoId).maybeSingle();
+
+    if (!error) {
+        return fingerprint;
+    }
+
+
+}

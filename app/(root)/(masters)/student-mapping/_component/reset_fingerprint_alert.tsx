@@ -11,11 +11,13 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import { Loader } from "@/lib/spinners";
 import { toastError, toastSuccess } from "@/lib/toast/toast";
 import { resetFingerprint, unblockUser } from "@/server/actions/auth.action";
+import { fetchFingerprintData } from "@/server/actions/students-auth.actions";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export function ResetFingerprintAlertDIalog({
   auto_id,
@@ -28,6 +30,7 @@ export function ResetFingerprintAlertDIalog({
 }) {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [fingerprint, setFingerprint] = useState<any>(null);
   const resetFunction = async () => {
     try {
       setLoading(true);
@@ -41,6 +44,17 @@ export function ResetFingerprintAlertDIalog({
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (open) {
+      const fetch = async () => {
+        const result = await fetchFingerprintData(student_auto_id!.toString());
+        setFingerprint(result);
+        return result;
+      };
+      fetch();
+    }
+  }, [open, student_auto_id]);
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>
@@ -54,6 +68,19 @@ export function ResetFingerprintAlertDIalog({
           <AlertDialogDescription>
             This action cannot be undone. This will permanently delete your data
             and remove your data from our servers.
+            <h1 className="mt-4 text-yellow-500 ">
+              Currently logged in devices
+            </h1>
+            <Separator className="bg-yellow-500 h-0.5 w-full" />
+            <h1>
+              Fingerprint 01 : {fingerprint && fingerprint.fingerprint_01}
+            </h1>
+            <h1>
+              Fingerprint 02 : {fingerprint && fingerprint.fingerprint_02}
+            </h1>
+            <h1>
+              Fingerprint 03 : {fingerprint && fingerprint.fingerprint_03}
+            </h1>
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

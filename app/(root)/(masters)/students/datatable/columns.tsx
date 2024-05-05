@@ -31,7 +31,7 @@ export const columns: ColumnDef<any>[] = [
   },
   {
     accessorKey: "auto_id",
-    header: () => <div>Reset Password</div>,
+    header: () => <div>Actions</div>,
     cell: ({ row }) => (
       <div className="flex gap-2">
         <ConfirmResetPasswordAlertDialog
