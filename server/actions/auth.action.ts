@@ -206,7 +206,7 @@ export async function resetFingerprint(userId: string) {
 
         let { error } = await supabaseCacheFreeClient
             .from('fingerprint')
-            .update([{ user_id: userId, fingerprint_01: null, fingerprint_02: null, reset_count: resetCount + 1 }]).eq('user_id', userId);
+            .update([{ user_id: userId, fingerprint_01: null, fingerprint_02: null, fingerprint_03: null, reset_count: resetCount + 1 }]).eq('user_id', userId);
         if (error) {
             throw error;
         }
