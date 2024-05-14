@@ -25,7 +25,6 @@ export const authOption: NextAuthOptions = {
               credentials.username,
               credentials.password
             );
-
             if (authResult) {
               if (authResult.multiple_device_lock == 1) {
                 throw new Error(

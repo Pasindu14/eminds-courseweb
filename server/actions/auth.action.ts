@@ -218,7 +218,7 @@ export async function resetFingerprint(userId: string) {
 async function blockUser(userId: string, batchAutoId: string) {
     let { error } = await supabaseCacheFreeClient
         .from('students_mapping')
-        .update([{ block_status: 0, multiple_device_lock: 1 }]).eq('student_auto_id', userId).eq('batch_auto_id', batchAutoId);;
+        .update([{ multiple_device_lock: 1 }]).eq('student_auto_id', userId).eq('batch_auto_id', batchAutoId);;
     if (error) {
         throw error;
     }
@@ -237,7 +237,7 @@ async function updateFingerprint3(userId: string, fingerprint: string) {
 export async function unblockUser(userId: string, batchAutoId: string) {
     let { error } = await supabaseCacheFreeClient
         .from('students_mapping')
-        .update([{ block_status: 1, multiple_device_lock: 0 }]).eq('student_auto_id', userId).eq('batch_auto_id', batchAutoId);;
+        .update([{ multiple_device_lock: 0 }]).eq('student_auto_id', userId);
     if (error) {
         throw error;
     }
