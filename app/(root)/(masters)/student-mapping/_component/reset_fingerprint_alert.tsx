@@ -88,7 +88,8 @@ export function ResetFingerprintAlertDIalog({
                 convertToLocaleDateTime(fingerprint.fingerprint_02_time)}
             </h1>
             <h1>
-              Fingerprint 03 : {fingerprint && fingerprint.fingerprint_03} -{" "}
+              Fingerprint 03 : {fingerprint && fingerprint.fingerprint_03} -
+              {"  "}
               {fingerprint && fingerprint.fingerprint_03_browser_agent} -{" "}
               {fingerprint &&
                 fingerprint.fingerprint_03_time &&
