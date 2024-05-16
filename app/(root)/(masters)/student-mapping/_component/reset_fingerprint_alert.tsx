@@ -12,6 +12,16 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+
 import { Loader } from "@/lib/spinners";
 import { toastError, toastSuccess } from "@/lib/toast/toast";
 import { convertToLocaleDateTime } from "@/lib/utils";
@@ -63,7 +73,7 @@ export function ResetFingerprintAlertDIalog({
           Reset Fingerprint
         </Button>
       </AlertDialogTrigger>
-      <AlertDialogContent>
+      <AlertDialogContent className="max-w-4xl">
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
@@ -73,28 +83,60 @@ export function ResetFingerprintAlertDIalog({
               Currently logged in devices
             </h1>
             <Separator className="bg-yellow-500 h-0.5 w-full" />
-            <h1>
-              Fingerprint 01 : {fingerprint && fingerprint.fingerprint_01} -{" "}
-              {fingerprint && fingerprint.fingerprint_01_browser_agent} -{" "}
-              {fingerprint &&
-                fingerprint.fingerprint_01_time &&
-                convertToLocaleDateTime(fingerprint.fingerprint_01_time)}
-            </h1>
-            <h1>
-              Fingerprint 02 : {fingerprint && fingerprint.fingerprint_02} -{" "}
-              {fingerprint && fingerprint.fingerprint_02_browser_agent} -{" "}
-              {fingerprint &&
-                fingerprint.fingerprint_02_time &&
-                convertToLocaleDateTime(fingerprint.fingerprint_02_time)}
-            </h1>
-            <h1>
-              Fingerprint 03 : {fingerprint && fingerprint.fingerprint_03} -
-              {"  "}
-              {fingerprint && fingerprint.fingerprint_03_browser_agent} -{" "}
-              {fingerprint &&
-                fingerprint.fingerprint_03_time &&
-                convertToLocaleDateTime(fingerprint.fingerprint_03_time)}
-            </h1>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="w-[100px]">Fingerprint</TableHead>
+                  <TableHead>ID</TableHead>
+                  <TableHead>Browser</TableHead>
+                  <TableHead>Time</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                <TableRow>
+                  <TableCell className="font-medium">Fingerprint 01</TableCell>
+                  <TableCell>
+                    {fingerprint && fingerprint.fingerprint_01}
+                  </TableCell>
+                  <TableCell>
+                    {fingerprint && fingerprint.fingerprint_01_browser_agent}
+                  </TableCell>
+                  <TableCell>
+                    {fingerprint &&
+                      fingerprint.fingerprint_01_time &&
+                      convertToLocaleDateTime(fingerprint.fingerprint_01_time)}
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell className="font-medium">Fingerprint 02</TableCell>
+                  <TableCell>
+                    {fingerprint && fingerprint.fingerprint_02}
+                  </TableCell>
+                  <TableCell>
+                    {fingerprint && fingerprint.fingerprint_02_browser_agent}
+                  </TableCell>
+                  <TableCell>
+                    {fingerprint &&
+                      fingerprint.fingerprint_02_time &&
+                      convertToLocaleDateTime(fingerprint.fingerprint_02_time)}
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell className="font-medium">Fingerprint 03</TableCell>
+                  <TableCell>
+                    {fingerprint && fingerprint.fingerprint_03}
+                  </TableCell>
+                  <TableCell>
+                    {fingerprint && fingerprint.fingerprint_03_browser_agent}
+                  </TableCell>
+                  <TableCell>
+                    {fingerprint &&
+                      fingerprint.fingerprint_03_time &&
+                      convertToLocaleDateTime(fingerprint.fingerprint_03_time)}
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
@@ -112,7 +154,7 @@ export function ResetFingerprintAlertDIalog({
                 <Loader size={13} />
               </div>
             ) : (
-              "Save changes"
+              "Reset fingerprint"
             )}
           </Button>
         </AlertDialogFooter>
