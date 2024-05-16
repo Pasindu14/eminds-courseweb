@@ -3,7 +3,8 @@ import { toastError } from "@/lib/toast/toast";
 import { unblockUser, validateFingerprint } from "@/server/actions/auth.action";
 import { getCurrentBrowserFingerPrint } from "@rajesh896/broprint.js";
 import { signOut } from "next-auth/react";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import BrowserDetector from "browser-dtector";
 
 interface FingerprintComponentProps {
   userId: string;
@@ -17,10 +18,19 @@ const FingerprintComponent = ({
   batchId,
 }: FingerprintComponentProps) => {
   useEffect(() => {
+    const browser = new BrowserDetector(window.navigator.userAgent);
+    browser.parseUserAgent();
+
     const manageFingerprint = async () => {
       try {
         const fingerPrint = await getCurrentBrowserFingerPrint();
-        await validateFingerprint(userId, phoneNumber, fingerPrint, batchId);
+        await validateFingerprint(
+          userId,
+          phoneNumber,
+          fingerPrint,
+          batchId,
+          browser?.userAgent ?? ""
+        );
       } catch (error: any) {
         if (
           error.message ==

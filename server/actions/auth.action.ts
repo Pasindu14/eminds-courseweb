@@ -130,7 +130,7 @@ export async function getSessionValidity(user_id: number, session_token: string)
 
 }
 
-export async function validateFingerprint(userId: string, phoneNumber: string, fingerprint: string, batchAutoId: string) {
+export async function validateFingerprint(userId: string, phoneNumber: string, fingerprint: string, batchAutoId: string, browserAgent: string | null) {
 
     let { data: user_fingerprints, error } = await supabaseCacheFreeClient
         .from('fingerprint')
@@ -146,7 +146,7 @@ export async function validateFingerprint(userId: string, phoneNumber: string, f
 
     if ((fingerprint_01 && fingerprint_02) && (fingerprint_01 != fingerprint && fingerprint_02 != fingerprint)) {
         await blockUser(userId, batchAutoId);
-        await updateFingerprint3(userId, fingerprint);
+        await updateFingerprint3(userId, fingerprint, browserAgent);
         throw new Error('More than two devices are not allowed, Please contact the administrator');
     }
 
@@ -159,7 +159,7 @@ export async function validateFingerprint(userId: string, phoneNumber: string, f
 
         let { error } = await supabaseCacheFreeClient
             .from('fingerprint')
-            .insert([{ user_id: userId, phone_number: phoneNumber, fingerprint_01: fingerprint }]);
+            .insert([{ user_id: userId, phone_number: phoneNumber, fingerprint_01: fingerprint, fingerprint_01_browser_agent: browserAgent, fingerprint_01_time: new Date().toISOString() }]);
 
         if (error) {
             throw new Error('Error occured while handling fingerprint');
@@ -171,7 +171,7 @@ export async function validateFingerprint(userId: string, phoneNumber: string, f
     if (fingerprint_01 == null) {
         let { error } = await supabaseCacheFreeClient
             .from('fingerprint')
-            .update([{ user_id: userId, phone_number: phoneNumber, fingerprint_01: fingerprint }]).eq('user_id', userId);
+            .update([{ user_id: userId, phone_number: phoneNumber, fingerprint_01: fingerprint, fingerprint_01_browser_agent: browserAgent, fingerprint_01_time: new Date().toISOString() }]).eq('user_id', userId);
         if (error) {
             throw new Error('Error occured while handling fingerprint');
         }
@@ -180,7 +180,7 @@ export async function validateFingerprint(userId: string, phoneNumber: string, f
     if (fingerprint_02 == null) {
         let { error } = await supabaseCacheFreeClient
             .from('fingerprint')
-            .update([{ user_id: userId, phone_number: phoneNumber, fingerprint_02: fingerprint }]).eq('user_id', userId);
+            .update([{ user_id: userId, phone_number: phoneNumber, fingerprint_02: fingerprint, fingerprint_02_browser_agent: browserAgent, fingerprint_02_time: new Date().toISOString() }]).eq('user_id', userId);
         if (error) {
             throw error;
         }
@@ -224,10 +224,10 @@ async function blockUser(userId: string, batchAutoId: string) {
     }
 }
 
-async function updateFingerprint3(userId: string, fingerprint: string) {
+async function updateFingerprint3(userId: string, fingerprint: string, browserAgent: string | null) {
     let { error } = await supabaseCacheFreeClient
         .from('fingerprint')
-        .update([{ fingerprint_03: fingerprint }]).eq('user_id', userId);
+        .update([{ fingerprint_03: fingerprint, fingerprint_03_browser_agent: browserAgent, fingerprint_03_time: new Date().toISOString() }]).eq('user_id', userId);
     if (error) {
         throw error;
     }
