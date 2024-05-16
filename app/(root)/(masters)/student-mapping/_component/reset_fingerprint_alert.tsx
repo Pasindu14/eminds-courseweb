@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Loader } from "@/lib/spinners";
 import { toastError, toastSuccess } from "@/lib/toast/toast";
+import { convertToLocaleDateTime } from "@/lib/utils";
 import { resetFingerprint, unblockUser } from "@/server/actions/auth.action";
 import { fetchFingerprintData } from "@/server/actions/students-auth.actions";
 
@@ -73,13 +74,25 @@ export function ResetFingerprintAlertDIalog({
             </h1>
             <Separator className="bg-yellow-500 h-0.5 w-full" />
             <h1>
-              Fingerprint 01 : {fingerprint && fingerprint.fingerprint_01}
+              Fingerprint 01 : {fingerprint && fingerprint.fingerprint_01} -{" "}
+              {fingerprint && fingerprint.fingerprint_01_browser_agent} -{" "}
+              {fingerprint &&
+                fingerprint.fingerprint_01_time &&
+                convertToLocaleDateTime(fingerprint.fingerprint_01_time)}
             </h1>
             <h1>
-              Fingerprint 02 : {fingerprint && fingerprint.fingerprint_02}
+              Fingerprint 02 : {fingerprint && fingerprint.fingerprint_02} -{" "}
+              {fingerprint && fingerprint.fingerprint_02_browser_agent} -{" "}
+              {fingerprint &&
+                fingerprint.fingerprint_02_time &&
+                convertToLocaleDateTime(fingerprint.fingerprint_02_time)}
             </h1>
             <h1>
-              Fingerprint 03 : {fingerprint && fingerprint.fingerprint_03}
+              Fingerprint 03 : {fingerprint && fingerprint.fingerprint_03} -{" "}
+              {fingerprint && fingerprint.fingerprint_03_browser_agent} -{" "}
+              {fingerprint &&
+                fingerprint.fingerprint_03_time &&
+                convertToLocaleDateTime(fingerprint.fingerprint_03_time)}
             </h1>
           </AlertDialogDescription>
         </AlertDialogHeader>
