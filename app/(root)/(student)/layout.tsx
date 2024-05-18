@@ -9,6 +9,7 @@ import { NavigationStudent } from "@/components/navbar-student";
 import Providers from "@/app/Providers";
 import { authOption } from "@/lib/auth-options";
 import { LoaderFull } from "@/lib/spinners";
+import { SheetProvider } from "@/providers/dialog-provider";
 
 const RootLayout = async ({ children }: { children: React.ReactNode }) => {
   const session: any = await getServerSession(authOption);
@@ -22,6 +23,7 @@ const RootLayout = async ({ children }: { children: React.ReactNode }) => {
 
   return (
     <Providers>
+      <SheetProvider />
       <div className="background-image min-h-screen flex flex-col">
         <div>
           {session.role === "ADMIN" ? (

@@ -54,6 +54,7 @@
     "react-pdf": "^7.7.1",
     "react-select": "^5.8.0",
     "react-spinners": "^0.13.8",
+    "react-use": "^17.5.0",
     "simplex-noise": "^4.0.1",
     "sonner": "^1.4.1",
     "supabase": "^1.127.4",
@@ -64,7 +65,8 @@
     "winston": "^3.11.0",
     "winston-transport-browserconsole": "^1.0.5",
     "xlsx": "^0.18.5",
-    "zod": "^3.22.4"
+    "zod": "^3.22.4",
+    "zustand": "^4.5.2"
   },
   "devDependencies": {
     "@types/node": "^20",

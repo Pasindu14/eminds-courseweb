@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import CustomButton from "../_component/custom_button";
 import { EmbeddedVideo } from "../_component/embedded_video";
+import ActionButton from "../_component/action_button";
 
 export const columns: ColumnDef<Session>[] = [
   {
@@ -26,10 +27,10 @@ export const columns: ColumnDef<Session>[] = [
     header: "Slide Url",
     cell: ({ row }) => {
       return (
-        <>
+        <div className="flex gap-2">
           <CustomButton row={row} type="slide" />
-          {/* <EmbeddedVideo /> */}
-        </>
+          {/*    <ActionButton link={row.original.zoom_link} /> */}
+        </div>
       );
     },
   },
