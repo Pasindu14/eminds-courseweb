@@ -38,7 +38,7 @@ const Dashboard = async () => {
 
   ///////// due to invalid data insertion in the database, we have to use the following code to get the valid data
   const startDate = new Date(batchDetails.start_date);
-  const currentDate = new Date("2024-04-01");
+  const currentDate = new Date();
 
   return (
     <div>
@@ -81,6 +81,7 @@ const Dashboard = async () => {
               <div className="flex gap-4">
                 <AccountRestrictionComponent />
                 <StudentGuideComponent courseId={batchDetails.course_auto_id} />
+                <GoodToKnowComponent />
               </div>
             </AnimatedComponent>
           )}
