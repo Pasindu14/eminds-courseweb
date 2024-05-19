@@ -29,7 +29,7 @@ export const columns: ColumnDef<Session>[] = [
       return (
         <div className="flex gap-2">
           <CustomButton row={row} type="slide" />
-          {/*    <ActionButton link={row.original.zoom_link} /> */}
+          {/* <ActionButton link={row.original.zoom_link} /> */}
         </div>
       );
     },

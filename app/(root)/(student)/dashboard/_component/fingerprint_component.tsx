@@ -1,10 +1,9 @@
 "use client";
 import { toastError } from "@/lib/toast/toast";
-import { unblockUser, validateFingerprint } from "@/server/actions/auth.action";
+import { validateFingerprint } from "@/server/actions/auth.action";
 import { getCurrentBrowserFingerPrint } from "@rajesh896/broprint.js";
 import { signOut } from "next-auth/react";
-import React, { useEffect, useState } from "react";
-import BrowserDetector from "browser-dtector";
+import React, { useEffect } from "react";
 
 interface FingerprintComponentProps {
   userId: string;
@@ -18,18 +17,26 @@ const FingerprintComponent = ({
   batchId,
 }: FingerprintComponentProps) => {
   useEffect(() => {
-    const browser = new BrowserDetector(window.navigator.userAgent);
-    browser.parseUserAgent();
-
     const manageFingerprint = async () => {
       try {
+        const { ClientJS } = await import("clientjs"); // Dynamically import clientjs
+        const client = new ClientJS();
+
+        const userAgent =
+          "Browser:" +
+          client.getBrowser() +
+          ",OS:" +
+          client.getOS() +
+          ",Mobile:" +
+          client.isMobile();
+
         const fingerPrint = await getCurrentBrowserFingerPrint();
         await validateFingerprint(
           userId,
           phoneNumber,
           fingerPrint,
           batchId,
-          browser?.userAgent ?? ""
+          userAgent
         );
       } catch (error: any) {
         if (
@@ -46,6 +53,7 @@ const FingerprintComponent = ({
 
     manageFingerprint();
   }, [phoneNumber, userId, batchId]);
+
   return <div></div>;
 };
 
