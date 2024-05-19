@@ -26,12 +26,16 @@ import { studentDashboardPath } from "@/constants/paths";
 import dynamic from "next/dynamic";
 import { validateStudent } from "@/server/actions/students-auth.actions";
 import { encryptToken } from "@/lib/encrypter";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { AlertCircle } from "lucide-react";
 
 const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
 const SignIn = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [browser, setBrowser] = useState(false);
+  const [browserChecked, setBrowserChecked] = useState(false);
 
   const form = useForm<z.infer<typeof authSchema>>({
     resolver: zodResolver(authSchema),
@@ -40,6 +44,29 @@ const SignIn = () => {
       password: "",
     },
   });
+
+  useEffect(() => {
+    const manageBrowser = async () => {
+      const { ClientJS } = await import("clientjs"); // Dynamically import clientjs
+      const client = new ClientJS();
+      const browser = client.getBrowser();
+
+      if (
+        browser == "Chrome" ||
+        browser == "Firefox" ||
+        browser == "Safari" ||
+        browser == "Opera"
+      ) {
+        setBrowser(true);
+      }
+
+      setBrowserChecked(true);
+    };
+
+    manageBrowser();
+
+    return () => {};
+  }, []);
 
   async function onSubmit(values: z.infer<typeof authSchema>) {
     try {
@@ -135,7 +162,11 @@ const SignIn = () => {
                 )}
               />
 
-              <Button type="submit" disabled={loading} className="w-full">
+              <Button
+                type="submit"
+                disabled={loading || (!browser && browserChecked)}
+                className="w-full"
+              >
                 {loading ? (
                   <div className="flex items-center justify-center gap-2">
                     <p>Login</p>
@@ -145,6 +176,17 @@ const SignIn = () => {
                   "Login"
                 )}
               </Button>
+
+              {!browser && browserChecked && (
+                <Alert variant="destructive">
+                  <AlertDescription>
+                    <h1 className="text-center">
+                      Unsupported browser detected. Please use Chrome, Firefox,
+                      Safari, or Opera.
+                    </h1>
+                  </AlertDescription>
+                </Alert>
+              )}
             </form>
           </Form>
         </div>

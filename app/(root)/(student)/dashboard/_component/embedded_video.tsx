@@ -8,7 +8,6 @@ export function EmbeddedVideo() {
     return;
   }
 
-  console.log(link);
   const replaceUrl = (link: string): string => {
     return link.replace("www.dropbox.com", "dl.dropboxusercontent.com");
   };
