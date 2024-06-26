@@ -33,7 +33,7 @@ const headTags = (courseCode: any) =>
 
 
 <!-- Facebook and Twitter integration -->
-<meta property="og:title" content="CPDM : Certificate in Practical Digital Marketing, eMinds Certified Digital Marketing Specialist">
+<meta property="og:title" content="${courseCode == "CPDM" ? "Certificate in Practical Digital Marketing, " : "Diploma In Practical Digital Marketing, "}eMinds Certified Digital Marketing Specialist">
 <meta property="og:image" content="${courseCode == "CPDM" ? cpdmOGBadgeImage : dpdmOGBadgeImage}">
 <meta property="og:url" content="">
 <meta property="og:site_name" content="Eminds CourseWeb">
