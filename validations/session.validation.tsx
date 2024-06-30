@@ -15,4 +15,9 @@ const sessionSchema = z.object({
     }),
 });
 
+export const sessionUpdateSchema = z.object({
+  session_auto_id: z.number().optional(),
+  zoom_link: z.string().url().optional(), // Assuming the zoom link is a URL
+});
+
 export default sessionSchema;

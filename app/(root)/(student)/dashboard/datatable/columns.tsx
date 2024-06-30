@@ -15,13 +15,13 @@ export const columns: ColumnDef<Session>[] = [
   },
   {
     accessorKey: "zoom_link",
-    header: "Dropbox Link",
-    cell: ({ row }) => <CustomButton row={row} type="dropbox" />,
+    header: "Video",
+    cell: ({ row }) => <ActionButton link={row.original.zoom_link} />,
   },
-  {
+  /*  {
     accessorKey: "zoom_password",
     header: "Password",
-  },
+  }, */
   {
     accessorKey: "slide_extension",
     header: "Slide Url",

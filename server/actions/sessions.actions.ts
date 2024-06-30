@@ -80,6 +80,31 @@ export async function addSession(session: FormData, filePath: string) {
     }
 }
 
+export async function updateSessionDropboxLink(session_auto_id: string, session: any) {
+
+    try {
+        const responseHandler = new ResponseHandler<any>();
+        const { data, error } = await supabaseCacheFreeClient
+            .from('sessions')
+            .update({
+                zoom_link: session.zoom_link,
+            })
+            .eq('session_auto_id', session_auto_id)
+            .select();
+
+
+        if (error != null) {
+            return responseHandler.setError(
+                error.details ?? errorMessage,
+            );
+        }
+        revalidatePath('/sessions', 'page');
+        return responseHandler.setSuccess("Success", data);
+    } catch (error) {
+        throw error;
+    }
+}
+
 export async function removeSession(session_auto_id: string, filePath: string) {
     try {
         const responseHandler = new ResponseHandler<any>();

@@ -28,7 +28,7 @@ export function SessionForm({ data }: { data?: any }) {
     resolver: zodResolver(sessionSchema),
     defaultValues: {
       title: "",
-      zoom_link: "",
+      zoom_link: data?.zoom_link ?? "",
       zoom_password: "",
       slide_extension: "",
       batch_auto_id: "",

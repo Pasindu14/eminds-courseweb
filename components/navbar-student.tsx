@@ -18,6 +18,7 @@ import { signOut, useSession } from "next-auth/react";
 import { Button } from "./ui/button";
 import { LogOut, Menu, X, KeyRound } from "lucide-react";
 import { Separator } from "./ui/separator";
+import { useEffect } from "react";
 
 export function NavigationStudent() {
   const { data: session }: any = useSession();
@@ -32,6 +33,13 @@ export function NavigationStudent() {
     { url: "/student-exam", title: "Exams" },
     { url: "/student-usage", title: "Usage" },
   ];
+
+  useEffect(() => {
+    const signOutHandler = async () => {
+      await signOut();
+    };
+    signOutHandler();
+  }, []);
 
   if (pathname === "/password-reset-initial" && pathname) {
     return;
