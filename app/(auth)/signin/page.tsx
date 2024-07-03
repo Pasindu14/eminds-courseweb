@@ -71,11 +71,7 @@ const SignIn = () => {
   async function onSubmit(values: z.infer<typeof authSchema>) {
     try {
       setLoading(true);
-      /* remove this after fix*/
-      if (values.username != "admin") {
-        toastError("Down for maintenance!");
-        return;
-      }
+
       const result = await validateStudent(values.username, values.password);
 
       if (result == null) {
