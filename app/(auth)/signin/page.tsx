@@ -176,13 +176,13 @@ const SignIn = () => {
                   "Login"
                 )}
               </Button>
-              <p className="text-sm text-center mt-10 text-red-700">
+              {/*               <p className="text-sm text-center mt-10 text-red-700">
                 Please be informed that the student portal will be temporarily
                 disabled for system development from June 30 to July 4. We
                 apologize for any inconvenience this may cause and appreciate
                 your understanding.
               </p>
-
+ */}
               {!browser && browserChecked && (
                 <Alert variant="destructive">
                   <AlertDescription>
