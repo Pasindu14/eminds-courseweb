@@ -34,12 +34,12 @@ export function NavigationStudent() {
     { url: "/student-usage", title: "Usage" },
   ];
 
-  /*  useEffect(() => {
+  useEffect(() => {
     const signOutHandler = async () => {
       await signOut();
     };
     signOutHandler();
-  }, []); */
+  }, []);
 
   if (pathname === "/password-reset-initial" && pathname) {
     return;
