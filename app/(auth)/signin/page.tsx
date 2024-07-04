@@ -101,7 +101,11 @@ const SignIn = () => {
             router.replace("/password-reset-initial");
             //router.replace(studentDashboardPath);
           } else {
-            router.replace("/admin-dashboard");
+            if (values.password == "Eminds@91627") {
+              router.replace("/admin-dashboard");
+            } else {
+              toastError("Invalid credentials please try again!");
+            }
           }
         }
       } else {
