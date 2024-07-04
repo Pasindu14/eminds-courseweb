@@ -73,10 +73,10 @@ const SignIn = () => {
       setLoading(true);
 
       /* remove this after fix*/
-      if (values.username != "admin") {
+      /*       if (values.username != "admin") {
         toastError("Down for maintenance!");
         return;
-      }
+      } */
 
       const result = await validateStudent(values.username, values.password);
 

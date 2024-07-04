@@ -5,25 +5,32 @@ export function EmbeddedVideo() {
   const { isOpen, onClose, link } = useOpenEmbeddedVideo();
 
   if (!link) {
-    return;
+    return null;
   }
 
   const replaceUrl = (link: string): string => {
     return link.replace("www.dropbox.com", "dl.dropboxusercontent.com");
   };
 
-  const handleContextMenu = (e: any) => {
+  const handleContextMenu = (e: React.MouseEvent) => {
     e.preventDefault();
   };
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[calc(70vw)] ">
+      <DialogContent className="sm:max-w-[calc(70vw)]">
         <div
           className="flex flex-col items-center justify-center"
           onContextMenu={handleContextMenu}
         >
-          <video width="95%" controls preload="none" autoPlay>
+          <video
+            width="95%"
+            controls
+            preload="none"
+            autoPlay
+            controlsList="nodownload"
+            disablePictureInPicture
+          >
             <source src={replaceUrl(link)} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
