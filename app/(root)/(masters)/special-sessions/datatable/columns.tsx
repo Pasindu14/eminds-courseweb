@@ -6,8 +6,6 @@ import { ColumnDef } from "@tanstack/react-table";
 import { removeExam } from "@/server/actions/exams.actions";
 import { StudentMapping } from "@/server/types/student-mapping.type";
 import { ConfirmDeleteAlertDialog } from "../_component/remove_special_session_alert";
-import MappginSwitch from "../_component/mapping_switch";
-import { ResetFingerprintAlertDIalog } from "../_component/reset_fingerprint_alert";
 import { SpecialSession } from "@/server/types/special-session.type";
 import Link from "next/link";
 
