@@ -20,9 +20,7 @@ import { signOut, useSession } from "next-auth/react";
 import { Button } from "./ui/button";
 import { BellDot, LogOut, Menu, X } from "lucide-react";
 import { fetchPendingApprovalPayments } from "@/server/actions/payments.actions";
-import { Separator } from "./ui/separator";
 import NavBarItemAdmin from "./common/navbar-admin-item";
-import { set } from "react-hook-form";
 import { Loader } from "@/lib/spinners";
 
 const masterComponents: { title: string; href: string; description: string }[] =
@@ -80,6 +78,12 @@ const masterComponents: { title: string; href: string; description: string }[] =
       href: "/events",
       description:
         "Discover and participate in our latest events, workshops, and webinars tailored for professional growth and networking.",
+    },
+    {
+      title: "Special Sessions",
+      href: "/special-sessions",
+      description:
+        "Display special sessions for specific batches enabling effective management and tracking of these unique sessions for targeted groups of students.",
     },
   ];
 
