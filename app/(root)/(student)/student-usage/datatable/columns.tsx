@@ -10,7 +10,7 @@ export const columns: ColumnDef<UsageData>[] = [
 
   {
     accessorKey: "dropClicksCount",
-    header: "Dropbox Clicks",
+    header: "Video Clicks",
     cell: ({ row }) => {
       return <p>{`${row.original.dropClicksCount}`}</p>;
     },

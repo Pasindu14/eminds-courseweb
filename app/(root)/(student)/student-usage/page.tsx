@@ -37,15 +37,13 @@ const StudentUsage = () => {
     userLoginActivity: 0,
   });
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const manipulateData = (usageData: any, totalSessions: any) => {
     let array: UsageData[] = [];
     for (let i = 0; i < totalSessions.length; i++) {
       let filteredData = usageData.filter((element: any) => {
-        return (
-          element.sessions.session_auto_id === totalSessions[i].session_auto_id
-        );
+        return element.session_id === totalSessions[i].session_auto_id;
       });
 
       if (filteredData.length === 0) {
@@ -99,10 +97,9 @@ const StudentUsage = () => {
         percentage: percentage,
         userLoginActivity: userLoginActivity,
       });
+      setLoading(false);
     } catch (error) {
       toastError("Something went wrong, please try again later");
-    } finally {
-      setLoading(false);
     }
   }, [session?.batchId, session?.phoneNumber]);
 

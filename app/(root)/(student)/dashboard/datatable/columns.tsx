@@ -16,7 +16,7 @@ export const columns: ColumnDef<Session>[] = [
   {
     accessorKey: "zoom_link",
     header: "Video",
-    cell: ({ row }) => <ActionButton link={row.original.zoom_link} />,
+    cell: ({ row }) => <ActionButton link={row.original.zoom_link} row={row} />,
   },
   /*  {
     accessorKey: "zoom_password",
