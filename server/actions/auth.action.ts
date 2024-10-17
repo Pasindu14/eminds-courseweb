@@ -242,3 +242,19 @@ export async function unblockUser(userId: string, batchAutoId: string) {
         throw error;
     }
 }
+
+
+export async function getBlockedStatus(batchAutoId: string, studentAutoId: string): Promise<any> {
+    try {
+        let { data: student, error } = await supabaseCacheFreeClient
+            .from('students_mapping')
+            .select("block_status").eq('student_auto_id', studentAutoId).eq('batch_auto_id', batchAutoId).maybeSingle();
+
+        if (error) {
+            return null;
+        }
+        return student;
+    } catch (error) {
+        return null;
+    }
+}

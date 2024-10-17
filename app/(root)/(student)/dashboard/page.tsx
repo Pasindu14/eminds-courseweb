@@ -1,5 +1,4 @@
 import React from "react";
-
 import {
   Card,
   CardContent,
@@ -25,9 +24,11 @@ import StudentGuideComponent from "./_component/student_guide";
 import AnimatedComponent from "@/components/common/animated-component";
 import GoodToKnowComponent from "./_component/good-to-know";
 import WelcomeAlertDialog from "@/components/common/welcome-message";
+import AutoLockingComponent from "./_component/auto_locking_component";
 
 const Dashboard = async () => {
   const session: any = await getServerSession(authOption);
+
   const studentPhone = session?.phoneNumber;
   const password = session?.password;
   const studentDetails = await fetchStudentByPhoneNumber(studentPhone);
@@ -51,6 +52,10 @@ const Dashboard = async () => {
               phoneNumber={studentPhone}
               userId={studentDetails.auto_id}
               batchId={batchDetails.auto_id}
+            />
+            <AutoLockingComponent
+              batchAutoId={batchDetails.auto_id}
+              studentAutoId={studentDetails.auto_id}
             />
           </CardTitle>
         </CardHeader>
