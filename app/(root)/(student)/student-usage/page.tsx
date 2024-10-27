@@ -30,6 +30,7 @@ interface State {
 
 const StudentUsage = () => {
   const { data: session }: any = useSession();
+  console.log(session);
 
   const [state, setState] = useState<State>({
     usageData: [],
@@ -80,20 +81,20 @@ const StudentUsage = () => {
     const totalSessionCount = totalSessions.length * 2;
     const percentage = total / totalSessionCount;
 
-    return { percentage: percentage * 100, aasd: array };
+    return { percentage: percentage * 100, uData: array };
   };
 
   const fetchUsageData = useCallback(async () => {
     try {
       if (!session?.batchId) return;
       setLoading(true);
-      const usageData = await fetchUsage(session.batchId);
+      const usageData = await fetchUsage(session.batchId, session.phoneNumber);
       const totalSessionData = await fetchTotalSessions(session.batchId);
       const userLoginActivity = await getUserLoginActivity(session.phoneNumber);
-      const { percentage, aasd } = manipulateData(usageData, totalSessionData);
+      const { percentage, uData } = manipulateData(usageData, totalSessionData);
 
       setState({
-        usageData: aasd,
+        usageData: uData,
         percentage: percentage,
         userLoginActivity: userLoginActivity,
       });
@@ -135,9 +136,9 @@ const StudentUsage = () => {
             </>
           )}
 
-          {!loading && state.usageData.length == 0 && (
+          {/*   {!loading && state.usageData.length == 0 && (
             <NotFoundAnimationComponent />
-          )}
+          )} */}
         </CardContent>
         <CardFooter className="flex justify-between"></CardFooter>
       </Card>

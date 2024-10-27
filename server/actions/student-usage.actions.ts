@@ -106,12 +106,13 @@ export async function upsertUserSlidesClicksCount(phone: string, sessionId: numb
     }
 }
 
-export async function fetchUsage(batchId?: string) {
+export async function fetchUsage(batchId?: string, phoneNumber?: string) {
     try {
         const { data, error } = await supabaseCacheFreeClient
             .from('user_activity')
             .select(`*, sessions(title,batch_auto_id,session_auto_id)`)
             .eq('sessions.batch_auto_id', batchId)
+            .eq('user_phone', phoneNumber)
             .order('id', { ascending: true });
         if (error) {
             return [];
