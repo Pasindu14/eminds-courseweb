@@ -32,7 +32,7 @@ export function NavigationStudent() {
     { url: "/student-jobs", title: "Jobs" },
     { url: "/student-exam", title: "Exams" },
     { url: "/student-usage", title: "Usage" },
-    { url: "/student-special-sessions", title: "Special Sessions" },
+    { url: "/student-extra-sessions", title: "Extra Sessions" },
   ];
 
   /*   useEffect(() => {
@@ -101,9 +101,9 @@ export function NavigationStudent() {
               </Link>
             </NavigationMenuItem>
             <NavigationMenuItem>
-              <Link href="/student-special-sessions" legacyBehavior passHref>
+              <Link href="/student-extra-sessions" legacyBehavior passHref>
                 <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                  Special Sessions
+                  Extra Sessions
                 </NavigationMenuLink>
               </Link>
             </NavigationMenuItem>
