@@ -28,7 +28,7 @@ const Dashboard = async () => {
     <div>
       <Card className="w-full rounded-sm">
         <CardHeader>
-          <CardTitle className="text-4xl">Special Sessions</CardTitle>
+          <CardTitle className="text-4xl">Extra Sessions</CardTitle>
         </CardHeader>
         <Separator />
         <CardContent className="pt-4">

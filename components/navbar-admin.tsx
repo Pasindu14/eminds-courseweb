@@ -80,10 +80,10 @@ const masterComponents: { title: string; href: string; description: string }[] =
         "Discover and participate in our latest events, workshops, and webinars tailored for professional growth and networking.",
     },
     {
-      title: "Special Sessions",
+      title: "Extra Sessions",
       href: "/special-sessions",
       description:
-        "Display special sessions for specific batches enabling effective management and tracking of these unique sessions for targeted groups of students.",
+        "Display extra sessions for specific batches enabling effective management and tracking of these unique sessions for targeted groups of students.",
     },
   ];
 

@@ -18,9 +18,9 @@ const SpecialSession = () => {
     <div>
       <Card className="w-full rounded-sm">
         <CardHeader>
-          <CardTitle className="text-4xl">Special Sessions</CardTitle>
+          <CardTitle className="text-4xl">Extra Sessions</CardTitle>
           <CardDescription>
-            Special Session: Display special sessions for specific batches,
+            Special Session: Display extra sessions for specific batches,
             enabling effective management and tracking of these unique sessions
             for targeted groups of students.
           </CardDescription>
