@@ -1,10 +1,6 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Exam } from "@/server/types/exam.type"; // Make sure you have an Exam type defined
 import { ColumnDef } from "@tanstack/react-table";
-import { removeExam } from "@/server/actions/exams.actions";
-import { StudentMapping } from "@/server/types/student-mapping.type";
 import { ConfirmDeleteAlertDialog } from "../_component/remove_special_session_alert";
 import { SpecialSession } from "@/server/types/special-session.type";
 import Link from "next/link";
