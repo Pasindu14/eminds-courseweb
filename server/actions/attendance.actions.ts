@@ -69,7 +69,6 @@ export async function updateAttendanceStatus(
     attendance_status: number
 ): Promise<any> {
 
-    console.log(batch_time_schedule_auto_id, student_auto_id, attendance_status)
     const responseHandler = new ResponseHandler<any>();
     try {
         // Check if the attendance record exists
