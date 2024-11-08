@@ -144,6 +144,25 @@ const paymentComponents: {
   },
 ];
 
+const attendanceComponents: {
+  title: string;
+  href: string;
+  description: string;
+}[] = [
+  {
+    title: "Batch Time Schedule",
+    href: "/batch-time-schedule",
+    description:
+      "Organize and manage class schedules for each batch efficiently, ensuring accurate planning and easy access to essential timetable details for all stakeholders.",
+  },
+  {
+    title: "Attendance Marking",
+    href: "/attendance-marking",
+    description:
+      "Track and record student attendance accurately, providing streamlined oversight of participation to support accountability and improve engagement.",
+  },
+];
+
 export function NavigationAdmin() {
   const { data: session }: any = useSession();
   const [loading, setLoading] = React.useState(false);
@@ -220,12 +239,27 @@ export function NavigationAdmin() {
                 </ul>
               </NavigationMenuContent>
             </NavigationMenuItem>
-
             <NavigationMenuItem>
               <NavigationMenuTrigger>Exams</NavigationMenuTrigger>
               <NavigationMenuContent>
                 <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
                   {examComponents.map((component) => (
+                    <ListItem
+                      key={component.title}
+                      title={component.title}
+                      href={component.href}
+                    >
+                      {component.description}
+                    </ListItem>
+                  ))}
+                </ul>
+              </NavigationMenuContent>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+              <NavigationMenuTrigger>Attendance</NavigationMenuTrigger>
+              <NavigationMenuContent>
+                <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
+                  {attendanceComponents.map((component) => (
                     <ListItem
                       key={component.title}
                       title={component.title}

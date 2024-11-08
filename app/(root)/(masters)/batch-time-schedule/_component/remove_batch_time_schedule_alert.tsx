@@ -14,8 +14,6 @@ import { Button } from "@/components/ui/button";
 import { Loader } from "@/lib/spinners";
 import { toastError } from "@/lib/toast/toast";
 import { removeBatchTimeSchedule } from "@/server/actions/batch-time-schedule.actions";
-import { removeExam } from "@/server/actions/exams.actions";
-import { removeMapping } from "@/server/actions/student-mapping.actions";
 
 import { useState } from "react";
 
