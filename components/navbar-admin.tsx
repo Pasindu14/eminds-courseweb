@@ -161,6 +161,12 @@ const attendanceComponents: {
     description:
       "Track and record student attendance accurately, providing streamlined oversight of participation to support accountability and improve engagement.",
   },
+  {
+    title: "View Attendance",
+    href: "/attendance",
+    description:
+      "Efficiently track and manage student attendance with real-time records for streamlined class management.",
+  },
 ];
 
 export function NavigationAdmin() {

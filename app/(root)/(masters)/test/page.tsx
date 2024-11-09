@@ -5,14 +5,19 @@ import React from "react";
 
 const page = () => {
   const sendEmail = async () => {
-    const info = await transporter.sendMail({
-      from: '"Course Web Admin" <admin@courseweb.eminds.com.au>', // sender address
-      to: "pasindu14@gmail.com", // recipient's email
-      subject: "Test Email from Course Web Admin",
-      text: "This is a plain text test message.",
-      html: "<h1>This is a test email</h1><p>Sent from the Course Web Admin.</p>",
-    });
+    try {
+      await fetch("/api/email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      console.log("Email sent successfully");
+    } catch (error) {
+      console.error("Error sending email:", error);
+    }
   };
+
   return (
     <div>
       <Button type="button" onClick={sendEmail}>

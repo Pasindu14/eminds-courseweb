@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useCallback, useState } from "react";
+import React, { useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
@@ -9,61 +9,44 @@ import { Form } from "@/components/ui/form";
 import { Loader } from "@/lib/spinners";
 import { toastError } from "@/lib/toast/toast";
 import { errorMessage } from "@/constants/messages";
-import { DataTable } from "@/components/datatable";
 import { Separator } from "@/components/ui/separator";
 import BatchSelect from "@/components/common/batch_select";
 import { motion } from "framer-motion";
-import attendanceMarkingFilterSchema from "@/validations/attendance.validation";
-import BatchTimeScheduleSelect from "@/components/common/batch_time_schedule_select";
+import { attendanceFilterSchema } from "@/validations/attendance.validation";
+import CourseSelect from "@/components/common/course_select";
+import { DataTable } from "@/components/datatable";
 import { columns } from "../datatable/columns";
-import { fetchAttendanceRecords } from "@/server/actions/attendance.actions";
-import { AttendanceRecord } from "@/server/types/attendance-record.type";
+import { fetchStudentMappings } from "@/server/actions/student-mapping.actions";
 
-const AttendanceMarkingFilterForm = () => {
+const AttendanceFilterForm = () => {
   const [loading, setLoading] = useState(false);
-
-  const [attendanceRecords, setAttendanceRecords] = useState<
-    AttendanceRecord[]
-  >([]);
-  const form = useForm<z.infer<typeof attendanceMarkingFilterSchema>>({
-    resolver: zodResolver(attendanceMarkingFilterSchema),
+  const [attendance, setaAttendance] = useState<any[]>([]);
+  const form = useForm<z.infer<typeof attendanceFilterSchema>>({
+    resolver: zodResolver(attendanceFilterSchema),
     defaultValues: {
       batchId: "",
-      batchTimeScheduleId: "",
+      courseId: "",
     },
   });
 
-  async function onSubmit(
-    values: z.infer<typeof attendanceMarkingFilterSchema>
-  ) {
-    fetchResults(values.batchTimeScheduleId, values.batchId);
+  async function onSubmit(values: z.infer<typeof attendanceFilterSchema>) {
+    try {
+      setLoading(true);
+      const result = await fetchStudentMappings(values.batchId);
+      setaAttendance(result);
+    } catch (error) {
+      toastError(errorMessage);
+    } finally {
+      setLoading(false);
+    }
   }
 
-  const fetchResults = useCallback(
-    async (batchTimeScheduleId: string, batchId?: string) => {
-      try {
-        setLoading(true);
-        const result = await fetchAttendanceRecords(
-          batchTimeScheduleId,
-          batchId
-        );
-        console.log(result);
-        setAttendanceRecords(result);
-      } catch (error) {
-        toastError(errorMessage);
-      } finally {
-        setLoading(false);
-      }
-    },
-    []
-  );
+  const courseId = useWatch({
+    control: form.control,
+    name: "courseId",
+  });
 
   const hasErrors = Object.keys(form.formState.errors).length === 0;
-
-  const batchCode = useWatch({
-    control: form.control,
-    name: "batchId",
-  });
 
   return (
     <div className="mt-2">
@@ -75,13 +58,13 @@ const AttendanceMarkingFilterForm = () => {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
             <div className="md:flex flex-row  gap-2">
               <div className="w-1/3">
-                <BatchSelect control={form.control} name="batchId" />
+                <CourseSelect control={form.control} name="courseId" />
               </div>
               <div className="w-1/3">
-                <BatchTimeScheduleSelect
+                <BatchSelect
                   control={form.control}
-                  name="batchTimeScheduleId"
-                  filter={batchCode}
+                  name="batchId"
+                  filter={courseId}
                 />
               </div>
               <div className="gap-2 flex flex-col md:flex-row md:items-center">
@@ -104,10 +87,11 @@ const AttendanceMarkingFilterForm = () => {
           </form>
         </Form>
         <Separator className="mt-2" />
-        <DataTable columns={columns} data={attendanceRecords} />
+
+        <DataTable columns={columns} data={attendance} />
       </motion.div>
     </div>
   );
 };
 
-export default AttendanceMarkingFilterForm;
+export default AttendanceFilterForm;

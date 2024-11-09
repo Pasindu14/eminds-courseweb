@@ -114,3 +114,20 @@ export async function updateAttendanceStatus(
         return responseHandler.setError('An unexpected error occurred.');
     }
 }
+
+export async function fetchTotalAttendanceForBatch(studentId: string, batchId: string): Promise<any[]> {
+    try {
+        const { data, error } = await supabaseCacheFreeClient
+            .rpc('fetch_student_attendance_for_batch', { student_id: studentId, batch_id: batchId });
+
+        if (error) {
+            console.error('Error fetching total attendance:', error);
+            return [];
+        }
+
+        return data;
+    } catch (error) {
+        console.error('Exception when fetching total attendance:', error);
+        return [];
+    }
+}
