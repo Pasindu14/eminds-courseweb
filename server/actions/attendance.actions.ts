@@ -24,25 +24,34 @@ export async function fetchAttendanceRecords(batchTimeScheduleId: string, batchP
         const { data: studentMappings, error: studentError } = await studentQuery;
 
         if (studentError || !studentMappings) {
+            console.error('Error fetching student mappings:', studentError);
             return [];
         }
 
-        // Fetch attendance records for the students
+        // Log studentMappings for debugging
+        //console.log("Student Mappings:", studentMappings);
+
+        // Fetch attendance records for the students and the specific batch time schedule
         const attendanceQuery = supabaseCacheFreeClient
             .from('attendance')
             .select('*')
-            .in('student_auto_id', studentMappings.map(mapping => mapping.student_auto_id || 0));
+            .in('student_auto_id', studentMappings.map(mapping => mapping.student_auto_id || 0))
+            .eq('batch_time_schedule_auto_id', batchTimeScheduleId);  // Ensure this is correctly filtering by schedule ID
 
         const { data: attendanceRecords, error: attendanceError } = await attendanceQuery;
 
         if (attendanceError || !attendanceRecords) {
+            console.error('Error fetching attendance records:', attendanceError);
             return [];
         }
+
+        // Log attendanceRecords for debugging
+        // console.log("Attendance Records:", attendanceRecords);
 
         // Map attendance to student mappings
         const processedRecords = studentMappings.map(mapping => {
             const attendance = attendanceRecords.find(
-                a => a.student_auto_id === mapping.student_auto_id && a.batch_time_schedule_auto_id === mapping.batch_auto_id
+                a => a.student_auto_id === mapping.student_auto_id && a.batch_time_schedule_auto_id === Number(batchTimeScheduleId)
             );
 
             return {
@@ -56,12 +65,15 @@ export async function fetchAttendanceRecords(batchTimeScheduleId: string, batchP
             };
         });
 
+        //console.log("Processed Records:", processedRecords);
 
         return processedRecords;
     } catch (error) {
+        console.error('Unexpected error:', error);
         return [];
     }
 }
+
 
 export async function updateAttendanceStatus(
     student_auto_id: number,
@@ -128,6 +140,23 @@ export async function fetchTotalAttendanceForBatch(studentId: string, batchId: s
         return data;
     } catch (error) {
         console.error('Exception when fetching total attendance:', error);
+        return [];
+    }
+}
+
+export async function fetchStudentAttendanceForSendingEmails(): Promise<any[]> {
+    try {
+        const { data, error } = await supabaseCacheFreeClient
+            .rpc('get_student_attendance_for_sending_emails');
+
+        if (error) {
+            console.error('Error fetching attendance for sending emails:', error);
+            return [];
+        }
+
+        return data;
+    } catch (error) {
+        console.error('Exception when fetching attendance for sending emails:', error);
         return [];
     }
 }

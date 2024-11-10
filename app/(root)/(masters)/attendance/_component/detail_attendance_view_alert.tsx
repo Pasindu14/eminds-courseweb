@@ -104,7 +104,7 @@ export function DetailAttendanceViewAlert({
                   Total Present Days: {totalPresentDays}
                 </Badge>
                 <Badge variant={"secondary"} className="ml-4 mr-4 text-xl p-2">
-                  Attendance Percentage: {attendancePercentage}
+                  Attendance Percentage: {attendancePercentage} %
                 </Badge>
               </div>
             </>
