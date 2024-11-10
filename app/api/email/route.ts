@@ -6,7 +6,7 @@ function delay(ms: number) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-export async function GET(request: Request) {
+export async function POST(request: Request) {
     try {
         // Fetch attendance data for sending emails
         const attendanceData = await fetchStudentAttendanceForSendingEmails();
