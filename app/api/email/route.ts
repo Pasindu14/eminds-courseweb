@@ -6,7 +6,7 @@ function delay(ms: number) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-export async function POST(request: Request) {
+export async function GET(request: Request) {
     try {
         // Fetch attendance data for sending emails
         const attendanceData = await fetchStudentAttendanceForSendingEmails();
@@ -105,6 +105,7 @@ export async function POST(request: Request) {
     }
 }
 
-export async function GET(request: Request) {
+/* export async function GET(request: Request) {
     return NextResponse.json({ message: "Email sending service is active" });
 }
+ */
