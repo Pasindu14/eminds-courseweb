@@ -43,6 +43,7 @@ const AttendanceMarkingFilterForm = () => {
     async (batchTimeScheduleId: string, batchId?: string) => {
       try {
         setLoading(true);
+
         const result = await fetchAttendanceRecords(
           batchTimeScheduleId,
           batchId
