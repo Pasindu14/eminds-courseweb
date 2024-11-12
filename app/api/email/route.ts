@@ -6,59 +6,37 @@ function delay(ms: number) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-export async function POST(request: Request) {
-    try {
-        // Fetch attendance data for sending emails
-        const attendanceData = await fetchStudentAttendanceForSendingEmails();
+async function sendEmailBatch(batch: any) {
+    const results = [];
 
-        if (!attendanceData.length) {
-            return NextResponse.json({
-                success: false,
-                message: "No attendance data available for the previous month"
-            });
-        }
+    for (const student of batch) {
+        const {
+            student_email: studentEmail,
+            batch_name: batchName,
+            course_name: courseName,
+            total_schedules: totalSessions,
+            attended_sessions: attendedSessions,
+            attendance_percentage: attendancePercentage
+        } = student;
 
-        const emailResults = <any[]>[];
+        const htmlContent = `
+            <p>Dear Student,</p>
+            <p>Greetings from the eMinds Academic Team!</p>
+            <p>Please find the attendance details below for your course:</p>
+            <ul>
+                <li><strong>Course Name:</strong> ${courseName}</li>
+                <li><strong>Batch:</strong> ${batchName}</li>
+                <li><strong>Month:</strong> ${new Date().toLocaleString('default', { month: 'long', year: 'numeric' })}</li>
+                <li><strong>Total Sessions:</strong> ${totalSessions}</li>
+                <li><strong>Attended Sessions:</strong> ${attendedSessions}</li>
+                <li><strong>Attendance Percentage:</strong> ${attendancePercentage}%</li>
+            </ul>
+            <p>Please be reminded that if you have missed any classes, you can access recorded videos of the lectures through the student portal.</p>
+            <p>This document is for your self-evaluation. We recommend maintaining at least a 60% attendance rate.</p>
+            <p>Best regards,<br>Piyumi Anushka,<br>Lead Admin</p>
+        `;
 
-        for (const student of attendanceData) {
-            const {
-                student_email: studentEmail,
-                batch_name: batchName,
-                course_name: courseName,
-                total_schedules: totalSessions,
-                attended_sessions: attendedSessions,
-                attendance_percentage: attendancePercentage
-            } = student;
-
-            // Compose the email content
-            const htmlContent = `
-                <p>Dear Student,</p>
-                
-                <p>Greetings from the eMinds Academic Team!</p>
-
-                <p>Please find the attendance details below for your course:</p>
-
-                <ul>
-                    <li><strong>Course Name:</strong> ${courseName}</li>
-                    <li><strong>Batch:</strong> ${batchName}</li>
-                    <li><strong>Month:</strong> ${new Date().toLocaleString('default', { month: 'long', year: 'numeric' })}</li>
-                    <li><strong>Total Sessions:</strong> ${totalSessions}</li>
-                    <li><strong>Attended Sessions:</strong> ${attendedSessions}</li>
-                    <li><strong>Attendance Percentage:</strong> ${attendancePercentage}%</li>
-                </ul>
-
-                <p>Please be reminded that if you have missed any classes, you can access recorded videos of the lectures through the student portal. These resources are designed to help you catch up and stay aligned with the course material.</p>
-
-                <p>This document is for your self-evaluation. While there is no compulsory attendance policy, we recommend maintaining at least a 60% attendance rate.</p>
-
-                <p>Let's continue to strive for excellence together!</p>
-
-                <p>Best regards,<br>
-                Piyumi Anushka,<br>
-                Lead Admin</p>
-            `;
-
-            // Send mail with defined transport object
+        try {
             const info = await transporter.sendMail({
                 from: '"Course Web Admin" <coursewebadmin@eminds.lk>',
                 to: studentEmail,
@@ -78,14 +56,34 @@ export async function POST(request: Request) {
                 }
             });
 
-            emailResults.push({
-                studentEmail,
-                success: true,
-                messageId: info.messageId
-            });
+            results.push({ studentEmail, success: true, messageId: info.messageId });
+        } catch (error: any) {
+            results.push({ studentEmail, success: false, error: error.message });
+        }
+    }
 
-            // Wait for 4 seconds before sending the next email
-            await delay(4000);
+    return results;
+}
+
+export async function POST(request: Request) {
+    try {
+        const attendanceData = await fetchStudentAttendanceForSendingEmails();
+
+        if (!attendanceData.length) {
+            return NextResponse.json({
+                success: false,
+                message: "No attendance data available for the previous month"
+            });
+        }
+
+        const batchSize = 10; // Set the batch size
+        const emailResults = [];
+
+        for (let i = 0; i < attendanceData.length; i += batchSize) {
+            const batch = attendanceData.slice(i, i + batchSize);
+            const batchResults = await sendEmailBatch(batch);
+            emailResults.push(...batchResults);
+            await delay(5000); // Optional delay between batches to avoid rate limiting
         }
 
         return NextResponse.json({
@@ -104,8 +102,3 @@ export async function POST(request: Request) {
         });
     }
 }
-
-/* export async function GET(request: Request) {
-    return NextResponse.json({ message: "Email sending service is active" });
-}
- */

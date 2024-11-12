@@ -104,7 +104,11 @@ const AttendanceMarkingFilterForm = () => {
           </form>
         </Form>
         <Separator className="mt-2" />
-        <DataTable columns={columns} data={attendanceRecords} />
+        <DataTable
+          columns={columns}
+          data={attendanceRecords}
+          key={JSON.stringify(attendanceRecords)}
+        />
       </motion.div>
     </div>
   );
