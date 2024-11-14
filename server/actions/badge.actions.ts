@@ -401,7 +401,7 @@ const generateCPDMHtmlContent = (name: string, courseCode: string, studentId: nu
           <h1>CPDM : Certificate in Practical Digital Marketing, eMinds Certified Digital Marketing Specialist</h1>
         </div>
         <div class="row">
-          <p class="lead mt-3">CPDM is eMinds global practical digital marketing education program for digital marketing professionals. This badge holder is a valued partner who is qualified and skilled enough to handle a digital marketing executive, senior executive or specialist position. </p>
+          <p class="lead mt-3">CPDM is eMinds' global, practical digital marketing education program for digital marketing professionals. This badge holder is a valued partner, qualified and skilled to handle a position as a Digital Marketing Executive, Senior Executive, or Specialist.</p>
         </div>
     
         <div class="row mt-5">
@@ -409,15 +409,16 @@ const generateCPDMHtmlContent = (name: string, courseCode: string, studentId: nu
         </div>
     
         <div class="row">
-          <span class="badge badge-primary badge-font-custom mr-1 mb-1">Digital marketing strategy and planning</span>
-          <span class="badge badge-primary badge-font-custom mr-1 mb-1">Facebook business manager and campaign set ups</span>
-          <span class="badge badge-primary badge-font-custom mr-1 mb-1">Facebook audience building</span>
-          <span class="badge badge-primary badge-font-custom mr-1 mb-1">Facebook pixels</span>
-          <span class="badge badge-primary badge-font-custom mr-1 mb-1">Google search ads</span>
-          <span class="badge badge-primary badge-font-custom mr-1 mb-1">Google display ads</span>
-          <span class="badge badge-primary badge-font-custom mr-1 mb-1">Youtube ads</span>
-          <span class="badge badge-primary badge-font-custom mr-1 mb-1">SEO</span>
-          <span class="badge badge-primary badge-font-custom mr-1 mb-1">Linkedin ads</span>
+            <span class="badge badge-primary badge-font-custom mr-1 mb-1">Digital Marketing Strategy And Planning</span>
+            <span class="badge badge-primary badge-font-custom mr-1 mb-1">Facebook Business Manager And Campaign Set Ups</span>
+            <span class="badge badge-primary badge-font-custom mr-1 mb-1">Facebook Audience Building</span>
+            <span class="badge badge-primary badge-font-custom mr-1 mb-1">Facebook Pixels</span>
+            <span class="badge badge-primary badge-font-custom mr-1 mb-1">Google Search Ads</span>
+            <span class="badge badge-primary badge-font-custom mr-1 mb-1">Google Display Ads</span>
+            <span class="badge badge-primary badge-font-custom mr-1 mb-1">YouTube Ads</span>
+            <span class="badge badge-primary badge-font-custom mr-1 mb-1">SEO</span>
+            <span class="badge badge-primary badge-font-custom mr-1 mb-1">LinkedIn Ads</span>
+            <span class="badge badge-primary badge-font-custom mr-1 mb-1">TikTok Ads</span>
         </div>
     
         <div class="row mt-5">
@@ -430,7 +431,7 @@ const generateCPDMHtmlContent = (name: string, courseCode: string, studentId: nu
               <i class="fa fa-id-card fa-fw" aria-hidden="true"></i>
             </div>
             <div>
-              <p class="lead">This badge indicates a candidate has successfully completed an in-depth eMinds training workshop developed in partnership CPD UK and TVEC. This rigorous, hands-on workshop focuses on training and facilitation skills to empower digital marketers to help brand to drive results by following best digital marketing tactics. </p>
+              <p class="lead">This badge indicates that the candidate has successfully completed an in-depth eMinds training workshop developed in partnership with CPD UK. This rigorous, hands-on workshop focuses on training and facilitation skills to empower digital marketers to help brands drive results by following best practices in digital marketing tactics.</p>
             </div>
           </div>
     
@@ -439,7 +440,7 @@ const generateCPDMHtmlContent = (name: string, courseCode: string, studentId: nu
               <i class="fa fa-id-card fa-fw" aria-hidden="true"></i>
             </div>
             <div>
-              <p class="lead">Badged candidates can deliver digital marketing services to various groups, including (but not limited to): small businesses, private and public sectors, nonprofits, and marketers.</p>
+              <p class="lead">Badged candidates are equipped to deliver digital marketing services to various groups, including (but not limited to) small businesses, private and public sectors, nonprofits, and marketers.</p>
             </div>
           </div>
         </div>
@@ -449,7 +450,7 @@ const generateCPDMHtmlContent = (name: string, courseCode: string, studentId: nu
         </div>
     
         <div class="row">
-          <p class="lead">Candidates must adhere to these to conditions to remain in the program <br>--Maintain an active eMinds professional certification <br>--Join with monthly training programs</p>
+          <p class="lead">To remain in the program, candidates must adhere to the following conditions: <br>--Maintain an active eMinds professional certification <br>--Participate in monthly training programs</p>
         </div>
     
       </div>
@@ -511,7 +512,7 @@ const generateDPDMHtmlContent = (name: string, courseCode: string, studentId: nu
           <h1>DPDM : Diploma in Practical Digital Marketing, eMinds Certified Digital Marketing Lead</h1>
         </div>
         <div class="row">
-          <p class="lead mt-3">DPDM is eMinds global practical digital marketing education program for digital marketing professionals who are in the managerial leval.  This badge holder is a valued partner who is qualified and skilled enough to handle a digital marketing manager and above positions. </p>
+          <p class="lead mt-3">Diploma in Practical Digital Marketing, eMinds Certified Digital Marketing LeadDPDM is eMinds' global, practical digital marketing education program for digital marketing professionals at the managerial level. This badge holder is a valued partner, qualified and skilled to handle positions as a Digital Marketing Manager or higher.</p>
         </div>
     
         <div class="row mt-5">
@@ -519,21 +520,22 @@ const generateDPDMHtmlContent = (name: string, courseCode: string, studentId: nu
         </div>
     
         <div class="row">
-          <span class="badge badge-primary badge-font-custom mr-1 mb-1">Digital marketing strategy and planning</span>
-          <span class="badge badge-primary badge-font-custom mr-1 mb-1">Facebook business manager and campaign set ups</span>
-          <span class="badge badge-primary badge-font-custom mr-1 mb-1">Facebook audience building</span>
-          <span class="badge badge-primary badge-font-custom mr-1 mb-1">Facebook pixels</span>
-          <span class="badge badge-primary badge-font-custom mr-1 mb-1">Google search ads</span>
-          <span class="badge badge-primary badge-font-custom mr-1 mb-1">Google display ads</span>
-          <span class="badge badge-primary badge-font-custom mr-1 mb-1">Youtube ads</span>
-          <span class="badge badge-primary badge-font-custom mr-1 mb-1">SEO</span>
-          <span class="badge badge-primary badge-font-custom mr-1 mb-1">Discovery commerce</span>
-          <span class="badge badge-primary badge-font-custom mr-1 mb-1">Facebook event manager and conversion ads</span>
-          <span class="badge badge-primary badge-font-custom mr-1 mb-1">Google conversion ads</span>
-          <span class="badge badge-primary badge-font-custom mr-1 mb-1">Google tag manager</span>
-          <span class="badge badge-primary badge-font-custom mr-1 mb-1">Advance SEO</span>
-          <span class="badge badge-primary badge-font-custom mr-1 mb-1">Across boarder marketing</span>
-          <span class="badge badge-primary badge-font-custom mr-1 mb-1">Facebook experiments</span>
+          <span class="badge badge-primary badge-font-custom mr-1 mb-1">Discovery Commerce</span>
+          <span class="badge badge-primary badge-font-custom mr-1 mb-1">Meta Pixel And Pixel Set Up</span>
+          <span class="badge badge-primary badge-font-custom mr-1 mb-1">Meta Conversion Events Set Up</span>
+          <span class="badge badge-primary badge-font-custom mr-1 mb-1">Google Tag Manager</span>
+          <span class="badge badge-primary badge-font-custom mr-1 mb-1">Meta Conversion Ads</span>
+          <span class="badge badge-primary badge-font-custom mr-1 mb-1">Google Analytics - GA4</span>
+          <span class="badge badge-primary badge-font-custom mr-1 mb-1">Google Conversion Ads</span>
+          <span class="badge badge-primary badge-font-custom mr-1 mb-1">Google Search Ads Extensions</span>
+          <span class="badge badge-primary badge-font-custom mr-1 mb-1">Google Audiences Manager</span>
+          <span class="badge badge-primary badge-font-custom mr-1 mb-1">Cross Border Marketing</span>
+          <span class="badge badge-primary badge-font-custom mr-1 mb-1">Automated Rules</span>
+          <span class="badge badge-primary badge-font-custom mr-1 mb-1">Experiments - Meta Ads</span>
+          <span class="badge badge-primary badge-font-custom mr-1 mb-1">Ad Reporting - Meta Ads</span>
+          <span class="badge badge-primary badge-font-custom mr-1 mb-1">Google Shopping Ads</span>
+          <span class="badge badge-primary badge-font-custom mr-1 mb-1">Performance Max Campaigns</span>
+          <span class="badge badge-primary badge-font-custom mr-1 mb-1">Advanced SEO And Google Search Console</span>
         </div>
     
         <div class="row mt-5">
@@ -546,7 +548,7 @@ const generateDPDMHtmlContent = (name: string, courseCode: string, studentId: nu
               <i class="fa fa-id-card fa-fw" aria-hidden="true"></i>
             </div>
             <div>
-              <p class="lead">This badge indicates a candidate has successfully completed an in-depth eMinds training workshop developed in partnership CPD UK and TVEC. This rigorous, hands-on workshop focuses on training and facilitation skills to empower digital marketers to help brand to drive results by following best digital marketing tactics. </p>
+              <p class="lead">This badge indicates that the candidate has successfully completed an in-depth eMinds training workshop developed in partnership with CPD UK. This rigorous, hands-on workshop focuses on training and facilitation skills to empower digital marketers to help brands drive results by following the best digital marketing tactics.</p>
             </div>
           </div>
     
@@ -555,7 +557,7 @@ const generateDPDMHtmlContent = (name: string, courseCode: string, studentId: nu
               <i class="fa fa-id-card fa-fw" aria-hidden="true"></i>
             </div>
             <div>
-              <p class="lead">Badged candidates can deliver digital marketing services to various groups, including (but not limited to): small businesses, private and public sectors, nonprofits, and marketers.</p>
+              <p class="lead">Badged candidates are equipped to deliver digital marketing services to various groups, including (but not limited to) small businesses, private and public sectors, nonprofits, and marketers.</p>
             </div>
           </div>
         </div>
@@ -565,7 +567,7 @@ const generateDPDMHtmlContent = (name: string, courseCode: string, studentId: nu
         </div>
     
         <div class="row">
-          <p class="lead">Candidates must adhere to these to conditions to remain in the program <br>--Maintain an active eMinds professional certification <br>--Join with monthly training programs</p>
+          <p class="lead">To remain in the program, candidates must adhere to the following conditions <br>--Maintain an active eMinds professional certification <br>--Participate in monthly training programs</p>
         </div>
     
       </div>
