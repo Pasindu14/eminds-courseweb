@@ -31,3 +31,24 @@ export function formatDate(dateInput: string) {
 
   return [year, month, day].join('-');
 }
+
+export function extractDateOnly(timestamp: string | Date): string {
+  // Ensure we're working with a Date object
+  const date = timestamp instanceof Date
+    ? timestamp
+    : new Date(timestamp);
+
+  // Adjust to local midnight to prevent timezone shifts
+  const localDate = new Date(
+    date.getFullYear(),
+    date.getMonth(),
+    date.getDate()
+  );
+
+  // Format in YYYY-MM-DD
+  const year = localDate.getFullYear();
+  const month = String(localDate.getMonth() + 1).padStart(2, '0');
+  const day = String(localDate.getDate()).padStart(2, '0');
+
+  return `${year}-${month}-${day}`;
+}

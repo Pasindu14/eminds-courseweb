@@ -20,6 +20,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { Loader } from "@/lib/spinners";
 import { fetchBatchTimeSchedules } from "@/server/actions/batch-time-schedule.actions";
 import { BatchTimeSchedule } from "@/server/types/batch-time-schedule";
+import { extractDateOnly } from "@/lib/utils";
 
 type BatchTimeScheduleSelectProps = {
   control: Control<any>;
@@ -80,7 +81,7 @@ const BatchTimeScheduleSelect = ({
                         key={schedule.auto_id}
                         value={schedule.auto_id!.toString()}
                       >
-                        {schedule.date}
+                        {extractDateOnly(schedule.date)}
                       </SelectItem>
                     ))
                   ) : (

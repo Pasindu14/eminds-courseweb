@@ -2,11 +2,13 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import { Badge } from "@/components/ui/badge";
+import { extractDateOnly } from "@/lib/utils";
 
 export const detailViewColumns: ColumnDef<any>[] = [
   {
     accessorKey: "schedule_date",
     header: "Date",
+    cell: ({ row }) => extractDateOnly(row.original.schedule_date), //
   },
   {
     accessorKey: "attendance_status",

@@ -25,7 +25,6 @@ export async function fetchBatchTimeSchedules(batchParam?: string): Promise<Batc
         if (error) {
             return [];
         }
-
         return schedules ?? [];
     } catch (error) {
         return [];
@@ -45,7 +44,6 @@ export async function addBatchTimeSchedule(schedule: any) {
                     date: dateItem,
                 }])
                 .select();
-
             if (error != null) {
                 return responseHandler.setError(
                     error.details ?? errorMessage,

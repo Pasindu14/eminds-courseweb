@@ -3,6 +3,7 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { ConfirmDeleteAlertDialog } from "../_component/remove_batch_time_schedule_alert";
 import { BatchTimeSchedule } from "@/server/types/batch-time-schedule";
+import { extractDateOnly } from "@/lib/utils";
 
 export const columns = (
   handleDelete: () => void
@@ -10,6 +11,7 @@ export const columns = (
   {
     accessorKey: "date",
     header: "Date",
+    cell: ({ row }) => extractDateOnly(row.original.date), //
   },
   {
     accessorKey: "batches.batch_name",

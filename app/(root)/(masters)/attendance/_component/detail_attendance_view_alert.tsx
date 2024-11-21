@@ -68,7 +68,6 @@ export function DetailAttendanceViewAlert({
           student_auto_id,
           batch_auto_id
         );
-        console.log(result);
         setData(result);
         return result;
       };
