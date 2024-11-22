@@ -38,7 +38,7 @@ async function sendEmailBatch(batch: any) {
 
         try {
             const info = await transporter.sendMail({
-                from: '"Course Web Admin" <coursewebadmin@eminds.lk>',
+                from: '"Course Web Admin" <edu@eminds.com.au>',
                 to: studentEmail,
                 subject: `Attendance Report for ${courseName}`,
                 html: htmlContent,
@@ -46,12 +46,12 @@ async function sendEmailBatch(batch: any) {
                     'X-Priority': '1',
                     'X-MSMail-Priority': 'High',
                     'Importance': 'high',
-                    'Message-ID': `<${Date.now()}@coursewebadmin@eminds.lk>`,
+                    'Message-ID': `<${Date.now()}@edu@eminds.com.au>`,
                     'Date': new Date().toUTCString()
                 },
                 priority: 'high',
                 envelope: {
-                    from: "coursewebadmin@eminds.lk",
+                    from: "edu@eminds.com.au",
                     to: studentEmail
                 }
             });

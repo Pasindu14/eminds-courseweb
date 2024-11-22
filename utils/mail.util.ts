@@ -2,12 +2,12 @@ import nodemailer from 'nodemailer';
 
 const transporter = nodemailer.createTransport({
     pool: true,
-    host: "mail.eminds.lk",
+    host: "smtp.titan.email",
     port: 465,
     secure: true, // use TLS
     auth: {
-        user: "coursewebadmin@eminds.lk",
-        pass: "OO6#.8akki%u",
+        user: "edu@eminds.com.au",
+        pass: "eminds@123",
     },
 });
 
