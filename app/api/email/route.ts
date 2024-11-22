@@ -21,7 +21,7 @@ async function sendEmailBatch(batch: any) {
 
         const htmlContent = `
             <p>Dear Student,</p>
-            <p>Greetings from the eMinds Academic Team!</p>
+            <p><strong>Greetings from the eMinds Academic Team!</strong> </p>
             <p>Please find the attendance details below for your course:</p>
             <ul>
                 <li><strong>Course Name:</strong> ${courseName}</li>
