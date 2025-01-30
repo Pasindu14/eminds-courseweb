@@ -160,3 +160,18 @@ export async function fetchStudentAttendanceForSendingEmails(): Promise<any[]> {
         return [];
     }
 }
+
+export async function storeSentEmails(sentEmails: { studentEmail: string, success: boolean, messageId?: string }[]) {
+    try {
+        await supabaseCacheFreeClient
+            .from('sent_emails')
+            .insert(sentEmails.map(email => ({
+                student_email: email.studentEmail,
+                success: email.success,
+                message_id: email.messageId || null,
+            })));
+    } catch (error) {
+        console.error("Failed to store sent emails:", error);
+    }
+}
+

@@ -6,7 +6,7 @@ import React from "react";
 const page = () => {
   const sendEmail = async () => {
     try {
-      const asd = await fetch("/api/email", {
+      const asd = await fetch("/api/testemail", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

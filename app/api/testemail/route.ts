@@ -63,13 +63,24 @@ async function sendEmailBatch(batch: any) {
     }
 
     await storeSentEmails(results);
-        
+    
     return results;
 }
 
 export async function POST(request: Request) {
     try {
-        const attendanceData = await fetchStudentAttendanceForSendingEmails();
+        const attendanceData = [
+            {
+                batch_auto_id: 84,
+                student_auto_id: 1592,
+                student_email: 'pasindu14@gmail.com',
+                batch_name: 'CPDM 5s9th Intake - September 2024 (Sinhala)',
+                course_name: 'Certificate in Practical Digital Marketing',
+                total_schedules: 4,
+                attended_sessions: 1,
+                attendance_percentage: 25
+              },
+        ];
 
         if (!attendanceData.length) {
             return NextResponse.json({
@@ -77,6 +88,7 @@ export async function POST(request: Request) {
                 message: "No attendance data available for the previous month"
             });
         }
+
 
         const batchSize = 10; // Set the batch size
         const emailResults = [];
@@ -90,7 +102,7 @@ export async function POST(request: Request) {
 
         return NextResponse.json({
             success: true,
-            results: emailResults,
+            results: "emailResults",
             message: "Emails sent successfully"
         });
     } catch (error) {
