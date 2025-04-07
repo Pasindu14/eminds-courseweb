@@ -17,38 +17,29 @@ import {
 } from "@/components/ui/select";
 
 import React, { useEffect, useMemo, useState } from "react";
+import { fetchBatches } from "@/server/actions/batch.actions";
+import { Batch } from "@/server/types/batch.type";
 import { Loader } from "@/lib/spinners";
-import { fetchBatchTimeSchedules } from "@/server/actions/batch-time-schedule.actions";
-import { BatchTimeSchedule } from "@/server/types/batch-time-schedule";
-import { extractDateOnly } from "@/lib/utils";
-import { fetchBatchDetailsWithTotalProgress } from "@/server/actions/batch.actions";
-import { BatchInfoWithSessionCount } from "@/server/types/batch-info-with-session-count";
 
-type BatchTimeScheduleSelectProps = {
+type BatchSelectProps = {
   control: Control<any>;
   name: string;
   filter?: string;
 };
 
-const BatchTimeScheduleSelect = ({
-  control,
-  name,
-  filter,
-}: BatchTimeScheduleSelectProps) => {
+const BatchSelect = ({ control, name, filter }: BatchSelectProps) => {
   const [loading, setLoading] = useState(false);
-  const [schedules, setBatchTimeSchedules] = useState<
-    BatchInfoWithSessionCount[]
-  >([]);
+  const [batches, setBatches] = useState<Batch[]>([]);
 
   useEffect(() => {
     // Define the async function inside the effect
     const fetchData = async () => {
       setLoading(true);
       try {
-        const data = await fetchBatchDetailsWithTotalProgress(filter); // Use the filter variable directly
-        setBatchTimeSchedules(data); // Update your state with the fetched data
+        const data = await fetchBatches(filter); // Use the filter variable directly
+        setBatches(data); // Update your state with the fetched data
       } catch (error) {
-        console.error("Failed to fetch batche time schedules:", error);
+        console.error("Failed to fetch batches:", error);
         // Optionally, handle errors, e.g., by setting an error state
       } finally {
         setLoading(false); // Ensure loading is false after data is fetched or if an error occurs
@@ -66,7 +57,7 @@ const BatchTimeScheduleSelect = ({
         name={name}
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Batch </FormLabel>
+            <FormLabel>Batch</FormLabel>
             <div className="flex items-center justify-center gap-2">
               <Select
                 onValueChange={field.onChange}
@@ -75,22 +66,22 @@ const BatchTimeScheduleSelect = ({
               >
                 <FormControl>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select a schedule" />
+                    <SelectValue placeholder="Select a batch" />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  {schedules.length > 0 ? (
-                    schedules.map((schedule) => (
+                  {batches.length > 0 ? (
+                    batches.map((batch) => (
                       <SelectItem
-                        key={schedule.batch_auto_id}
-                        value={schedule.batch_auto_id.toString()}
+                        key={batch.auto_id}
+                        value={batch.auto_id!.toString()}
                       >
-                        {`${schedule.batch_name} | Count :${schedule.total_session_progress_count}`}
+                        {batch.batch_name}
                       </SelectItem>
                     ))
                   ) : (
                     <SelectItem value="-1" disabled>
-                      No schedules available
+                      No batches available
                     </SelectItem>
                   )}
                 </SelectContent>
@@ -106,4 +97,4 @@ const BatchTimeScheduleSelect = ({
   );
 };
 
-export default BatchTimeScheduleSelect;
+export default BatchSelect;

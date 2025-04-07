@@ -4,6 +4,7 @@ import { supabase, supabaseCacheFreeClient } from "../server";
 import { revalidatePath } from 'next/cache';
 import { Batch } from "../types/batch.type";
 import { errorMessage } from "@/constants/messages";
+import { BatchInfoWithSessionCount } from "../types/batch-info-with-session-count";
 
 export async function fetchBatches(courseParam?: string): Promise<Batch[]> {
     try {
@@ -150,5 +151,35 @@ export async function fetchBatchById(id?: string): Promise<Batch | null> {
         return batch ?? null;
     } catch (error) {
         return null;
+    }
+}
+
+
+export async function fetchBatchDetailsWithTotalProgress(courseParam?: string): Promise<BatchInfoWithSessionCount[]> {
+    try {
+        let query = supabaseCacheFreeClient
+            .from('batches')
+            .select(`*,session_progress(count:batch_auto_id)`)
+            .order('auto_id', { ascending: true });
+
+        if (courseParam) {
+            query = query.eq('course_auto_id', courseParam);
+        }
+
+        let { data: batches, error } = await query;
+
+        if (error) {
+            console.error("Error fetching batch details with total progress:", error);
+            return [];
+        }
+
+        return (batches ?? []).map(batch => ({
+            batch_auto_id: batch.auto_id,
+            batch_name: batch.batch_name,
+            total_session_progress_count: batch.session_progress?.length ?? 0
+        }));
+    } catch (error) {
+        console.error("Error in fetchBatchDetailsWithTotalProgress:", error);
+        return [];
     }
 }

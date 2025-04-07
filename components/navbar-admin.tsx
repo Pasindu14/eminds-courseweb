@@ -85,6 +85,12 @@ const masterComponents: { title: string; href: string; description: string }[] =
       description:
         "Display extra sessions for specific batches enabling effective management and tracking of these unique sessions for targeted groups of students.",
     },
+    {
+      title: "Session Progress",
+      href: "/admin-session-progress",
+      description:
+        "Monitor and manage the learning progress of students within specific sessions, providing insights into their advancement and completion status.",
+    },
   ];
 
 const mappingComponents: {
