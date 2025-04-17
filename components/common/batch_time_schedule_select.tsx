@@ -21,8 +21,6 @@ import { Loader } from "@/lib/spinners";
 import { fetchBatchTimeSchedules } from "@/server/actions/batch-time-schedule.actions";
 import { BatchTimeSchedule } from "@/server/types/batch-time-schedule";
 import { extractDateOnly } from "@/lib/utils";
-import { fetchBatchDetailsWithTotalProgress } from "@/server/actions/batch.actions";
-import { BatchInfoWithSessionCount } from "@/server/types/batch-info-with-session-count";
 
 type BatchTimeScheduleSelectProps = {
   control: Control<any>;
@@ -36,16 +34,14 @@ const BatchTimeScheduleSelect = ({
   filter,
 }: BatchTimeScheduleSelectProps) => {
   const [loading, setLoading] = useState(false);
-  const [schedules, setBatchTimeSchedules] = useState<
-    BatchInfoWithSessionCount[]
-  >([]);
+  const [schedules, setBatchTimeSchedules] = useState<BatchTimeSchedule[]>([]);
 
   useEffect(() => {
     // Define the async function inside the effect
     const fetchData = async () => {
       setLoading(true);
       try {
-        const data = await fetchBatchDetailsWithTotalProgress(filter); // Use the filter variable directly
+        const data = await fetchBatchTimeSchedules(filter); // Use the filter variable directly
         setBatchTimeSchedules(data); // Update your state with the fetched data
       } catch (error) {
         console.error("Failed to fetch batche time schedules:", error);
@@ -66,7 +62,7 @@ const BatchTimeScheduleSelect = ({
         name={name}
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Batch </FormLabel>
+            <FormLabel>Batch Schedule</FormLabel>
             <div className="flex items-center justify-center gap-2">
               <Select
                 onValueChange={field.onChange}
@@ -82,10 +78,10 @@ const BatchTimeScheduleSelect = ({
                   {schedules.length > 0 ? (
                     schedules.map((schedule) => (
                       <SelectItem
-                        key={schedule.batch_auto_id}
-                        value={schedule.batch_auto_id.toString()}
+                        key={schedule.auto_id}
+                        value={schedule.auto_id!.toString()}
                       >
-                        {`${schedule.batch_name} | Count :${schedule.total_session_progress_count}`}
+                        {extractDateOnly(schedule.date)}
                       </SelectItem>
                     ))
                   ) : (
