@@ -105,7 +105,7 @@ const SessionProgressFilterForm = () => {
               </div>
 
               <div className="md:w-1/3">
-                <BatchTimeScheduleSelect
+                <BatchSelect
                   control={form.control}
                   name="batchId"
                   filter={courseCode}
