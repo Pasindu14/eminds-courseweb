@@ -10,7 +10,7 @@ export async function fetchSessionProgress(batchParam?: string): Promise<Session
         let query = supabaseCacheFreeClient
             .from('session_progress')
             .select()
-            .order('created_at', { ascending: false });
+            .order('created_at', { ascending: true });
 
         if (batchParam) {
             query = query.eq('batch_auto_id', batchParam);
