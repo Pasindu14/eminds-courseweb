@@ -18,8 +18,10 @@ import { useState } from "react";
 
 export function ConfirmResetPasswordAlertDialog({
   phoneNumber,
+  studentAutoIId,
 }: {
   phoneNumber: string | null;
+  studentAutoIId: number | null;
 }) {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -27,7 +29,7 @@ export function ConfirmResetPasswordAlertDialog({
   const resetFunction = async () => {
     try {
       setLoading(true);
-      await resetPassword(phoneNumber!.toString());
+      await resetPassword(phoneNumber!.toString(), studentAutoIId!);
       toastSuccess("Password reset successfully");
       setOpen(false);
     } catch (error: any) {

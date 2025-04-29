@@ -61,7 +61,7 @@ export async function fetchStudentMappingsByAutoId(studentAutoId: string): Promi
     }
 }
 
-export async function resetPassword(phoneNumber: string): Promise<any> {
+export async function resetPassword(phoneNumber: string, studentAutoId: number): Promise<any> {
     try {
         const { data, error, count } = await supabaseCacheFreeClient
             .from('students_auth')
@@ -73,8 +73,15 @@ export async function resetPassword(phoneNumber: string): Promise<any> {
         }
 
         if (data.length === 0) {
-            // If no rows were updated, throw or return a specific error/message
-            throw new Error("No account found with the provided phone number.");
+            const { error: insertError } = await supabaseCacheFreeClient
+                .from('students_auth')
+                .insert({
+                    phone_number: phoneNumber,
+                    password: 'abc@123',
+                    student_auto_id: studentAutoId,
+                });
+
+            if (insertError) throw new Error("Error occured while resetting student auth");
         }
 
         return data; // Optionally return the data if needed

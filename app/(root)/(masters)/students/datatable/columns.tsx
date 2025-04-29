@@ -36,6 +36,7 @@ export const columns: ColumnDef<any>[] = [
       <div className="flex gap-2">
         <ConfirmResetPasswordAlertDialog
           phoneNumber={row.original.phonenumber}
+          studentAutoIId={row.original.auto_id}
         />
         <UpdateStudentDialog data={row.original} />
       </div>
