@@ -26,7 +26,7 @@ async function sendEmailBatch(batch: any) {
             <ul>
                 <li><strong>Course Name:</strong> ${courseName}</li>
                 <li><strong>Batch:</strong> ${batchName}</li>
-                <li><strong>Month:</strong> ${new Date().toLocaleString('default', { month: 'long', year: 'numeric' })}</li>
+                <li><strong>Month:</strong> ${new Date(new Date().setMonth(new Date().getMonth() - 1)).toLocaleString('default', { month: 'long', year: 'numeric' })}</li>
                 <li><strong>Total Sessions:</strong> ${totalSessions}</li>
                 <li><strong>Attended Sessions:</strong> ${attendedSessions}</li>
                 <li><strong>Attendance Percentage:</strong> ${attendancePercentage}%</li>
@@ -63,7 +63,7 @@ async function sendEmailBatch(batch: any) {
     }
 
     await storeSentEmails(results);
-        
+
     return results;
 }
 
