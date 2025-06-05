@@ -1,12 +1,20 @@
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { useOpenEmbeddedVideo } from "@/zustand/dialog-store";
-import { useRef } from "react";
-import { RotateCcw, RotateCw } from "lucide-react"; // Lucide icons
+import { useRef, useState } from "react";
+import { RotateCcw, RotateCw } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export function EmbeddedVideo() {
   const { isOpen, onClose, link } = useOpenEmbeddedVideo();
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [speed, setSpeed] = useState("1");
 
   if (!link) return null;
 
@@ -24,6 +32,13 @@ export function EmbeddedVideo() {
     }
   };
 
+  const changeSpeed = (value: string) => {
+    setSpeed(value);
+    if (videoRef.current) {
+      videoRef.current.playbackRate = parseFloat(value);
+    }
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[calc(70vw)]">
@@ -31,18 +46,20 @@ export function EmbeddedVideo() {
           className="flex flex-col items-center justify-center"
           onContextMenu={handleContextMenu}
         >
-          <video
-            ref={videoRef}
-            width="95%"
-            controls
-            preload="none"
-            autoPlay
-            controlsList="nodownload"
-            disablePictureInPicture
-          >
-            <source src={replaceUrl(link)} type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
+          <div className="w-full flex flex-col items-center gap-2">
+            <video
+              ref={videoRef}
+              width="95%"
+              controls
+              preload="none"
+              autoPlay
+              controlsList="nodownload"
+              disablePictureInPicture
+            >
+              <source src={replaceUrl(link)} type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          </div>
 
           <div className="flex gap-4 mt-4">
             <Button
@@ -61,6 +78,17 @@ export function EmbeddedVideo() {
               Skip 10s
               <RotateCw size={18} />
             </Button>
+            <Select value={speed} onValueChange={changeSpeed}>
+              <SelectTrigger className="w-[120px]">
+                <SelectValue placeholder="Speed" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="0.5">0.5x</SelectItem>
+                <SelectItem value="1">1x</SelectItem>
+                <SelectItem value="1.5">1.5x</SelectItem>
+                <SelectItem value="2">2x</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
         </div>
       </DialogContent>
