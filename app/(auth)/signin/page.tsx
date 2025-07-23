@@ -90,7 +90,7 @@ const SignIn = () => {
 
         if (res?.ok === false) {
           if (res?.error == "CredentialsSignin") {
-            toastError("Invalid credentials please try again!");
+            toastError("Invalid credentials please try again! ");
           } else {
             toastError(res.error ?? "Invalid credentials please try again!");
           }
