@@ -33,7 +33,7 @@ async function sendEmailBatch(batch: any) {
             </ul>
             <p>Please be reminded that if you have missed any classes, you can access recorded videos of the lectures through the student portal.</p>
             <p>This document is for your self-evaluation. We recommend maintaining at least a 60% attendance rate.</p>
-            <p>Best regards,<br>Piyumi Anushka,<br>Lead Admin</p>
+            <p>Best regards,<br>eMinds Academy Australia</p>
         `;
 
         try {
