@@ -22,6 +22,14 @@ export function EmbeddedVideo() {
     return link.replace("www.dropbox.com", "dl.dropboxusercontent.com");
   };
 
+  const toRawUrl = (link: string): string => {
+    const u = new URL(link);
+    u.hostname = "www.dropbox.com";
+    u.searchParams.delete("dl"); // remove dl=0/1
+    u.searchParams.set("raw", "1"); // force raw stream
+    return u.toString();
+  };
+
   const handleContextMenu = (e: React.MouseEvent) => {
     e.preventDefault();
   };
@@ -56,7 +64,7 @@ export function EmbeddedVideo() {
               controlsList="nodownload"
               disablePictureInPicture
             >
-              <source src={replaceUrl(link)} type="video/mp4" />
+              <source src={toRawUrl(link)} type="video/mp4" />
               Your browser does not support the video tag.
             </video>
           </div>
