@@ -97,7 +97,7 @@ const Dashboard = async () => {
             <DataTable columns={columns} data={sessions} />
           </div>
 
-          <h1 className="text-2xl mt-2 mb-2 font-semibold">Exam Results</h1>
+          <h1 className="text-2xl mt-2 mb-2 font-semibold">Exam Result</h1>
           <Separator className="mt-3" />
           <div>
             <DataTable columns={resultsColumns} data={examResults} />
