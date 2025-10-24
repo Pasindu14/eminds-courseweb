@@ -5,10 +5,10 @@ export const emindsLogo =
   "https://courseweb.eminds.lk/assets/images/eminds_logo.png";
 
 export const dpdmBadgeImage =
-  "https://eminds.com.au/courseweb/badges/badge_4.png?5";
+  "https://eminds.com.au/courseweb/badges/badge_4.png?6";
 
 export const cpdmBadgeImage =
-  "https://eminds.com.au/courseweb/badges/badge_5.png?5";
+  "https://eminds.com.au/courseweb/badges/badge_5.png?6";
 
 export const dpdmBadgeImageSL =
   "https://courseweb.eminds.lk/profile/img/badges/badge_5.png?4";
