@@ -99,6 +99,7 @@ const SignIn = () => {
         } else {
           if (values.username != "admin") {
             router.replace("/password-reset-initial");
+            //router.replace(studentDashboardPath);
           } else {
             if (values.password == "Eminds@587854") {
               router.replace("/admin-dashboard");
