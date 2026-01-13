@@ -141,12 +141,6 @@ export async function validateFingerprint(userId: string, phoneNumber: string, f
         throw error;
     }
 
-
-
-    console.log(user_fingerprints);
-    console.log(fingerprint);
-    console.log(batchAutoId);
-    console.log(browserAgent);
     const fingerprint_01 = user_fingerprints?.fingerprint_01;
     const fingerprint_02 = user_fingerprints?.fingerprint_02;
     const fingerprint_03 = user_fingerprints?.fingerprint_03;
