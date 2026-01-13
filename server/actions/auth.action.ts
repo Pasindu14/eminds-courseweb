@@ -157,14 +157,6 @@ export async function validateFingerprint(userId: string, phoneNumber: string, f
         return true;
     }
 
-
-    console.log("user_fingerprints", user_fingerprints);
-    console.log("fingerprint", fingerprint_01);
-    console.log("fingerprint_02", fingerprint_02);
-    console.log("fingerprint_03", fingerprint_03);
-    console.log("fingerprint_04", fingerprint_04);
-    console.log("fingerprint_05", fingerprint_05);
-
     if (!user_fingerprints ) {
 
         let { error } = await supabaseCacheFreeClient
