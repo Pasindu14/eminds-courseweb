@@ -134,8 +134,7 @@ export async function validateFingerprint(userId: string, phoneNumber: string, f
 
     let { data: user_fingerprints, error } = await supabaseCacheFreeClient
         .from('fingerprint')
-        .select("*").eq('user_id', userId).maybeSingle();
-
+        .select("*").eq('user_id', userId).limit(1).maybeSingle();
 
     if (error) {
         throw error;
@@ -158,7 +157,15 @@ export async function validateFingerprint(userId: string, phoneNumber: string, f
         return true;
     }
 
-    if (!user_fingerprints || (!fingerprint_01 && !fingerprint_02 && !fingerprint_03 && !fingerprint_04 && !fingerprint_05)) {
+
+    console.log("user_fingerprints", user_fingerprints);
+    console.log("fingerprint", fingerprint_01);
+    console.log("fingerprint_02", fingerprint_02);
+    console.log("fingerprint_03", fingerprint_03);
+    console.log("fingerprint_04", fingerprint_04);
+    console.log("fingerprint_05", fingerprint_05);
+
+    if (!user_fingerprints ) {
 
         let { error } = await supabaseCacheFreeClient
             .from('fingerprint')
@@ -221,7 +228,7 @@ export async function validateFingerprint(userId: string, phoneNumber: string, f
 export async function resetFingerprint(userId: string) {
     let { data: user_fingerprints, error } = await supabaseCacheFreeClient
         .from('fingerprint')
-        .select("*").eq('user_id', userId).maybeSingle();
+        .select("*").eq('user_id', userId).limit(1).maybeSingle();
 
     if (error) {
         throw error;
