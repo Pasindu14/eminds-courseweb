@@ -141,21 +141,30 @@ export async function validateFingerprint(userId: string, phoneNumber: string, f
         throw error;
     }
 
+
+
+    console.log(user_fingerprints);
+    console.log(fingerprint);
+    console.log(batchAutoId);
+    console.log(browserAgent);
     const fingerprint_01 = user_fingerprints?.fingerprint_01;
     const fingerprint_02 = user_fingerprints?.fingerprint_02;
+    const fingerprint_03 = user_fingerprints?.fingerprint_03;
+    const fingerprint_04 = user_fingerprints?.fingerprint_04;
+    const fingerprint_05 = user_fingerprints?.fingerprint_05;
 
-    if ((fingerprint_01 && fingerprint_02) && (fingerprint_01 != fingerprint && fingerprint_02 != fingerprint)) {
+    if ((fingerprint_01 && fingerprint_02 && fingerprint_03 && fingerprint_04 && fingerprint_05) && (fingerprint_01 != fingerprint && fingerprint_02 != fingerprint && fingerprint_03 != fingerprint && fingerprint_04 != fingerprint && fingerprint_05 != fingerprint)) {
         await blockUser(userId, batchAutoId);
-        await updateFingerprint3(userId, fingerprint, browserAgent);
-        throw new Error('More than two devices are not allowed, Please contact the administrator');
+        await updateFingerprint5(userId, fingerprint, browserAgent);
+        throw new Error('More than five devices are not allowed, Please contact the administrator');
     }
 
 
-    if (fingerprint_01 == fingerprint || fingerprint_02 == fingerprint) {
+    if (fingerprint_01 == fingerprint || fingerprint_02 == fingerprint || fingerprint_03 == fingerprint || fingerprint_04 == fingerprint || fingerprint_05 == fingerprint) {
         return true;
     }
 
-    if (((!fingerprint_01 && !fingerprint_02) && (fingerprint_01 != null && fingerprint_02 != null)) || !user_fingerprints) {
+    if (!user_fingerprints || (!fingerprint_01 && !fingerprint_02 && !fingerprint_03 && !fingerprint_04 && !fingerprint_05)) {
 
         let { error } = await supabaseCacheFreeClient
             .from('fingerprint')
@@ -186,6 +195,33 @@ export async function validateFingerprint(userId: string, phoneNumber: string, f
         }
         return;
     }
+    if (fingerprint_03 == null) {
+        let { error } = await supabaseCacheFreeClient
+            .from('fingerprint')
+            .update([{ user_id: userId, phone_number: phoneNumber, fingerprint_03: fingerprint, fingerprint_03_browser_agent: browserAgent, fingerprint_03_time: new Date().toISOString() }]).eq('user_id', userId);
+        if (error) {
+            throw error;
+        }
+        return;
+    }
+    if (fingerprint_04 == null) {
+        let { error } = await supabaseCacheFreeClient
+            .from('fingerprint')
+            .update([{ user_id: userId, phone_number: phoneNumber, fingerprint_04: fingerprint, fingerprint_04_browser_agent: browserAgent, fingerprint_04_time: new Date().toISOString() }]).eq('user_id', userId);
+        if (error) {
+            throw error;
+        }
+        return;
+    }
+    if (fingerprint_05 == null) {
+        let { error } = await supabaseCacheFreeClient
+            .from('fingerprint')
+            .update([{ user_id: userId, phone_number: phoneNumber, fingerprint_05: fingerprint, fingerprint_05_browser_agent: browserAgent, fingerprint_05_time: new Date().toISOString() }]).eq('user_id', userId);
+        if (error) {
+            throw error;
+        }
+        return;
+    }
 }
 
 export async function resetFingerprint(userId: string) {
@@ -206,13 +242,12 @@ export async function resetFingerprint(userId: string) {
 
         let { error } = await supabaseCacheFreeClient
             .from('fingerprint')
-            .update([{ user_id: userId, fingerprint_01: null, fingerprint_02: null, fingerprint_03: null, fingerprint_01_browser_agent: null, fingerprint_01_time: null, fingerprint_02_browser_agent: null, fingerprint_02_time: null, fingerprint_03_browser_agent: null, fingerprint_03_time: null, reset_count: resetCount + 1 }]).eq('user_id', userId);
+            .update([{ user_id: userId, fingerprint_01: null, fingerprint_02: null, fingerprint_03: null, fingerprint_04: null, fingerprint_05: null, fingerprint_01_browser_agent: null, fingerprint_01_time: null, fingerprint_02_browser_agent: null, fingerprint_02_time: null, fingerprint_03_browser_agent: null, fingerprint_03_time: null, fingerprint_04_browser_agent: null, fingerprint_04_time: null, fingerprint_05_browser_agent: null, fingerprint_05_time: null, reset_count: resetCount + 1 }]).eq('user_id', userId);
         if (error) {
             throw error;
         }
         return;
     }
-
 }
 
 async function blockUser(userId: string, batchAutoId: string) {
@@ -224,15 +259,14 @@ async function blockUser(userId: string, batchAutoId: string) {
     }
 }
 
-async function updateFingerprint3(userId: string, fingerprint: string, browserAgent: string | null) {
+async function updateFingerprint5(userId: string, fingerprint: string, browserAgent: string | null) {
     let { error } = await supabaseCacheFreeClient
         .from('fingerprint')
-        .update([{ fingerprint_03: fingerprint, fingerprint_03_browser_agent: browserAgent, fingerprint_03_time: new Date().toISOString() }]).eq('user_id', userId);
+        .update([{ fingerprint_05: fingerprint, fingerprint_05_browser_agent: browserAgent, fingerprint_05_time: new Date().toISOString() }]).eq('user_id', userId);
     if (error) {
         throw error;
     }
 }
-
 
 export async function unblockUser(userId: string, batchAutoId: string) {
     let { error } = await supabaseCacheFreeClient

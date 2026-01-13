@@ -148,6 +148,42 @@ export function ResetFingerprintAlertDIalog({
                         )}
                     </TableCell>
                   </TableRow>
+                  <TableRow>
+                    <TableCell className="font-medium">
+                      Fingerprint 04
+                    </TableCell>
+                    <TableCell>
+                      {fingerprint && fingerprint.fingerprint_04}
+                    </TableCell>
+                    <TableCell>
+                      {fingerprint && fingerprint.fingerprint_04_browser_agent}
+                    </TableCell>
+                    <TableCell>
+                      {fingerprint &&
+                        fingerprint.fingerprint_04_time &&
+                        convertToLocaleDateTime(
+                          fingerprint.fingerprint_04_time
+                        )}
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell className="font-medium">
+                      Fingerprint 05
+                    </TableCell>
+                    <TableCell>
+                      {fingerprint && fingerprint.fingerprint_05}
+                    </TableCell>
+                    <TableCell>
+                      {fingerprint && fingerprint.fingerprint_05_browser_agent}
+                    </TableCell>
+                    <TableCell>
+                      {fingerprint &&
+                        fingerprint.fingerprint_05_time &&
+                        convertToLocaleDateTime(
+                          fingerprint.fingerprint_05_time
+                        )}
+                    </TableCell>
+                  </TableRow>
                 </TableBody>
               </Table>
             </div>
