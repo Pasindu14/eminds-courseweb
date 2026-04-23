@@ -63,6 +63,7 @@
     "react-use": "^17.5.0",
     "simplex-noise": "^4.0.1",
     "sonner": "^1.4.1",
+    "stripe": "^22.0.2",
     "supabase": "^1.127.4",
     "tailwind-merge": "^2.2.1",
     "tailwind-scrollbar": "^3.1.0",
