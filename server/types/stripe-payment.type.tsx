@@ -19,6 +19,7 @@ export type StripePayment = {
   customer_name: string;
   customer_email: string;
   customer_phone: string | null;
+  customer_country: string | null;
   payment_type: "one_time" | "installment";
   amount_paid: number;
   promo_code_used: string | null;

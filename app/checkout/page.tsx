@@ -11,10 +11,28 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import Image from "next/image";
+import "./checkout.css";
 
 type PaymentType = "one_time" | "installment";
+
+const COUNTRIES = [
+  "Afghanistan","Albania","Algeria","Andorra","Angola","Argentina","Armenia","Australia",
+  "Austria","Azerbaijan","Bahrain","Bangladesh","Belarus","Belgium","Bolivia","Bosnia and Herzegovina",
+  "Brazil","Bulgaria","Cambodia","Cameroon","Canada","Chile","China","Colombia","Croatia",
+  "Cuba","Cyprus","Czech Republic","Denmark","Ecuador","Egypt","Estonia","Ethiopia",
+  "Finland","France","Georgia","Germany","Ghana","Greece","Guatemala","Honduras","Hungary",
+  "India","Indonesia","Iran","Iraq","Ireland","Israel","Italy","Jamaica","Japan","Jordan",
+  "Kazakhstan","Kenya","Kuwait","Kyrgyzstan","Latvia","Lebanon","Libya","Lithuania",
+  "Luxembourg","Malaysia","Maldives","Malta","Mexico","Moldova","Mongolia","Morocco",
+  "Mozambique","Myanmar","Nepal","Netherlands","New Zealand","Nigeria","North Korea",
+  "Norway","Oman","Pakistan","Palestine","Panama","Paraguay","Peru","Philippines","Poland",
+  "Portugal","Qatar","Romania","Russia","Saudi Arabia","Senegal","Serbia","Singapore",
+  "Slovakia","Slovenia","Somalia","South Africa","South Korea","Spain","Sri Lanka","Sudan",
+  "Sweden","Switzerland","Syria","Taiwan","Tajikistan","Tanzania","Thailand","Tunisia",
+  "Turkey","Turkmenistan","Uganda","Ukraine","United Arab Emirates","United Kingdom",
+  "United States","Uruguay","Uzbekistan","Venezuela","Vietnam","Yemen","Zambia","Zimbabwe",
+];
 
 function PriceDisplay({
   fullPrice,
@@ -25,20 +43,48 @@ function PriceDisplay({
 }) {
   if (discountedPrice !== null) {
     return (
-      <div className="flex items-baseline gap-2">
-        <span className="text-gray-400 line-through text-sm">
-          $ {fullPrice.toLocaleString()}
+      <div className="flex items-center gap-2 flex-wrap mt-0.5">
+        <span className="text-gray-300 line-through text-sm font-medium">
+          ${fullPrice.toLocaleString()}
         </span>
-        <span className="text-[#2563EB] font-bold text-lg">
-          $ {discountedPrice.toLocaleString()}
+        <span className="text-[#2563EB] font-bold text-xl leading-none">
+          ${discountedPrice.toLocaleString()}
+        </span>
+        <span className="text-xs text-emerald-600 font-semibold bg-emerald-50 border border-emerald-100 px-2 py-0.5 rounded-full">
+          Save ${(fullPrice - discountedPrice).toLocaleString()}
         </span>
       </div>
     );
   }
   return (
-    <span className="text-[#2563EB] font-bold text-lg">
-      $ {fullPrice.toLocaleString()}
+    <span className="text-[#2563EB] font-bold text-xl leading-none mt-0.5 block">
+      ${fullPrice.toLocaleString()}
     </span>
+  );
+}
+
+function CheckIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+      <circle cx="9" cy="9" r="9" fill="#2563EB" />
+      <path d="M5 9l3 3 5-5" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function ShieldIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+    </svg>
+  );
+}
+
+function ArrowIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M5 12h14M12 5l7 7-7 7" />
+    </svg>
   );
 }
 
@@ -54,6 +100,7 @@ export default function CheckoutPage() {
   const [customerName, setCustomerName] = useState("");
   const [customerEmail, setCustomerEmail] = useState("");
   const [customerPhone, setCustomerPhone] = useState("");
+  const [customerCountry, setCustomerCountry] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -88,6 +135,7 @@ export default function CheckoutPage() {
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(customerEmail))
       errs.customerEmail = "Invalid email";
     if (!customerPhone.trim()) errs.customerPhone = "Phone is required";
+    if (!customerCountry.trim()) errs.customerCountry = "Country is required";
     return errs;
   }
 
@@ -110,6 +158,7 @@ export default function CheckoutPage() {
           customerName,
           customerEmail,
           customerPhone,
+          customerCountry,
         }),
       });
 
@@ -126,231 +175,336 @@ export default function CheckoutPage() {
     }
   }
 
-  const chargeAmount =
-    selectedPricing
-      ? paymentType === "one_time"
-        ? (selectedPricing.one_time_discounted_price ?? selectedPricing.one_time_price)
-        : (selectedPricing.installment_discounted_price ?? selectedPricing.installment_amount)
-      : 0;
-
-  if (stage === "loading") {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <p className="text-gray-400">Loading...</p>
-      </div>
-    );
-  }
+  const chargeAmount = selectedPricing
+    ? paymentType === "one_time"
+      ? (selectedPricing.one_time_discounted_price ?? selectedPricing.one_time_price)
+      : (selectedPricing.installment_discounted_price ?? selectedPricing.installment_amount)
+    : 0;
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center py-12 px-4">
-      <div className="w-full max-w-lg space-y-6">
-        <div className="flex justify-center">
-          <Image
-            src="/eminds_logo.png"
-            width={140}
-            height={0}
-            sizes="140px"
-            className="h-auto"
-            alt="Logo"
-            priority
-          />
-        </div>
+    <div className="checkout-root checkout-bg min-h-screen flex flex-col items-center justify-center py-12 px-4">
 
-        {stage === "select-course" && (
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-2xl text-[#2563EB]">Select a Course</CardTitle>
-              <CardDescription>Choose the course you'd like to enroll in.</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              {allCourses.length === 0 && (
-                <p className="text-gray-400 text-sm">No courses available at the moment.</p>
-              )}
-              {allCourses.map((course) => (
-                <button
-                  key={course.id}
-                  onClick={() => selectCourse(course)}
-                  className="w-full text-left border border-gray-200 rounded-lg px-4 py-4 hover:border-[#2563EB] hover:bg-blue-50 transition-colors group"
-                >
-                  <p className="font-semibold text-gray-800 group-hover:text-[#2563EB] text-sm">
-                    {course.course_name}
-                  </p>
-                  <div className="mt-1 flex gap-4 text-xs text-gray-500">
-                    <span>
-                      One-time:{" "}
-                      {course.one_time_discounted_price !== null ? (
-                        <>
-                          <span className="line-through mr-1">
-                            $ {course.one_time_price.toLocaleString()}
-                          </span>
-                          <span className="text-[#2563EB] font-medium">
-                            $ {course.one_time_discounted_price.toLocaleString()}
-                          </span>
-                        </>
-                      ) : (
-                        <span className="text-[#2563EB] font-medium">
-                          $ {course.one_time_price.toLocaleString()}
-                        </span>
-                      )}
-                    </span>
-                    <span>
-                      Installment:{" "}
-                      {course.installment_discounted_price !== null ? (
-                        <>
-                          <span className="line-through mr-1">
-                            $ {course.installment_amount.toLocaleString()}
-                          </span>
-                          <span className="text-[#2563EB] font-medium">
-                            $ {course.installment_discounted_price.toLocaleString()}
-                          </span>
-                        </>
-                      ) : (
-                        <span className="text-[#2563EB] font-medium">
-                          $ {course.installment_amount.toLocaleString()}
-                        </span>
-                      )}
-                    </span>
-                  </div>
-                </button>
-              ))}
-            </CardContent>
-          </Card>
+        {stage === "loading" && (
+          <div className="flex flex-col items-center gap-4">
+            <div className="loading-pulse" />
+            <p style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", color: '#9CA3AF', fontSize: 14 }}>
+              Loading...
+            </p>
+          </div>
         )}
 
-        {stage === "payment" && selectedPricing && (
-          <Card>
-            <CardHeader>
-              <div className="flex items-start justify-between gap-2">
-                <div>
-                  <CardTitle className="text-xl text-[#2563EB]">
-                    {selectedPricing.course_name}
-                  </CardTitle>
-                  <CardDescription className="mt-1">
-                    Select your payment option and complete the form.
-                  </CardDescription>
-                </div>
-                {!courseParam && (
-                  <button
-                    onClick={() => setStage("select-course")}
-                    className="text-xs text-gray-400 hover:text-gray-600 mt-1 shrink-0"
-                  >
-                    ← Change course
-                  </button>
+        {stage !== "loading" && (
+          <div className="w-full max-w-[480px] space-y-5">
+
+            <div className="fade-up fade-up-1 flex justify-center">
+              <Image
+                src="/eminds_logo.png"
+                width={130}
+                height={0}
+                sizes="130px"
+                className="h-auto drop-shadow-sm"
+                alt="Logo"
+                priority
+              />
+            </div>
+
+            <div key={stage} className="checkout-card fade-up fade-up-2">
+              <div style={{ height: 4, background: 'linear-gradient(90deg, #2563EB, #6366F1)' }} />
+
+              <div style={{ padding: '28px 28px 32px' }}>
+
+                {stage === "select-course" && (
+                  <>
+                    <div style={{ marginBottom: 24 }}>
+                      <h1 style={{ fontSize: 22, fontWeight: 800, color: '#111827', marginBottom: 4 }}>
+                        Choose Your Course
+                      </h1>
+                      <p style={{ fontSize: 14, color: '#6B7280' }}>
+                        Select the programme you'd like to enroll in.
+                      </p>
+                    </div>
+
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                      {allCourses.length === 0 && (
+                        <p style={{ fontSize: 14, color: '#9CA3AF', textAlign: 'center', padding: '24px 0' }}>
+                          No courses available at the moment.
+                        </p>
+                      )}
+                      {allCourses.map((course, i) => (
+                        <button
+                          key={course.id}
+                          onClick={() => selectCourse(course)}
+                          className={`course-card fade-up fade-up-${Math.min(i + 3, 5)}`}
+                        >
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 12 }}>
+                            <div style={{ flex: 1 }}>
+                              <p style={{ fontSize: 14, fontWeight: 700, color: '#111827', marginBottom: 10, lineHeight: 1.4 }}>
+                                {course.course_name}
+                              </p>
+                              <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
+                                <div>
+                                  <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: '#9CA3AF', display: 'block', marginBottom: 2 }}>
+                                    One-time
+                                  </span>
+                                  {course.one_time_discounted_price !== null ? (
+                                    <span>
+                                      <span style={{ fontSize: 12, color: '#D1D5DB', textDecoration: 'line-through', marginRight: 4 }}>
+                                        ${course.one_time_price.toLocaleString()}
+                                      </span>
+                                      <span style={{ fontSize: 14, fontWeight: 700, color: '#2563EB' }}>
+                                        ${course.one_time_discounted_price.toLocaleString()}
+                                      </span>
+                                    </span>
+                                  ) : (
+                                    <span style={{ fontSize: 14, fontWeight: 700, color: '#2563EB' }}>
+                                      ${course.one_time_price.toLocaleString()}
+                                    </span>
+                                  )}
+                                </div>
+                                <div>
+                                  <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: '#9CA3AF', display: 'block', marginBottom: 2 }}>
+                                    Installment
+                                  </span>
+                                  {course.installment_discounted_price !== null ? (
+                                    <span>
+                                      <span style={{ fontSize: 12, color: '#D1D5DB', textDecoration: 'line-through', marginRight: 4 }}>
+                                        ${course.installment_amount.toLocaleString()}
+                                      </span>
+                                      <span style={{ fontSize: 14, fontWeight: 700, color: '#2563EB' }}>
+                                        ${course.installment_discounted_price.toLocaleString()}
+                                      </span>
+                                    </span>
+                                  ) : (
+                                    <span style={{ fontSize: 14, fontWeight: 700, color: '#2563EB' }}>
+                                      ${course.installment_amount.toLocaleString()}
+                                    </span>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                            <div style={{ color: '#9CA3AF', marginTop: 2, flexShrink: 0, transition: 'color 0.15s, transform 0.15s' }}>
+                              <ArrowIcon />
+                            </div>
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  </>
+                )}
+
+                {stage === "payment" && selectedPricing && (
+                  <>
+                    <div style={{ marginBottom: 24 }}>
+                      {!courseParam && (
+                        <button className="back-btn" onClick={() => setStage("select-course")} style={{ marginBottom: 14 }}>
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M19 12H5M12 19l-7-7 7-7" />
+                          </svg>
+                          Back to courses
+                        </button>
+                      )}
+                      <div style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: 6,
+                        background: '#EFF6FF',
+                        border: '1px solid #BFDBFE',
+                        borderRadius: 8,
+                        padding: '4px 10px',
+                        marginBottom: 12,
+                      }}>
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="#2563EB">
+                          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="#2563EB" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                        <span style={{ fontSize: 12, fontWeight: 600, color: '#2563EB' }}>
+                          {selectedPricing.course_name}
+                        </span>
+                      </div>
+                      <h1 style={{ fontSize: 22, fontWeight: 800, color: '#111827', marginBottom: 4 }}>
+                        Complete Enrollment
+                      </h1>
+                      <p style={{ fontSize: 14, color: '#6B7280' }}>
+                        Choose a payment plan and fill in your details.
+                      </p>
+                    </div>
+
+                    <div style={{ marginBottom: 24 }}>
+                      <span className="section-label">Payment Plan</span>
+                      <RadioGroup
+                        value={paymentType}
+                        onValueChange={(v) => setPaymentType(v as PaymentType)}
+                        style={{ display: 'flex', flexDirection: 'column', gap: 10 }}
+                      >
+                        <label htmlFor="one_time" className={`payment-option ${paymentType === "one_time" ? "selected" : ""}`} style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+                          <RadioGroupItem value="one_time" id="one_time" className="sr-only" />
+                          <div style={{
+                            width: 20,
+                            height: 20,
+                            borderRadius: '50%',
+                            border: paymentType === "one_time" ? 'none' : '2px solid #D1D5DB',
+                            flexShrink: 0,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            transition: 'all 0.15s ease',
+                          }}>
+                            {paymentType === "one_time" && <CheckIcon />}
+                          </div>
+                          <div style={{ flex: 1 }}>
+                            <p style={{ fontSize: 13, fontWeight: 600, color: '#374151', marginBottom: 2 }}>
+                              Full Payment
+                            </p>
+                            <PriceDisplay
+                              fullPrice={selectedPricing.one_time_price}
+                              discountedPrice={selectedPricing.one_time_discounted_price}
+                            />
+                          </div>
+                          {selectedPricing.one_time_discounted_price !== null && (
+                            <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.04em', background: '#2563EB', color: 'white', borderRadius: 6, padding: '3px 8px' }}>
+                              BEST DEAL
+                            </span>
+                          )}
+                        </label>
+
+                        <label htmlFor="installment" className={`payment-option ${paymentType === "installment" ? "selected" : ""}`} style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+                          <RadioGroupItem value="installment" id="installment" className="sr-only" />
+                          <div style={{
+                            width: 20,
+                            height: 20,
+                            borderRadius: '50%',
+                            border: paymentType === "installment" ? 'none' : '2px solid #D1D5DB',
+                            flexShrink: 0,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            transition: 'all 0.15s ease',
+                          }}>
+                            {paymentType === "installment" && <CheckIcon />}
+                          </div>
+                          <div style={{ flex: 1 }}>
+                            <p style={{ fontSize: 13, fontWeight: 600, color: '#374151', marginBottom: 2 }}>
+                              First Installment
+                            </p>
+                            <PriceDisplay
+                              fullPrice={selectedPricing.installment_amount}
+                              discountedPrice={selectedPricing.installment_discounted_price}
+                            />
+                          </div>
+                        </label>
+                      </RadioGroup>
+                    </div>
+
+                    <div style={{ marginBottom: 24 }}>
+                      <span className="section-label">Your Details</span>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+                        <div>
+                          <label style={{ fontSize: 13, fontWeight: 600, color: '#374151', display: 'block', marginBottom: 6 }}>
+                            Full Name
+                          </label>
+                          <input
+                            className={`checkout-input ${errors.customerName ? "error" : ""}`}
+                            placeholder="Your full name"
+                            value={customerName}
+                            onChange={(e) => setCustomerName(e.target.value)}
+                          />
+                          {errors.customerName && (
+                            <p style={{ fontSize: 12, color: '#EF4444', marginTop: 4 }}>{errors.customerName}</p>
+                          )}
+                        </div>
+
+                        <div>
+                          <label style={{ fontSize: 13, fontWeight: 600, color: '#374151', display: 'block', marginBottom: 6 }}>
+                            Email Address
+                          </label>
+                          <input
+                            className={`checkout-input ${errors.customerEmail ? "error" : ""}`}
+                            type="email"
+                            placeholder="you@example.com"
+                            value={customerEmail}
+                            onChange={(e) => setCustomerEmail(e.target.value)}
+                          />
+                          {errors.customerEmail && (
+                            <p style={{ fontSize: 12, color: '#EF4444', marginTop: 4 }}>{errors.customerEmail}</p>
+                          )}
+                        </div>
+
+                        <div>
+                          <label style={{ fontSize: 13, fontWeight: 600, color: '#374151', display: 'block', marginBottom: 6 }}>
+                            Phone Number
+                          </label>
+                          <input
+                            className={`checkout-input ${errors.customerPhone ? "error" : ""}`}
+                            type="tel"
+                            placeholder="07X XXX XXXX"
+                            value={customerPhone}
+                            onChange={(e) => setCustomerPhone(e.target.value)}
+                          />
+                          {errors.customerPhone && (
+                            <p style={{ fontSize: 12, color: '#EF4444', marginTop: 4 }}>{errors.customerPhone}</p>
+                          )}
+                        </div>
+
+                        <div>
+                          <label style={{ fontSize: 13, fontWeight: 600, color: '#374151', display: 'block', marginBottom: 6 }}>
+                            Country
+                          </label>
+                          <select
+                            className={`checkout-input ${errors.customerCountry ? "error" : ""}`}
+                            value={customerCountry}
+                            onChange={(e) => setCustomerCountry(e.target.value)}
+                            style={{ cursor: 'pointer' }}
+                          >
+                            <option value="">Select your country</option>
+                            {COUNTRIES.map((c) => (
+                              <option key={c} value={c}>{c}</option>
+                            ))}
+                          </select>
+                          {errors.customerCountry && (
+                            <p style={{ fontSize: 12, color: '#EF4444', marginTop: 4 }}>{errors.customerCountry}</p>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="total-box" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
+                      <div>
+                        <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.07em', textTransform: 'uppercase', color: '#6366F1', marginBottom: 4 }}>
+                          Total Due Today
+                        </p>
+                        <p style={{ fontSize: 30, fontWeight: 800, color: '#1E40AF', lineHeight: 1 }}>
+                          ${chargeAmount.toLocaleString()}
+                        </p>
+                        <p style={{ fontSize: 12, color: '#6B7280', marginTop: 4 }}>
+                          {paymentType === "installment" ? "First instalment only" : "One-time · Full access"}
+                        </p>
+                      </div>
+                      <button
+                        className="pay-btn"
+                        onClick={handlePay}
+                        disabled={submitting}
+                      >
+                        {submitting ? (
+                          <span style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                            <span style={{ width: 14, height: 14, borderRadius: '50%', border: '2px solid rgba(255,255,255,0.3)', borderTopColor: 'white', display: 'inline-block', animation: 'spin 0.7s linear infinite' }} />
+                            Redirecting
+                          </span>
+                        ) : "Pay Now →"}
+                      </button>
+                    </div>
+                  </>
                 )}
               </div>
-            </CardHeader>
+            </div>
 
-            <CardContent className="space-y-6">
-              <div>
-                <Label className="text-sm font-medium mb-3 block">Payment Option</Label>
-                <RadioGroup
-                  value={paymentType}
-                  onValueChange={(v) => setPaymentType(v as PaymentType)}
-                  className="space-y-3"
-                >
-                  <label
-                    htmlFor="one_time"
-                    className={`flex items-center gap-3 border rounded-lg px-4 py-3 cursor-pointer transition-colors ${
-                      paymentType === "one_time"
-                        ? "border-[#2563EB] bg-blue-50"
-                        : "border-gray-200"
-                    }`}
-                  >
-                    <RadioGroupItem value="one_time" id="one_time" />
-                    <div>
-                      <p className="font-medium text-sm">One-time Payment</p>
-                      <PriceDisplay
-                        fullPrice={selectedPricing.one_time_price}
-                        discountedPrice={selectedPricing.one_time_discounted_price}
-                      />
-                    </div>
-                  </label>
+            <div className="fade-up fade-up-3" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
+              <ShieldIcon />
+              <p style={{ fontSize: 12, color: '#9CA3AF', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                256-bit SSL encryption · Secured by <strong style={{ color: '#6B7280' }}>Stripe</strong>
+              </p>
+            </div>
 
-                  <label
-                    htmlFor="installment"
-                    className={`flex items-center gap-3 border rounded-lg px-4 py-3 cursor-pointer transition-colors ${
-                      paymentType === "installment"
-                        ? "border-[#2563EB] bg-blue-50"
-                        : "border-gray-200"
-                    }`}
-                  >
-                    <RadioGroupItem value="installment" id="installment" />
-                    <div>
-                      <p className="font-medium text-sm">First Installment</p>
-                      <PriceDisplay
-                        fullPrice={selectedPricing.installment_amount}
-                        discountedPrice={selectedPricing.installment_discounted_price}
-                      />
-                    </div>
-                  </label>
-                </RadioGroup>
-              </div>
-
-              <div className="space-y-4">
-                <div>
-                  <Label htmlFor="name">Full Name</Label>
-                  <Input
-                    id="name"
-                    placeholder="Your full name"
-                    value={customerName}
-                    onChange={(e) => setCustomerName(e.target.value)}
-                    className="mt-1"
-                  />
-                  {errors.customerName && (
-                    <p className="text-red-500 text-xs mt-1">{errors.customerName}</p>
-                  )}
-                </div>
-
-                <div>
-                  <Label htmlFor="email">Email</Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="you@example.com"
-                    value={customerEmail}
-                    onChange={(e) => setCustomerEmail(e.target.value)}
-                    className="mt-1"
-                  />
-                  {errors.customerEmail && (
-                    <p className="text-red-500 text-xs mt-1">{errors.customerEmail}</p>
-                  )}
-                </div>
-
-                <div>
-                  <Label htmlFor="phone">Phone Number</Label>
-                  <Input
-                    id="phone"
-                    type="tel"
-                    placeholder="07X XXX XXXX"
-                    value={customerPhone}
-                    onChange={(e) => setCustomerPhone(e.target.value)}
-                    className="mt-1"
-                  />
-                  {errors.customerPhone && (
-                    <p className="text-red-500 text-xs mt-1">{errors.customerPhone}</p>
-                  )}
-                </div>
-              </div>
-
-              <div className="border-t pt-4 flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-500">Total to pay</p>
-                  <p className="text-2xl font-bold text-[#2563EB]">
-                    $ {chargeAmount.toLocaleString()}
-                  </p>
-                </div>
-                <Button onClick={handlePay} disabled={submitting} className="px-8">
-                  {submitting ? "Redirecting..." : "Pay Now"}
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
+          </div>
         )}
-
-        <p className="text-center text-xs text-gray-400">
-          Secured by Stripe. Your payment information is encrypted.
-        </p>
       </div>
-    </div>
   );
 }
