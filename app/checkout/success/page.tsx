@@ -1,5 +1,6 @@
 import Stripe from "stripe";
 import { saveStripePayment } from "@/server/actions/stripe-payment.actions";
+import { sendPaymentConfirmationEmail } from "@/utils/mail.util";
 import SuccessView from "./_components/SuccessView";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
@@ -71,6 +72,16 @@ export default async function CheckoutSuccessPage({
     });
   } catch (err) {
     console.error("Failed to save payment record:", err);
+  }
+
+  try {
+    await sendPaymentConfirmationEmail(
+      meta.customerName ?? "",
+      session.customer_email ?? "",
+      meta.courseName ?? "",
+    );
+  } catch (emailErr) {
+    console.error("Failed to send confirmation email:", emailErr);
   }
 
   return (

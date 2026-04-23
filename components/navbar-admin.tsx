@@ -148,6 +148,12 @@ const paymentComponents: {
     description:
       "Manage and organize session details efficiently, ensuring convenient access and timely updates to essential information.",
   },
+  {
+    title: "Stripe Payments",
+    href: "/stripe-payments",
+    description:
+      "View all online Stripe payment transactions including enrollment details, amounts, and customer information.",
+  },
 ];
 
 const attendanceComponents: {

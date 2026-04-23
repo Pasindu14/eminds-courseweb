@@ -8,7 +8,7 @@ export default withAuth(
         const userRole = req.nextauth.token?.role;
 
         const adminPaths = [
-            , "/badges", "/batches", "/courses", "/events", "/exam-results", "/exams", "/expire-badges", "/final-exams-submissions-results", "/jobs", "/payment-report", "/payments", "/questions", "/sessions", "/student-mapping", "/students", "/admin-dashboard"
+            , "/badges", "/batches", "/courses", "/events", "/exam-results", "/exams", "/expire-badges", "/final-exams-submissions-results", "/jobs", "/payment-report", "/payments", "/questions", "/sessions", "/student-mapping", "/students", "/admin-dashboard", "/stripe-payments"
         ];
         const studentPaths = [
             "/dashboard", "/student-events", "/student-exams", "/student-payments", "/student-jobs", "/student-usage", "/zoom", "/password-reset",
@@ -30,4 +30,4 @@ export default withAuth(
 );
 
 
-export const config = { matcher: ["/badges", "/batches", "/courses", "/events", "/exam-results", "/exams", "/expire-badges", "/final-exams-submissions-results", "/jobs", "/payment-report", "/payments", "/questions", "/sessions", "/student-mapping", "/students", "/admin-dashboard", "/dashboard", "/student-events", "/student-exams", "/student-payments", "/student-jobs", "/student-usage", "/zoom", "/password-reset"] };
+export const config = { matcher: ["/badges", "/batches", "/courses", "/events", "/exam-results", "/exams", "/expire-badges", "/final-exams-submissions-results", "/jobs", "/payment-report", "/payments", "/questions", "/sessions", "/student-mapping", "/students", "/admin-dashboard", "/stripe-payments", "/dashboard", "/student-events", "/student-exams", "/student-payments", "/student-jobs", "/student-usage", "/zoom", "/password-reset"] };

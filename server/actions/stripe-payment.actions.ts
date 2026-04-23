@@ -25,6 +25,16 @@ export async function fetchAllCoursePricings(): Promise<CoursePricing[]> {
   return data as CoursePricing[];
 }
 
+export async function fetchStripePayments(): Promise<StripePayment[]> {
+  const { data, error } = await supabaseCacheFreeClient
+    .from("stripe_payments")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (error) return [];
+  return data as StripePayment[];
+}
+
 export async function saveStripePayment(payload: Omit<StripePayment, "id" | "created_at">): Promise<void> {
   const { error } = await supabaseCacheFreeClient
     .from("stripe_payments")
