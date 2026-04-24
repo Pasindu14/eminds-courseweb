@@ -1,7 +1,7 @@
+import { redirect } from "next/navigation";
 import Stripe from "stripe";
 import { saveStripePayment } from "@/server/actions/stripe-payment.actions";
 import { sendPaymentConfirmationEmail } from "@/utils/mail.util";
-import SuccessView from "./_components/SuccessView";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
@@ -84,14 +84,6 @@ export default async function CheckoutSuccessPage({
     console.error("Failed to send confirmation email:", emailErr);
   }
 
-  return (
-    <SuccessView
-      courseName={meta.courseName ?? ""}
-      customerName={meta.customerName ?? ""}
-      customerEmail={session.customer_email ?? ""}
-      amountPaid={Number(meta.amountPaid)}
-      paymentType={paymentType as "one_time" | "installment"}
-      redirectUrl={process.env.PAYMENT_REDIRECT_URL!}
-    />
-  );
+  const wordpressSuccessUrl = `${process.env.PAYMENT_REDIRECT_URL}?token=${process.env.PAYMENT_SUCCESS_TOKEN}`;
+  redirect(wordpressSuccessUrl);
 }
