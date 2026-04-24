@@ -220,7 +220,7 @@ export default function CheckoutPage() {
                         Choose Your Course
                       </h1>
                       <p style={{ fontSize: 14, color: '#6B7280' }}>
-                        Select the programme you'd like to enroll in.
+                        Select the programme you&apos;d like to enroll in.
                       </p>
                     </div>
 
