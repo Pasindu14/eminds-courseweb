@@ -27,7 +27,7 @@ import dynamic from "next/dynamic";
 import { validateStudent } from "@/server/actions/students-auth.actions";
 import { encryptToken } from "@/lib/encrypter";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { AlertCircle } from "lucide-react";
+
 
 const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
