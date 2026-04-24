@@ -28,7 +28,8 @@ export async function POST(req: NextRequest) {
     const discountApplied = discountedAmount ? fullAmount - discountedAmount : 0;
 
     const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
-    const successUrl = process.env.PAYMENT_REDIRECT_URL ?? `${appUrl}/checkout/success?session_id={CHECKOUT_SESSION_ID}&course=${courseId}&type=${paymentType}`;
+    const redirectBase = process.env.PAYMENT_REDIRECT_URL ?? `${appUrl}/checkout/success`;
+    const successUrl = `${redirectBase}?token=${process.env.PAYMENT_SUCCESS_TOKEN}`;
     const cancelUrl = `${appUrl}/checkout?course=${courseId}`;
 
     const session = await stripe.checkout.sessions.create({
