@@ -251,6 +251,9 @@ export default function CheckoutPage() {
                                     fullPrice={course.one_time_price}
                                     discountedPrice={course.one_time_discounted_price}
                                   />
+                                  <p style={{ fontSize: 11, color: '#6B7280', marginTop: 4 }}>
+                                    Pay AUD 30 and enroll
+                                  </p>
                                 </div>
                                 <div style={{ display: 'none' }}>
                                   <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: '#9CA3AF', display: 'block', marginBottom: 2 }}>
