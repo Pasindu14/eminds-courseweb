@@ -17,7 +17,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Course not found or inactive" }, { status: 404 });
     }
 
-    const chargeAmount = 30;
+    const chargeAmount = Number(courseId) === 999 ? 5 : 30;
     const discountApplied = 0;
 
     const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";

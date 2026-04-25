@@ -175,7 +175,7 @@ export default function CheckoutPage() {
     }
   }
 
-  const chargeAmount = selectedPricing ? 30 : 0;
+  const chargeAmount = selectedPricing ? (selectedPricing.course_id === 999 ? 5 : 30) : 0;
 
   return (
     <div className="checkout-root checkout-bg min-h-screen flex flex-col items-center justify-center py-12 px-4">
