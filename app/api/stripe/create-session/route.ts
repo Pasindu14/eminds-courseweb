@@ -17,15 +17,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Course not found or inactive" }, { status: 404 });
     }
 
-    const fullAmount =
-      paymentType === "one_time" ? pricing.one_time_price : pricing.installment_amount;
-    const discountedAmount =
-      paymentType === "one_time"
-        ? pricing.one_time_discounted_price
-        : pricing.installment_discounted_price;
-
-    const chargeAmount = discountedAmount ?? fullAmount;
-    const discountApplied = discountedAmount ? fullAmount - discountedAmount : 0;
+    const chargeAmount = 30;
+    const discountApplied = 0;
 
     const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
     const successUrl = `${appUrl}/checkout/success?session_id={CHECKOUT_SESSION_ID}&type=${paymentType}`;
@@ -37,11 +30,11 @@ export async function POST(req: NextRequest) {
       line_items: [
         {
           price_data: {
-            currency: "usd",
+            currency: "aud",
             product_data: {
               name: pricing.course_name,
               description:
-                paymentType === "installment" ? "First Installment Payment" : "One-time Full Payment",
+                paymentType === "installment" ? "Installment Payment" : "One-time Full Payment",
             },
             unit_amount: Math.round(chargeAmount * 100),
           },

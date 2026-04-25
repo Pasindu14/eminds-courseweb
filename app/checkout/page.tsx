@@ -175,11 +175,7 @@ export default function CheckoutPage() {
     }
   }
 
-  const chargeAmount = selectedPricing
-    ? paymentType === "one_time"
-      ? (selectedPricing.one_time_discounted_price ?? selectedPricing.one_time_price)
-      : (selectedPricing.installment_discounted_price ?? selectedPricing.installment_amount)
-    : 0;
+  const chargeAmount = selectedPricing ? 30 : 0;
 
   return (
     <div className="checkout-root checkout-bg min-h-screen flex flex-col items-center justify-center py-12 px-4">
@@ -215,6 +211,11 @@ export default function CheckoutPage() {
 
                 {stage === "select-course" && (
                   <>
+                    <div style={{ marginBottom: 12, display: 'flex', justifyContent: 'center' }}>
+                      <span style={{ fontSize: 12, fontWeight: 700, color: '#DC2626', background: '#FEF2F2', border: '1px solid #FECACA', borderRadius: 6, padding: '4px 12px', letterSpacing: '0.02em' }}>
+                        Offer valid only for 7 days
+                      </span>
+                    </div>
                     <div style={{ marginBottom: 24 }}>
                       <h1 style={{ fontSize: 22, fontWeight: 800, color: '#111827', marginBottom: 4 }}>
                         Choose Your Course
@@ -243,42 +244,22 @@ export default function CheckoutPage() {
                               </p>
                               <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
                                 <div>
-                                  <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: '#9CA3AF', display: 'block', marginBottom: 2 }}>
+                                  <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: '#9CA3AF', display: 'none', marginBottom: 2 }}>
                                     One-time
                                   </span>
-                                  {course.one_time_discounted_price !== null ? (
-                                    <span>
-                                      <span style={{ fontSize: 12, color: '#D1D5DB', textDecoration: 'line-through', marginRight: 4 }}>
-                                        ${course.one_time_price.toLocaleString()}
-                                      </span>
-                                      <span style={{ fontSize: 14, fontWeight: 700, color: '#2563EB' }}>
-                                        ${course.one_time_discounted_price.toLocaleString()}
-                                      </span>
-                                    </span>
-                                  ) : (
-                                    <span style={{ fontSize: 14, fontWeight: 700, color: '#2563EB' }}>
-                                      ${course.one_time_price.toLocaleString()}
-                                    </span>
-                                  )}
+                                  <PriceDisplay
+                                    fullPrice={course.one_time_price}
+                                    discountedPrice={course.one_time_discounted_price}
+                                  />
                                 </div>
-                                <div>
+                                <div style={{ display: 'none' }}>
                                   <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: '#9CA3AF', display: 'block', marginBottom: 2 }}>
                                     Installment
                                   </span>
-                                  {course.installment_discounted_price !== null ? (
-                                    <span>
-                                      <span style={{ fontSize: 12, color: '#D1D5DB', textDecoration: 'line-through', marginRight: 4 }}>
-                                        ${course.installment_amount.toLocaleString()}
-                                      </span>
-                                      <span style={{ fontSize: 14, fontWeight: 700, color: '#2563EB' }}>
-                                        ${course.installment_discounted_price.toLocaleString()}
-                                      </span>
-                                    </span>
-                                  ) : (
-                                    <span style={{ fontSize: 14, fontWeight: 700, color: '#2563EB' }}>
-                                      ${course.installment_amount.toLocaleString()}
-                                    </span>
-                                  )}
+                                  <span style={{ fontSize: 14, fontWeight: 700, color: '#2563EB' }}>$30</span>
+                                  <span style={{ fontSize: 10, color: '#6B7280', display: 'block', marginTop: 2 }}>
+                                    Pay AUD 30 and reserve a seat
+                                  </span>
                                 </div>
                               </div>
                             </div>
@@ -358,6 +339,9 @@ export default function CheckoutPage() {
                               fullPrice={selectedPricing.one_time_price}
                               discountedPrice={selectedPricing.one_time_discounted_price}
                             />
+                            <p style={{ fontSize: 11, color: '#6B7280', marginTop: 4 }}>
+                              Pay AUD 30 and reserve a seat to be eligible for this discount
+                            </p>
                           </div>
                           {selectedPricing.one_time_discounted_price !== null && (
                             <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.04em', background: '#2563EB', color: 'white', borderRadius: 6, padding: '3px 8px' }}>
@@ -383,12 +367,11 @@ export default function CheckoutPage() {
                           </div>
                           <div style={{ flex: 1 }}>
                             <p style={{ fontSize: 13, fontWeight: 600, color: '#374151', marginBottom: 2 }}>
-                              First Installment
+                              Installment <span style={{ fontWeight: 400, color: '#6B7280' }}>(4 equally divided installments)</span>
                             </p>
-                            <PriceDisplay
-                              fullPrice={selectedPricing.installment_amount}
-                              discountedPrice={selectedPricing.installment_discounted_price}
-                            />
+                            <p style={{ fontSize: 11, color: '#6B7280', marginTop: 2 }}>
+                              Pay AUD 30 and reserve a seat
+                            </p>
                           </div>
                         </label>
                       </RadioGroup>
@@ -474,9 +457,6 @@ export default function CheckoutPage() {
                         <p style={{ fontSize: 30, fontWeight: 800, color: '#1E40AF', lineHeight: 1 }}>
                           ${chargeAmount.toLocaleString()}
                         </p>
-                        <p style={{ fontSize: 12, color: '#6B7280', marginTop: 4 }}>
-                          {paymentType === "installment" ? "First instalment only" : "One-time · Full access"}
-                        </p>
                       </div>
                       <button
                         className="pay-btn"
@@ -491,6 +471,12 @@ export default function CheckoutPage() {
                         ) : "Pay Now →"}
                       </button>
                     </div>
+                    <p style={{ fontSize: 11, color: '#EF4444', fontWeight: 600, marginTop: 10, textAlign: 'center' }}>
+                      Limited seats
+                    </p>
+                    <p style={{ fontSize: 10, color: '#9CA3AF', marginTop: 3, textAlign: 'center' }}>
+                      Terms and conditions apply
+                    </p>
                   </>
                 )}
               </div>

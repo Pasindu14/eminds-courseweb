@@ -152,7 +152,7 @@ export default function SuccessView({
                   style={{ fontSize: 13, fontWeight: 600, color: "#374151" }}
                 >
                   {paymentType === "installment"
-                    ? "First Installment"
+                    ? "Installment"
                     : "Full Payment"}
                 </span>
               </div>
