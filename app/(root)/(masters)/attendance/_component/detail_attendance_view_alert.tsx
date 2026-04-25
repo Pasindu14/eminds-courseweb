@@ -20,7 +20,6 @@ import { resetFingerprint, unblockUser } from "@/server/actions/auth.action";
 import { fetchFingerprintData } from "@/server/actions/students-auth.actions";
 
 import { useEffect, useState } from "react";
-import { columns } from "../datatable/columns";
 import { fetchTotalAttendanceForBatch } from "@/server/actions/attendance.actions";
 import { detailViewColumns } from "../datatable/detail_view_columns";
 import { Badge } from "@/components/ui/badge";
