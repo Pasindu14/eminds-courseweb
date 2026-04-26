@@ -3,6 +3,7 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { StripePayment } from "@/server/types/stripe-payment.type";
 import { Badge } from "@/components/ui/badge";
+import { ConfirmRegistrationAlertDialog } from "../_component/confirm_registration_alert";
 
 export const columns: ColumnDef<StripePayment>[] = [
   {
@@ -43,8 +44,14 @@ export const columns: ColumnDef<StripePayment>[] = [
     accessorKey: "payment_type",
     header: "Type",
     cell: ({ row }) => (
-      <Badge variant={row.original.payment_type === "one_time" ? "default" : "secondary"}>
-        {row.original.payment_type === "one_time" ? "Full Payment" : "Installment"}
+      <Badge
+        variant={
+          row.original.payment_type === "one_time" ? "default" : "secondary"
+        }
+      >
+        {row.original.payment_type === "one_time"
+          ? "Full Payment"
+          : "Installment"}
       </Badge>
     ),
   },
@@ -54,12 +61,13 @@ export const columns: ColumnDef<StripePayment>[] = [
     cell: ({ row }) => `$${Number(row.original.amount_paid).toLocaleString()}`,
   },
   {
-    accessorKey: "status",
-    header: "Status",
+    accessorKey: "registration_status",
+    header: "Acknowledgement",
     cell: ({ row }) => (
-      <Badge variant="default" className="bg-green-600 hover:bg-green-600">
-        {row.original.status}
-      </Badge>
+      <ConfirmRegistrationAlertDialog
+        id={row.original.id}
+        registration_status={row.original.registration_status ?? "pending"}
+      />
     ),
   },
 ];

@@ -26,5 +26,6 @@ export type StripePayment = {
   discount_applied: number;
   stripe_session_id: string;
   status: string;
+  registration_status: string;
   created_at: string;
 };

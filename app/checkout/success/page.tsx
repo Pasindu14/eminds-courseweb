@@ -69,6 +69,7 @@ export default async function CheckoutSuccessPage({
       discount_applied: Number(meta.discountApplied ?? 0),
       stripe_session_id: session_id,
       status: "completed",
+      registration_status: "pending",
     });
   } catch (err) {
     console.error("Failed to save payment record:", err);

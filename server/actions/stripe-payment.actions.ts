@@ -1,4 +1,6 @@
 "use server";
+import { revalidatePath } from "next/cache";
+import ResponseHandler from "../models/response.model";
 import { supabaseCacheFreeClient } from "../server";
 import { CoursePricing, StripePayment } from "../types/stripe-payment.type";
 
@@ -33,6 +35,23 @@ export async function fetchStripePayments(): Promise<StripePayment[]> {
 
   if (error) return [];
   return data as StripePayment[];
+}
+
+export async function confirmStripeRegistration(id: string) {
+  const responseHandler = new ResponseHandler<any>();
+  try {
+    const { error } = await supabaseCacheFreeClient
+      .from("stripe_payments")
+      .update({ registration_status: "confirmed" })
+      .eq("id", id);
+
+    if (error) return responseHandler.setError(error.message ?? "Failed to confirm registration");
+
+    revalidatePath("/stripe-payments", "page");
+    return responseHandler.setSuccess("Registration confirmed successfully");
+  } catch (error: any) {
+    return responseHandler.setError(error.message ?? "Failed to confirm registration");
+  }
 }
 
 export async function saveStripePayment(payload: Omit<StripePayment, "id" | "created_at">): Promise<void> {
